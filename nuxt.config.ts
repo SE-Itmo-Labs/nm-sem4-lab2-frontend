@@ -4,12 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   app: {
-    baseURL: process.env.NUXT_APP_BASE_URL || '/'
-  },
-
-  nitro: {
-    prerender: {
-      failOnError: false
-    }
+    baseURL: '/nm-sem4-lab2-frontend/', // baseURL: '/<repository>/'
+    buildAssetsDir: 'assets', // don't use "_" at the begining of the folder name to avoids nojkill conflict
   }
 })

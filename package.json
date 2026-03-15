@@ -3,15 +3,20 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "deploy": "gh-pages -d dist",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "tyap-lyap-i-v-prod": "nuxt generate & gh-pages -d dist"
   },
   "dependencies": {
     "nuxt": "^4.4.2",
     "vue": "^3.5.30",
     "vue-router": "^5.0.3"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
