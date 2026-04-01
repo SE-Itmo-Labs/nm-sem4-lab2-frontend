@@ -10,11 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend.git"
   },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  },
   "license": "Apache-2.0",
   "author": "",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "prod": "gh-pages -d www",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
