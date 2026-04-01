@@ -6,6 +6,7 @@ nm-sem4-lab2-frontend/
 │   └── PROJECT_STRUCTURE.txt
 ├── www
 │   ├── img
+│   │   ├── num.gif
 │   │   ├── pirate.gif
 │   │   └── professor.gif
 │   ├── index.html
@@ -167,7 +168,7 @@ www/index.html
 <body>
 
 <div class="container">
-    <header>
+    <header style="display: flex">
         <div style="width: 50%">
             <h1>Лабораторная работа №2</h1>
             <h3>Численное решение нелинейных уравнений</h3>
@@ -176,8 +177,6 @@ www/index.html
         <div style="width: 50%">
             <img src="img/pirate.gif" alt="Under Construction" width="200">
         </div>
-
-
     </header>
 
     <!-- Бегущая строка для атмосферы -->
@@ -265,6 +264,13 @@ www/index.html
         <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
         <br><br>
         <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center">
+            <img src="https://88x31.nl/gifs/devOnMintGreen.png">
+            <img src="https://88x31.nl/gifs/firefoxnow.gif">
+            <img src="https://88x31.nl/gifs/neo_now88.gif">
+            <img src="https://88x31.nl/gifs/lifewithoutangels.gif">
+            <img src="img/num.gif">
+        </div>
     </footer>
 </div>
 

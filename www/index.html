@@ -33,9 +33,8 @@
     <!-- Навигация таблицей -->
     <table class="nav-table">
         <tr>
-            <td><a href="#equation">[ Уравнение ]</a></td>
+            <td><a href="#equation">[ Уравнения ]</a></td>
             <td><a href="#system">[ Система ]</a></td>
-            <td><a href="#graphs">[ Графики ]</a></td>
             <td><a href="#report">[ Отчет ]</a></td>
         </tr>
     </table>
@@ -85,18 +84,7 @@
                 <a name="graphs"></a>
                 <h2>Графики</h2>
                 <div class="graph-box" id="plot-area">
-                    <!-- Сюда будем вставлять canvas или img -->
-<!--                    <div class="graph-placeholder">-->
-<!--                        МЕСТО ДЛЯ ГРАФИКА<br>-->
-<!--                        (Сюда вставим Plotly.js)-->
-<!--                    </div>-->
-
-                    <div id="calculator" style="width: 600px; height: 400px;"></div>
-
-                    <script>
-                        var elt = document.getElementById('calculator');
-                        var calculator = Desmos.GraphingCalculator(elt);
-                    </script>
+                    <div id="calculator" style="width: 100%; height: 100%;"></div>
                 </div>
                 <font size="2" color="blue">Рис 1. Функция f(x)</font>
             </td>
