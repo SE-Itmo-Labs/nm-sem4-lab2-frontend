@@ -1,0 +1,78 @@
+/* === БАЗОВЫЕ СТИЛИ === */
+
+:root {
+    --retro-bg: #c0c0c0;
+    --retro-fg: #000000;
+    --retro-primary: #000080;
+    --retro-secondary: #008080;
+    --retro-accent: #ffff00;
+    --retro-border-light: #ffffff;
+    --retro-border-dark: #808080;
+    --retro-font: "Times New Roman", Times, serif;
+    --retro-mono: "Courier New", monospace;
+}
+
+body {
+    background-color: var(--retro-bg);
+    background-image:
+            linear-gradient(45deg, #ccc 25%, transparent 25%),
+            linear-gradient(-45deg, #ccc 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #ccc 75%),
+            linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+    font-family: var(--retro-font);
+    margin: 0;
+    padding: 10px;
+    color: var(--retro-fg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 5px ridge var(--retro-border-dark);
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    border-bottom: 3px double var(--retro-primary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--retro-primary);
+    font-size: 24px;
+    margin: 5px;
+    text-shadow: 2px 2px var(--retro-accent);
+}
+
+h2 {
+    background-color: var(--retro-primary);
+    color: #ffffff;
+    font-size: 18px;
+    padding: 5px;
+    border: 2px outset var(--retro-border-dark);
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    border-top: 2px solid #000000;
+    padding-top: 10px;
+}
+
+.graph-box {
+    width: 100%;
+    height: 600px;
+    border: 4px inset var(--retro-primary);
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}

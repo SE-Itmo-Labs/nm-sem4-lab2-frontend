@@ -1,0 +1,96 @@
+/* === СТИЛИ КОМПОНЕНТОВ === */
+
+/* Навигация */
+.nav-table {
+    width: 100%;
+    background-color: var(--retro-secondary);
+    margin-bottom: 15px;
+}
+
+.nav-table a {
+    display: block;
+    color: var(--retro-accent);
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+.nav-table a:hover {
+    background-color: var(--retro-primary);
+    color: #ffffff;
+}
+
+/* Таблицы данных */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px outset var(--retro-border-dark);
+    margin-bottom: 20px;
+}
+
+.data-table th, .data-table td {
+    border: 1px inset var(--retro-border-dark);
+    padding: 5px;
+    text-align: center;
+}
+
+.data-table th {
+    background-color: var(--retro-bg);
+    color: #000000;
+}
+
+/* Dropdown */
+.graph-selector-container {
+    background-color: var(--retro-bg);
+    border: 3px outset var(--retro-border-dark);
+    padding: 10px;
+    margin: 15px 0;
+    font-family: var(--retro-font);
+}
+
+.graph-selector-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--retro-primary);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.retro-select {
+    width: 100%;
+    padding: 5px;
+    font-family: var(--retro-font);
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 2px inset var(--retro-border-dark);
+    color: #000000;
+    cursor: pointer;
+}
+
+.retro-select:focus {
+    outline: none;
+    border: 2px outset var(--retro-primary);
+    background-color: #ffffcc;
+}
+
+/* Блок информации */
+.graph-info {
+    background-color: #ffffcc;
+    border: 2px dashed var(--retro-primary);
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.graph-info h3 {
+    margin-top: 0;
+    color: var(--retro-primary);
+    font-size: 16px;
+    border-bottom: 1px solid var(--retro-primary);
+    padding-bottom: 5px;
+}
+
+.graph-info p {
+    margin: 5px 0;
+}
