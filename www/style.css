@@ -152,3 +152,82 @@ footer {
     position: relative;
     overflow: hidden;  /* Скрываем всё что выходит за границы */
 }
+
+.graph-selector-container {
+    background-color: #c0c0c0;
+    border: 3px outset #808080;
+    padding: 10px;
+    margin: 15px 0;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.graph-selector-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #000080;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.retro-select {
+    width: 100%;
+    padding: 5px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 2px inset #808080;
+    color: #000000;
+    cursor: pointer;
+}
+
+.retro-select:focus {
+    outline: none;
+    border: 2px outset #000080;
+    background-color: #ffffcc;
+}
+
+.retro-select option {
+    padding: 5px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.retro-select option:hover {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+/* Стили для описания графика */
+.graph-info {
+    background-color: #ffffcc;
+    border: 2px dashed #000080;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.graph-info h3 {
+    margin-top: 0;
+    color: #000080;
+    font-size: 16px;
+    border-bottom: 1px solid #000080;
+    padding-bottom: 5px;
+}
+
+.graph-info p {
+    margin: 5px 0;
+}
+
+/* Адаптация graph-box */
+.graph-box {
+    width: 100%;
+    height: 600px;
+    border: 4px inset #000080;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
