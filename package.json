@@ -1,0 +1,20 @@
+{
+  "name": "nm-sem4-lab2-frontend",
+  "version": "1.0.0",
+  "description": "Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.",
+  "homepage": "https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend.git"
+  },
+  "license": "Apache-2.0",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
