@@ -20,6 +20,8 @@ CODE_EXTENSIONS = {
     '.vue',
     '.json', '.yaml', '.yml', '.toml',
     '.md',
+    '.html',
+    '.css',
     '.env', '.env.local',
     'vite.config.js', 'vite.config.ts',
     'package.json', 'tsconfig.json', 'tsconfig.node.json',
