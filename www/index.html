@@ -1,3 +1,108 @@
+<!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>ЛР №2 | ВычМат | Вариант 16</title>
+    <link rel="stylesheet" href="style.css">
 
+    <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=329897ff1088408ebb1aadda32aa3ae6"></script>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Лабораторная работа №2</h1>
+        <h3>Численное решение нелинейных уравнений</h3>
+        <p>Выполнил: студент Р3215 Снагин С.М.</p>
+    </header>
+
+    <!-- Бегущая строка для атмосферы -->
+    <div class="marquee-container">
+        <marquee scrollamount="5">
+            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ВЫЧИСЛИТЕЛЬНОЙ МАТЕМАТИКИ *** ВАРИАНТ 16 *** МЕТОДЫ НЬЮТОНА И ХОРД ***
+        </marquee>
+    </div>
+
+    <!-- Навигация таблицей -->
+    <table class="nav-table">
+        <tr>
+            <td><a href="#equation">[ Уравнение ]</a></td>
+            <td><a href="#system">[ Система ]</a></td>
+            <td><a href="#graphs">[ Графики ]</a></td>
+            <td><a href="#report">[ Отчет ]</a></td>
+        </tr>
+    </table>
+
+    <!-- Основной контент -->
+    <table width="100%" cellpadding="10">
+        <tr>
+            <!-- Левая колонка: Текст -->
+            <td width="60%" valign="top">
+                <a name="equation"></a>
+                <h2>Задание 1. Уравнение</h2>
+                <p>Функция: <b>f(x) = x³ + 4.81x² - 17.37x + 5.38</b></p>
+                <p>Интервалы изоляции корней определены графически.</p>
+
+                <table class="data-table">
+                    <caption><b>Таблица 1. Интервалы изоляции</b></caption>
+                    <tr>
+                        <th>Корень</th>
+                        <th>Интервал</th>
+                        <th>Метод</th>
+                    </tr>
+                    <tr>
+                        <td>x1 (Левый)</td>
+                        <td>[-9; -4]</td>
+                        <td>Хорд</td>
+                    </tr>
+                    <tr>
+                        <td>x2 (Центр)</td>
+                        <td>[-4; 1.5]</td>
+                        <td>Ньютона</td>
+                    </tr>
+                    <tr>
+                        <td>x3 (Правый)</td>
+                        <td>[1.5; 5]</td>
+                        <td>Итерации</td>
+                    </tr>
+                </table>
+
+                <a name="system"></a>
+                <h2>Задание 2. Система</h2>
+                <p>Метод простой итерации. Точность ε = 0.01</p>
+                <p class="blink">!!! ВНИМАНИЕ: ИДЕТ ВЫЧИСЛЕНИЕ !!!</p>
+            </td>
+
+            <!-- Правая колонка: Графики -->
+            <td width="40%" valign="top" align="center">
+                <a name="graphs"></a>
+                <h2>Графики</h2>
+                <div class="graph-box" id="plot-area">
+                    <!-- Сюда будем вставлять canvas или img -->
+<!--                    <div class="graph-placeholder">-->
+<!--                        МЕСТО ДЛЯ ГРАФИКА<br>-->
+<!--                        (Сюда вставим Plotly.js)-->
+<!--                    </div>-->
+
+                    <div id="calculator" style="width: 600px; height: 400px;"></div>
+
+                    <script>
+                        var elt = document.getElementById('calculator');
+                        var calculator = Desmos.GraphingCalculator(elt);
+                    </script>
+                </div>
+                <font size="2" color="blue">Рис 1. Функция f(x)</font>
+            </td>
+        </tr>
+    </table>
+
+    <footer>
+        <p>© 2024 Кафедра Вычислительной Математики</p>
+        <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
+        <br><br>
+        <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
+    </footer>
+</div>
+
+</body>
 </html>
