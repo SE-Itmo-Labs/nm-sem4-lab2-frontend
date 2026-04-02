@@ -1,22 +1,11 @@
-/* === АНИМАЦИИ === */
-
-/* Мигающий текст */
 .blink {
-    animation: blinker 1s linear infinite;
-    color: red;
-    font-weight: bold;
+    animation: blinker 1s linear infinite; color: red; font-weight: bold;
 }
-
 @keyframes blinker {
     50% { opacity: 0; }
 }
 
-/* Бегущая строка */
 .marquee-container {
-    background-color: #000000;
-    color: #00ff00;
-    font-family: var(--retro-mono);
-    padding: 5px;
-    margin-bottom: 10px;
-    border: 2px inset var(--retro-border-dark);
+    background-color: #000000; color: #00ff00; font-family: var(--retro-mono);
+    padding: 5px; margin-bottom: 10px; border: 2px inset var(--retro-border-dark);
 }

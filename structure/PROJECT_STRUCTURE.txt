@@ -169,161 +169,66 @@ tsconfig.json
 
 www/css/animations.css
 
-/* === АНИМАЦИИ === */
-
-/* Мигающий текст */
 .blink {
-    animation: blinker 1s linear infinite;
-    color: red;
-    font-weight: bold;
+    animation: blinker 1s linear infinite; color: red; font-weight: bold;
 }
-
 @keyframes blinker {
     50% { opacity: 0; }
 }
 
-/* Бегущая строка */
 .marquee-container {
-    background-color: #000000;
-    color: #00ff00;
-    font-family: var(--retro-mono);
-    padding: 5px;
-    margin-bottom: 10px;
-    border: 2px inset var(--retro-border-dark);
+    background-color: #000000; color: #00ff00; font-family: var(--retro-mono);
+    padding: 5px; margin-bottom: 10px; border: 2px inset var(--retro-border-dark);
 }
 
 
 www/css/components.css
 
-/* === СТИЛИ КОМПОНЕНТОВ === */
-
-/* Навигация */
 .nav-table {
-    width: 100%;
-    background-color: var(--retro-secondary);
-    margin-bottom: 15px;
+    width: 100%; background-color: var(--retro-secondary); margin-bottom: 15px;
 }
-
 .nav-table a {
-    display: block;
-    color: var(--retro-accent);
-    text-decoration: underline;
-    font-weight: bold;
-    padding: 5px;
-    text-align: center;
+    display: block; color: var(--retro-accent); text-decoration: underline; font-weight: bold;
+    padding: 5px; text-align: center;
 }
+.nav-table a:hover { background-color: var(--retro-primary); color: #ffffff; }
 
-.nav-table a:hover {
-    background-color: var(--retro-primary);
-    color: #ffffff;
-}
-
-/* Таблицы данных */
 .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 3px outset var(--retro-border-dark);
-    margin-bottom: 20px;
+    width: 100%; border-collapse: collapse; border: 3px outset var(--retro-border-dark); margin-bottom: 20px;
 }
+.data-table th, .data-table td { border: 1px inset var(--retro-border-dark); padding: 5px; text-align: center; }
+.data-table th { background-color: var(--retro-bg); color: #000000; }
 
-.data-table th, .data-table td {
-    border: 1px inset var(--retro-border-dark);
-    padding: 5px;
-    text-align: center;
-}
-
-.data-table th {
-    background-color: var(--retro-bg);
-    color: #000000;
-}
-
-/* Dropdown */
 .graph-selector-container {
-    background-color: var(--retro-bg);
-    border: 3px outset var(--retro-border-dark);
-    padding: 10px;
-    margin: 15px 0;
-    font-family: var(--retro-font);
+    background-color: var(--retro-bg); border: 3px outset var(--retro-border-dark);
+    padding: 10px; margin: 15px 0; font-family: var(--retro-font);
 }
-
-.graph-selector-container label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--retro-primary);
-    font-weight: bold;
-    font-size: 14px;
-}
+.graph-selector-container label { display: block; margin-bottom: 8px; color: var(--retro-primary); font-weight: bold; font-size: 14px; }
 
 .retro-select {
-    width: 100%;
-    padding: 5px;
-    font-family: var(--retro-font);
-    font-size: 14px;
-    background-color: #ffffff;
-    border: 2px inset var(--retro-border-dark);
-    color: #000000;
-    cursor: pointer;
+    width: 100%; padding: 5px; font-family: var(--retro-font); font-size: 14px;
+    background-color: #ffffff; border: 2px inset var(--retro-border-dark); color: #000000; cursor: pointer;
 }
+.retro-select:focus { outline: none; border: 2px outset var(--retro-primary); background-color: #ffffcc; }
 
-.retro-select:focus {
-    outline: none;
-    border: 2px outset var(--retro-primary);
-    background-color: #ffffcc;
-}
-
-/* Блок информации */
 .graph-info {
-    background-color: #ffffcc;
-    border: 2px dashed var(--retro-primary);
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 13px;
+    background-color: #ffffcc; border: 2px dashed var(--retro-primary); padding: 10px; margin: 10px 0; font-size: 13px;
 }
+.graph-info h3 { margin-top: 0; color: var(--retro-primary); font-size: 16px; border-bottom: 1px solid var(--retro-primary); padding-bottom: 5px; }
+.graph-info p { margin: 5px 0; }
 
-.graph-info h3 {
-    margin-top: 0;
-    color: var(--retro-primary);
-    font-size: 16px;
-    border-bottom: 1px solid var(--retro-primary);
-    padding-bottom: 5px;
-}
+.root-marker { }
 
-.graph-info p {
-    margin: 5px 0;
-}
-
-/* Стили для точки корня на графике */
-.root-marker {
-    /* Точка управляется через Desmos API */
-}
-
-/* Анимация появления точки */
 @keyframes rootAppear {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.5);
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-/* Подпись к корню */
-.root-label {
-    font-family: var(--retro-mono);
-    font-size: 12px;
-    color: #ff0000;
-    font-weight: bold;
-}
+.root-label { font-family: var(--retro-mono); font-size: 12px; color: #ff0000; font-weight: bold; }
 
 
 www/css/main.css
-
-/* === БАЗОВЫЕ СТИЛИ === */
 
 :root {
     --retro-bg: #c0c0c0;
@@ -359,35 +264,17 @@ body {
     padding: 15px;
 }
 
-header {
+.header-flex {
+    display: flex;
     text-align: center;
     border-bottom: 3px double var(--retro-primary);
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
+.header-text, .header-img { width: 50%; }
 
-h1 {
-    color: var(--retro-primary);
-    font-size: 24px;
-    margin: 5px;
-    text-shadow: 2px 2px var(--retro-accent);
-}
-
-h2 {
-    background-color: var(--retro-primary);
-    color: #ffffff;
-    font-size: 18px;
-    padding: 5px;
-    border: 2px outset var(--retro-border-dark);
-}
-
-footer {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 12px;
-    border-top: 2px solid #000000;
-    padding-top: 10px;
-}
+h1 { color: var(--retro-primary); font-size: 24px; margin: 5px; text-shadow: 2px 2px var(--retro-accent); }
+h2 { background-color: var(--retro-primary); color: #ffffff; font-size: 18px; padding: 5px; border: 2px outset var(--retro-border-dark); }
 
 .graph-box {
     width: 100%;
@@ -402,8 +289,6 @@ footer {
     overflow: hidden;
 }
 
-/* === ФОРМЫ И ВВОД === */
-
 .retro-form {
     background-color: var(--retro-bg);
     border: 3px outset var(--retro-border-dark);
@@ -411,26 +296,11 @@ footer {
     margin: 10px 0;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; color: var(--retro-primary); font-weight: bold; font-size: 14px; }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--retro-primary);
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.input-row {
-    display: flex;
-    gap: 10px;
-}
-
-.input-row .retro-input {
-    flex: 1;
-}
+.input-row { display: flex; gap: 10px; }
+.input-row .retro-input { flex: 1; }
 
 .retro-input {
     width: 100%;
@@ -442,167 +312,63 @@ footer {
     color: #000000;
     box-sizing: border-box;
 }
+.retro-input:focus { outline: none; border: 2px outset var(--retro-primary); background-color: #ffffcc; }
+.retro-input:invalid { border-color: #ff0000; }
+.retro-input.error { border-color: #ff0000; background-color: #ffeeee; }
 
-.retro-input:focus {
-    outline: none;
-    border: 2px outset var(--retro-primary);
-    background-color: #ffffcc;
-}
-
-.retro-input:invalid {
-    border-color: #ff0000;
-}
-
-.retro-input.error {
-    border-color: #ff0000;
-    background-color: #ffeeee;
-}
-
-/* Кнопки */
-.form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
+.form-actions { display: flex; gap: 10px; margin-top: 20px; }
 
 .retro-btn {
-    flex: 1;
-    padding: 10px 15px;
-    font-family: var(--retro-font);
-    font-size: 14px;
-    font-weight: bold;
-    border: 3px outset var(--retro-border-dark);
-    cursor: pointer;
-    transition: all 0.1s;
+    flex: 1; padding: 10px 15px; font-family: var(--retro-font); font-size: 14px; font-weight: bold;
+    border: 3px outset var(--retro-border-dark); cursor: pointer; transition: all 0.1s;
 }
+.retro-btn:active { border-style: inset; transform: translate(1px, 1px); }
+.retro-btn-primary { background: linear-gradient(to bottom, #4a90e2, #2c5aa0); color: #ffffff; }
+.retro-btn-primary:hover { background: linear-gradient(to bottom, #5aa0f2, #3c6ab0); }
+.retro-btn-secondary { background: linear-gradient(to bottom, #e0e0e0, #a0a0a0); color: #000000; }
+.retro-btn-secondary:hover { background: linear-gradient(to bottom, #f0f0f0, #b0b0b0); }
 
-.retro-btn:active {
-    border-style: inset;
-    transform: translate(1px, 1px);
-}
-
-.retro-btn-primary {
-    background: linear-gradient(to bottom, #4a90e2, #2c5aa0);
-    color: #ffffff;
-}
-
-.retro-btn-primary:hover {
-    background: linear-gradient(to bottom, #5aa0f2, #3c6ab0);
-}
-
-.retro-btn-secondary {
-    background: linear-gradient(to bottom, #e0e0e0, #a0a0a0);
-    color: #000000;
-}
-
-.retro-btn-secondary:hover {
-    background: linear-gradient(to bottom, #f0f0f0, #b0b0b0);
-}
-
-/* Статус сообщения */
 .status-message {
-    margin-top: 15px;
-    padding: 10px;
-    border: 2px inset var(--retro-border-dark);
-    font-size: 13px;
-    display: none;
+    margin-top: 15px; padding: 10px; border: 2px inset var(--retro-border-dark); font-size: 13px; display: none;
 }
+.status-message.show { display: block; }
+.status-message.success { background-color: #ccffcc; border-color: #00aa00; color: #006600; }
+.status-message.error { background-color: #ffcccc; border-color: #aa0000; color: #660000; }
+.status-message.info { background-color: #cce5ff; border-color: #0066cc; color: #004080; }
 
-.status-message.show {
-    display: block;
-}
-
-.status-message.success {
-    background-color: #ccffcc;
-    border-color: #00aa00;
-    color: #006600;
-}
-
-.status-message.error {
-    background-color: #ffcccc;
-    border-color: #aa0000;
-    color: #660000;
-}
-
-.status-message.info {
-    background-color: #cce5ff;
-    border-color: #0066cc;
-    color: #004080;
-}
-
-/* Панель результатов */
 .results-panel {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border: 3px ridge var(--retro-border-dark);
+    margin-top: 20px; padding: 15px; background-color: #f5f5f5; border: 3px ridge var(--retro-border-dark);
 }
+.results-panel h3 { margin-top: 0; color: var(--retro-primary); font-size: 16px; border-bottom: 2px solid var(--retro-primary); padding-bottom: 5px; }
 
-.results-panel h3 {
-    margin-top: 0;
-    color: var(--retro-primary);
-    font-size: 16px;
-    border-bottom: 2px solid var(--retro-primary);
-    padding-bottom: 5px;
-}
+.results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+.result-item { display: flex; flex-direction: column; padding: 8px; background-color: #ffffff; border: 2px inset var(--retro-border-dark); }
+.result-label { font-size: 12px; color: #666666; margin-bottom: 3px; }
+.result-value { font-family: var(--retro-mono); font-size: 16px; font-weight: bold; color: var(--retro-primary); }
 
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 10px;
-}
+footer { margin-top: 30px; text-align: center; font-size: 12px; border-top: 2px solid #000000; padding-top: 10px; }
+.footer-badges { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 10px; }
 
-.result-item {
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    background-color: #ffffff;
-    border: 2px inset var(--retro-border-dark);
-}
-
-.result-label {
-    font-size: 12px;
-    color: #666666;
-    margin-bottom: 3px;
-}
-
-.result-value {
-    font-family: var(--retro-mono);
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--retro-primary);
-}
-
-/* Адаптив для мобильных */
 @media (max-width: 768px) {
-    .input-row {
-        flex-direction: column;
-    }
-
-    .results-grid {
-        grid-template-columns: 1fr;
-    }
+    .input-row { flex-direction: column; }
+    .results-grid { grid-template-columns: 1fr; }
+    .header-flex { flex-direction: column; }
+    .header-text, .header-img { width: 100%; }
 }
 
 
 www/index.html
 
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ЛР №2 | ВычМат | Вариант 13</title>
-
-    <!-- Стили -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
-
-    <!-- Desmos API -->
     <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=329897ff1088408ebb1aadda32aa3ae6"></script>
-
-    <!-- Скрипты -->
     <script src="js/config/functions.config.js"></script>
     <script src="js/config/systems.config.js"></script>
     <script src="js/graph/DesmosGraph.js"></script>
@@ -610,22 +376,21 @@ www/index.html
     <script src="js/app.js"></script>
 </head>
 <body>
-
 <div class="container">
-    <header style="display: flex">
-        <div style="width: 50%">
+    <header class="header-flex">
+        <div class="header-text">
             <h1>Лабораторная работа №2</h1>
             <h3>Численное решение нелинейных уравнений</h3>
             <p>Выполнил: студент Р3215 Снагин С.М.</p>
         </div>
-        <div style="width: 50%">
+        <div class="header-img">
             <img src="img/pirate.gif" alt="Under Construction" width="200">
         </div>
     </header>
 
     <div class="marquee-container">
         <marquee scrollamount="5">
-            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ *** /// *** ТУТ ДЕЛАЮТСЯ ОЧЕНЬ ВАЖНЫЕ РАСЧЕТЫ *** ///
+            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ *** /// *** ТУТ ДЕЛАЮТСЯ ОЧЕНЬ ВАЖНЫЕ РАСЧЕТЫ ***
         </marquee>
     </div>
 
@@ -637,15 +402,12 @@ www/index.html
         </tr>
     </table>
 
-    <table width="100%" cellpadding="10">
+    <table class="layout-table" width="100%" cellpadding="10">
         <tr>
-            <!-- ЛЕВАЯ КОЛОНКА: ФОРМА -->
             <td width="40%" valign="top">
                 <a name="equation"></a>
                 <h2>Входные данные</h2>
-
                 <form id="calcForm" class="retro-form">
-                    <!-- Выбор функции -->
                     <div class="form-group">
                         <label for="functionSelect"><b>Выберите функцию:</b></label>
                         <select id="functionSelect" class="retro-select" required>
@@ -655,8 +417,6 @@ www/index.html
                             <option value="g3">f(x) = sin(x²) + 0.3x</option>
                         </select>
                     </div>
-
-                    <!-- Выбор метода -->
                     <div class="form-group">
                         <label for="methodSelect"><b>Выберите метод:</b></label>
                         <select id="methodSelect" class="retro-select" required>
@@ -667,69 +427,50 @@ www/index.html
                             <option value="newton">Метод Ньютона</option>
                         </select>
                     </div>
-
-                    <!-- Границы интервала [a, b] -->
                     <div class="form-group">
                         <label><b>Границы интервала:</b></label>
                         <div class="input-row">
+
                             <input type="text" id="intervalA" placeholder="a (левая)"
                                    class="retro-input number-input"
-                                   pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
-                                   title="Введите число (макс. 4 знака после запятой)"
-                                   required>
+                                   pattern="[-+]?[0-9]*[.]?[0-9]{0,4}"
+                                   title="Введите число (макс. 4 знака после запятой)" required>
+
                             <input type="text" id="intervalB" placeholder="b (правая)"
                                    class="retro-input number-input"
-                                   pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
-                                   title="Введите число (макс. 4 знака после запятой)"
-                                   required>
+                                   pattern="[-+]?[0-9]*[.]?[0-9]{0,4}"
+                                   title="Введите число (макс. 4 знака после запятой)" required>
                         </div>
                     </div>
-
-                    <!-- Начальное приближение x0 -->
                     <div class="form-group">
                         <label for="x0Input"><b>Начальное приближение x₀:</b></label>
                         <input type="text" id="x0Input" placeholder="x₀"
                                class="retro-input number-input"
-                               pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
-                               title="Введите число (макс. 4 знака после запятой)">
+                               pattern="[-+]?[0-9]*[.]?[0-9]+"
+                               title="Введите число" required>
                     </div>
-
-                    <!-- Начальное приближение y0 (для систем) -->
                     <div class="form-group" id="y0Group" style="display: none;">
                         <label for="y0Input"><b>Начальное приближение y₀:</b></label>
                         <input type="text" id="y0Input" placeholder="y₀"
                                class="retro-input number-input"
-                               pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
-                               title="Введите число (макс. 4 знака после запятой)">
+                               pattern="[-+]?[0-9]*[.]?[0-9]+"
+                               title="Введите число">
                     </div>
-
-                    <!-- Точность -->
                     <div class="form-group">
                         <label for="epsilonInput"><b>Точность (ε):</b></label>
                         <input type="text" id="epsilonInput" placeholder="ε"
                                class="retro-input number-input"
                                value="0.0001"
-                               pattern="[0-9]*\.?[0-9]{0,4}"
-                               title="Введите положительное число"
-                               required>
+                               pattern="[0-9]*[.]?[0-9]{4}"
+                               title="Введите число от 0.0001 до 0.9999" required>
                     </div>
-
-                    <!-- Кнопка расчета -->
                     <div class="form-actions">
-                        <button type="submit" class="retro-btn retro-btn-primary" id="calcBtn">
-                            🔢 ВЫПОЛНИТЬ РАСЧЁТ
-                        </button>
-                        <button type="reset" class="retro-btn retro-btn-secondary" id="resetBtn">
-                            🔄 СБРОСИТЬ
-                        </button>
+                        <button type="submit" class="retro-btn retro-btn-primary" id="calcBtn">ВЫПОЛНИТЬ РАСЧЁТ</button>
+                        <button type="reset" class="retro-btn retro-btn-secondary" id="resetBtn">СБРОСИТЬ</button>
                     </div>
-
-                    <!-- Статус -->
                     <div id="formStatus" class="status-message"></div>
                 </form>
             </td>
-
-            <!-- ПРАВАЯ КОЛОНКА: ГРАФИК -->
             <td width="60%" valign="top" align="center">
                 <a name="graphs"></a>
                 <h2>График функции</h2>
@@ -737,8 +478,6 @@ www/index.html
                     <div id="calculator" style="width: 100%; height: 100%;"></div>
                 </div>
                 <p class="graph-caption" id="graphCaption">Выберите функцию для отображения</p>
-
-                <!-- Результаты вычислений -->
                 <div id="resultsPanel" class="results-panel" style="display: none;">
                     <h3>Результаты вычислений</h3>
                     <div class="results-grid">
@@ -769,7 +508,7 @@ www/index.html
         <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
         <br><br>
         <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
-        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center">
+        <div class="footer-badges">
             <img src="https://88x31.nl/gifs/devOnMintGreen.png">
             <img src="https://88x31.nl/gifs/firefoxnow.gif">
             <img src="https://88x31.nl/gifs/neo_now88.gif">
@@ -778,165 +517,85 @@ www/index.html
         </div>
     </footer>
 </div>
-
 </body>
 </html>
 
 
 www/js/app.js
 
-/**
- * Точка входа приложения
- */
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 Initializing LabWork App v1.0...');
-
     const graphManager = new GraphManager();
     const formManager = new FormManager();
 
     try {
-        // Инициализация графика
         await graphManager.createMainGraph('calculator', {
             viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 10 }
         });
-        console.log('✅ Graph initialized');
-
-        // Инициализация формы
         formManager.init(graphManager);
 
-        // Сохраняем для отладки
         window.graphManager = graphManager;
         window.formManager = formManager;
-
     } catch (e) {
-        console.error('❌ Failed to initialize:', e);
+        console.error('Initialization failed:', e);
         document.getElementById('plot-area').innerHTML =
-            '<div style="color:red;padding:20px">⚠️ Ошибка загрузки. Проверьте консоль.</div>';
+            '<div style="color:red;padding:20px">Ошибка загрузки. Проверьте консоль.</div>';
     }
 });
 
-/**
- * Менеджер формы: валидация, сбор данных, отправка на API
- */
 class FormManager {
     constructor() {
         this.form = null;
         this.graphManager = null;
-        this.formData = {
-            function: '',
-            method: '',
-            intervalA: null,
-            intervalB: null,
-            x0: null,
-            y0: null,
-            epsilon: 0.0001
-        };
+        this.formData = { function: '', method: '', intervalA: null, intervalB: null, x0: null, y0: null, epsilon: 0.0001 };
     }
 
     init(graphManager) {
         this.form = document.getElementById('calcForm');
         this.graphManager = graphManager;
+        if (!this.form) return;
 
-        if (!this.form) {
-            console.error('Form not found');
-            return;
-        }
+        this.form.addEventListener('submit', e => { e.preventDefault(); this.handleSubmit(); });
+        this.form.addEventListener('reset', () => { setTimeout(() => { this.hideStatus(); this.hideResults(); }, 100); });
 
-        // Привязка событий
-        this.bindEvents();
-
-        // Инициализация выбора функции
-        this.initFunctionSelector();
-    }
-
-    bindEvents() {
-        // Отправка формы
-        this.form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.handleSubmit();
+        document.querySelectorAll('.number-input').forEach(input => {
+            input.addEventListener('input', e => this.validateNumberInput(e.target));
+            input.addEventListener('blur', e => this.normalizeNumberInput(e.target));
         });
 
-        // Сброс формы
-        this.form.addEventListener('reset', () => {
-            setTimeout(() => {
-                this.hideStatus();
-                this.hideResults();
-            }, 100);
-        });
-
-        // Валидация числовых полей в реальном времени
-        const numberInputs = document.querySelectorAll('.number-input');
-        numberInputs.forEach(input => {
-            input.addEventListener('input', (e) => {
-                this.validateNumberInput(e.target);
-            });
-
-            input.addEventListener('blur', (e) => {
-                this.normalizeNumberInput(e.target);
-            });
-        });
-    }
-
-    initFunctionSelector() {
         const funcSelect = document.getElementById('functionSelect');
-        if (!funcSelect) return;
-
-        funcSelect.addEventListener('change', (e) => {
-            const funcId = e.target.value;
-            if (funcId && FUNCTIONS_CONFIG[funcId]) {
-                this.graphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
-                document.getElementById('graphCaption').textContent =
-                    FUNCTIONS_CONFIG[funcId].name;
-            }
-        });
+        if (funcSelect) {
+            funcSelect.addEventListener('change', e => {
+                const funcId = e.target.value;
+                if (funcId && FUNCTIONS_CONFIG[funcId]) {
+                    this.graphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
+                    document.getElementById('graphCaption').textContent = FUNCTIONS_CONFIG[funcId].name;
+                }
+            });
+        }
     }
 
-    /**
-     * Валидация числового поля
-     */
     validateNumberInput(input) {
-        let value = input.value;
-
-        // Замена запятой на точку
-        value = value.replace(',', '.');
-
-        // Разрешаем только цифры, точку и минус в начале
+        let value = input.value.replace(',', '.');
         if (!/^[-+]?[0-9]*\.?[0-9]{0,4}$/.test(value) && value !== '') {
             input.classList.add('error');
             return false;
         }
-
         input.classList.remove('error');
         input.value = value;
         return true;
     }
 
-    /**
-     * Нормализация числа (округление до 4 знаков)
-     */
     normalizeNumberInput(input) {
         let value = input.value.trim();
         if (!value) return;
-
-        // Замена запятой
         value = value.replace(',', '.');
-
-        // Парсинг числа
         const num = parseFloat(value);
-        if (isNaN(num)) {
-            input.classList.add('error');
-            return;
-        }
-
-        // Округление до 4 знаков
+        if (isNaN(num)) return input.classList.add('error');
         input.value = num.toFixed(4).replace(/\.?0+$/, '');
     }
 
-    /**
-     * Сбор данных из формы
-     */
     collectFormData() {
-        const data = {
+        return {
             function: document.getElementById('functionSelect').value,
             method: document.getElementById('methodSelect').value,
             intervalA: this.parseNumber(document.getElementById('intervalA').value),
@@ -945,45 +604,23 @@ class FormManager {
             y0: this.parseNumber(document.getElementById('y0Input').value),
             epsilon: this.parseNumber(document.getElementById('epsilonInput').value) || 0.0001
         };
-
-        return data;
     }
 
-    /**
-     * Парсинг числа (запятая -> точка)
-     */
     parseNumber(value) {
         if (!value || value.trim() === '') return null;
-        const normalized = value.replace(',', '.');
-        const num = parseFloat(normalized);
+        const num = parseFloat(value.replace(',', '.'));
         return isNaN(num) ? null : num;
     }
 
-    /**
-     * Обработка отправки формы
-     */
     async handleSubmit() {
-        // Очистить старую точку корня перед новым расчетом
-        if (this.graphManager) {
-            this.graphManager.clearRootMarker();
-        }
-
-        // ✅ СОБРАТЬ ДАННЫЕ ИЗ ФОРМЫ
+        if (this.graphManager) this.graphManager.clearRootMarker();
         const data = this.collectFormData();
+        if (!this.validateData(data)) return;
 
-        // Валидация
-        if (!this.validateData(data)) {
-            return;
-        }
-
-        // Сохранение
         this.formData = data;
-
-        // Отправка на API
         try {
             this.showStatus('🔄 Отправка данных на сервер...', 'info');
             const result = await this.sendToAPI(data);
-
             if (result.success) {
                 this.showStatus('✅ Расчёт завершён успешно!', 'success');
                 this.displayResults(result.data);
@@ -991,158 +628,70 @@ class FormManager {
                 this.showStatus(`❌ Ошибка: ${result.error}`, 'error');
             }
         } catch (error) {
-            console.error('API Error:', error);
-
-            // 🔥 Обработка сетевых ошибок (CORS, нет интернета, неверный URL)
-            if (error.message.includes('Failed to fetch')) {
-                this.showStatus('❌ Не удалось соединиться с сервером. Проверьте интернет или CORS.', 'error');
-            } else {
-                this.showStatus(`❌ Ошибка: ${error.message}`, 'error');
-            }
+            const msg = error.message.includes('Failed to fetch')
+                ? 'Не удалось соединиться с сервером. Проверьте интернет или CORS.'
+                : `Ошибка: ${error.message}`;
+            this.showStatus(msg, 'error');
         }
     }
 
-    /**
-     * Валидация данных
-     */
     validateData(data) {
-        // Проверка функции
-        if (!data.function) {
-            this.showStatus('⚠️ Выберите функцию', 'error');
-            return false;
-        }
+        if (!data.function) return this.showStatus('Выберите функцию', 'error'), false;
+        if (!data.method) return this.showStatus('Выберите метод решения', 'error'), false;
+        if (data.intervalA === null || data.intervalB === null) return this.showStatus('Введите границы интервала [a, b]', 'error'), false;
+        if (data.intervalA >= data.intervalB) return this.showStatus('Левая граница должна быть меньше правой', 'error'), false;
 
-        // Проверка метода
-        if (!data.method) {
-            this.showStatus('⚠️ Выберите метод решения', 'error');
-            return false;
+        if (data.epsilon < 0.0001 || data.epsilon > 0.9999) {
+            return this.showStatus('Точность должна быть в диапазоне [0.0001; 0.9999]', 'error'), false;
         }
-
-        // Проверка интервала
-        if (data.intervalA === null || data.intervalB === null) {
-            this.showStatus('⚠️ Введите границы интервала [a, b]', 'error');
-            return false;
-        }
-
-        if (data.intervalA >= data.intervalB) {
-            this.showStatus('⚠️ Левая граница должна быть меньше правой', 'error');
-            return false;
-        }
-
-        // Проверка точности
-        if (data.epsilon <= 0 || data.epsilon > 1) {
-            this.showStatus('⚠️ Точность должна быть в диапазоне (0, 1]', 'error');
-            return false;
-        }
-
         return true;
     }
 
-    /**
-     * Отправка данных на реальный API бэкенда
-     */
     async sendToAPI(data) {
-        // ✅ URL твоего задеплоенного бэкенда
         const API_URL = 'https://itmo.ssngn.ru/lab5/api/calculate';
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data),
+            mode: 'cors',
+            credentials: 'omit'
+        });
 
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(data),
-                // Важно для CORS с кукими/авторизацией (если понадобится)
-                mode: 'cors',
-                credentials: 'omit'
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-            }
-
-            const result = await response.json();
-
-            // ✅ Бэкенд возвращает {success: true, data: {...}}
-            if (result.success && result.data) {
-                return {
-                    success: true,
-                    data: result.data
-                };
-            } else {
-                // Обработка ошибки от бэкенда
-                return {
-                    success: false,
-                    error: result.error || 'Неизвестная ошибка сервера'
-                };
-            }
-
-        } catch (error) {
-            console.error('API Error:', error);
-            throw error; // Пробрасываем ошибку выше для обработки в handleSubmit
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
         }
+
+        const result = await response.json();
+        if (result.success && result.data) return { success: true, data: result.data };
+        return { success: false, error: result.error || 'Неизвестная ошибка сервера' };
     }
 
     displayResults(data) {
-        console.log('📊 displayResults вызван с данными:', data);
-
-        // ... обновление UI ...
-
         if (this.graphManager && data.root !== undefined) {
-            const x = data.root;
-            const y = data.fValue ?? 0;
-
-            console.log('📍 Вызов markRoot:', { x, y });
-            console.log('🔧 Состояние графика:', {
-                calculator: !!this.graphManager.mainGraph?.calculator,
-                rootIds: this.graphManager.rootExpressionIds
-            });
-
-            this.graphManager.markRoot(x, y);
+            this.graphManager.markRoot(data.root, data.fValue ?? 0);
         }
     }
 
-
-    /**
-     * Показать статус
-     */
     showStatus(message, type = 'info') {
-        const statusEl = document.getElementById('formStatus');
-        if (!statusEl) return;
-
-        statusEl.textContent = message;
-        statusEl.className = `status-message show ${type}`;
+        const el = document.getElementById('formStatus');
+        if (el) { el.textContent = message; el.className = `status-message show ${type}`; }
     }
 
-    /**
-     * Скрыть статус
-     */
     hideStatus() {
-        const statusEl = document.getElementById('formStatus');
-        if (statusEl) {
-            statusEl.className = 'status-message';
-        }
+        const el = document.getElementById('formStatus');
+        if (el) el.className = 'status-message';
     }
 
-    /**
-     * Скрыть результаты
-     */
     hideResults() {
         const panel = document.getElementById('resultsPanel');
-        if (panel) {
-            panel.style.display = 'none';
-        }
+        if (panel) panel.style.display = 'none';
     }
 }
 
 
 www/js/config/functions.config.js
 
-/**
- * Конфигурация функций — 3 графика для отображения (без корней)
- */
 const FUNCTIONS_CONFIG = {
     'g1': {
         name: 'f(x) = 0.4x⁴ - (x - 0.1)² + 0.2',
@@ -1151,7 +700,7 @@ const FUNCTIONS_CONFIG = {
         description: 'Полином 4-й степени'
     },
     'g2': {
-        name: 'f(x) = e^x + 4x² - 22.8*x',
+        name: 'f(x) = e^x + 4x² - 22.8x',
         latex: 'e^x + 4x^2 - 22.8x',
         viewport: { xmin: -2, ymin: -10, xmax: 4, ymax: 20 },
         description: 'Экспонента и квадратичная функция'
@@ -1167,9 +716,6 @@ const FUNCTIONS_CONFIG = {
 
 www/js/config/systems.config.js
 
-/**
- * Конфигурация систем уравнений
- */
 const SYSTEMS_CONFIG = {
     'sys13': {
         name: 'Система варианта 13',
@@ -1186,9 +732,6 @@ const SYSTEMS_CONFIG = {
 
 www/js/graph/DesmosGraph.js
 
-/**
- * Класс для управления одним графиком Desmos
- */
 class DesmosGraph {
     constructor(elementId, config = {}) {
         this.elementId = elementId;
@@ -1196,18 +739,9 @@ class DesmosGraph {
         this.calculator = null;
         this.expressions = [];
         this.config = {
-            expressions: false,
-            settingsMenu: false,
-            zoomButtons: false,
-            trace: false,
-            showGrid: true,
-            showXAxis: true,
-            showYAxis: true,
-            xAxisNumbers: true,
-            yAxisNumbers: true,
-            lockedViewport: false,
-            allowUndo: false,
-            border: false,
+            expressions: false, settingsMenu: false, zoomButtons: false, trace: false,
+            showGrid: true, showXAxis: true, showYAxis: true, xAxisNumbers: true, yAxisNumbers: true,
+            lockedViewport: false, allowUndo: false, border: false,
             viewport: { xmin: -10, ymin: -10, xmax: 10, ymax: 10 },
             ...config
         };
@@ -1215,24 +749,19 @@ class DesmosGraph {
 
     init() {
         return new Promise((resolve, reject) => {
-            if (!this.element) {
-                console.error(`Element "${this.elementId}" not found`);
-                reject('Element not found');
-                return;
-            }
+            if (!this.element) return reject('Element not found');
 
             if (typeof Desmos === 'undefined' || !Desmos.GraphingCalculator) {
-                console.warn('Desmos API not ready, waiting...');
+                let attempts = 0;
                 const checkInterval = setInterval(() => {
                     if (Desmos?.GraphingCalculator) {
                         clearInterval(checkInterval);
                         this._createCalculator(resolve);
+                    } else if (++attempts > 50) {
+                        clearInterval(checkInterval);
+                        reject('Desmos API timeout');
                     }
                 }, 100);
-                setTimeout(() => {
-                    clearInterval(checkInterval);
-                    reject('Desmos API timeout');
-                }, 5000);
             } else {
                 this._createCalculator(resolve);
             }
@@ -1245,17 +774,15 @@ class DesmosGraph {
             this.setViewport(this.config.viewport);
             callback();
         } catch (e) {
-            console.error('Failed to create Desmos calculator:', e);
+            reject('Failed to create Desmos calculator');
         }
     }
 
     setViewport(viewport) {
         if (this.calculator) {
             this.calculator.setMathBounds({
-                left: viewport.xmin,
-                right: viewport.xmax,
-                bottom: viewport.ymin,
-                top: viewport.ymax
+                left: viewport.xmin, right: viewport.xmax,
+                bottom: viewport.ymin, top: viewport.ymax
             });
         }
     }
@@ -1278,25 +805,17 @@ class DesmosGraph {
 
     destroy() {
         this.clearExpressions();
-        if (this.calculator) {
-            this.calculator.destroy();
-        }
+        if (this.calculator) this.calculator.destroy();
     }
 }
 
 
 www/js/graph/GraphManager.js
 
-/**
- * Менеджер для управления графиками
- */
 class GraphManager {
     constructor() {
         this.mainGraph = null;
-        this.selectElement = null;
-        this.descriptionElement = null;
-        this.captionElement = null;
-        this.rootExpressionIds = []; // Храним ID точек корня
+        this.rootExpressionIds = [];
     }
 
     async createMainGraph(elementId, config) {
@@ -1305,236 +824,53 @@ class GraphManager {
         return this.mainGraph;
     }
 
-    switchToGraph(graphType) {
-        if (!this.mainGraph) {
-            console.error('Main graph not initialized');
-            return;
-        }
+    renderFunction(funcConfig) {
+        if (!this.mainGraph) return;
 
         this.mainGraph.clearExpressions();
-        this.rootExpressionIds = []; // Очищаем ID корней
+        this.rootExpressionIds = [];
+        this.mainGraph.setViewport(funcConfig.viewport);
 
-        switch(graphType) {
-            case 'g1':
-            case 'var13_full':
-                this._setupFullGraph();
-                break;
-            case 'system':
-            case 'sys13':
-                this._setupSystemGraph();
-                break;
-            default:
-                console.warn(`Unknown graph type: ${graphType}`);
-                this._setupFullGraph();
-        }
-    }
-
-    _setupFullGraph() {
-        const func = FUNCTIONS_CONFIG['var13'];
-        this.mainGraph.setViewport(func.viewport);
-
-        this.mainGraph.addExpression({
-            id: 'func1',
-            latex: `f(x) = ${func.latex}`,
-            color: '#c74440'
-        });
+        this.mainGraph.addExpression({ id: 'func_curve', latex: funcConfig.latex, color: '#c74440' });
         this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
         this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
     }
 
-    _setupSystemGraph() {
-        const sys = SYSTEMS_CONFIG['sys13'];
-        this.mainGraph.setViewport(sys.viewport);
-
-        sys.equations.forEach((eq, i) => {
-            this.mainGraph.addExpression({
-                id: `sys_eq${i+1}`,
-                latex: eq.latex,
-                color: eq.color
-            });
-        });
-
-        this.mainGraph.addExpression({
-            id: 'solution',
-            latex: `(${sys.solution.x}, ${sys.solution.y})`,
-            color: '#ff0000',
-            pointSize: Desmos.PointSize?.LARGE || 'large'
-        });
-    }
-
-    /**
-     * Отобразить функцию без корней (чистый график)
-     */
-    renderFunction(funcConfig) {
-        if (!this.mainGraph) {
-            console.error('❌ Graph not initialized');
-            return;
-        }
-
-        // 1. Сохраняем координаты корня, если он есть
-        let savedRoot = null;
-        if (this.rootExpressionIds.includes('root_point') && this.mainGraph.calculator) {
-            const exprs = this.mainGraph.calculator.expressions?.list || [];
-            const rootExpr = exprs.find(e => e.id === 'root_point');
-            if (rootExpr?.latex) {
-                // Парсим координаты из латекса вида "R=(x,y)" или "(x,y)"
-                const match = rootExpr.latex.match(/\(([^,]+),\s*([^)]+)\)/);
-                if (match) {
-                    savedRoot = {
-                        x: parseFloat(match[1]),
-                        y: parseFloat(match[2])
-                    };
-                }
-            }
-        }
-
-        // 2. Очищаем все выражения и сбрасываем трекинг
-        this.mainGraph.clearExpressions();
-        this.rootExpressionIds = [];
-
-        // 3. Устанавливаем viewport из конфига функции
-        this.mainGraph.setViewport(funcConfig.viewport);
-
-        // 4. Добавляем саму функцию
-        this.mainGraph.addExpression({
-            id: 'func_curve',
-            latex: funcConfig.latex,  // ← Важно: без "f(x) =", просто выражение
-            color: '#c74440',
-            hidden: false
-        });
-
-        // 5. Добавляем оси координат
-        this.mainGraph.addExpression({
-            id: 'xaxis',
-            latex: 'y = 0',
-            color: '#000000',
-            lineWidth: 1,
-            hidden: false
-        });
-        this.mainGraph.addExpression({
-            id: 'yaxis',
-            latex: 'x = 0',
-            color: '#000000',
-            lineWidth: 1,
-            hidden: false
-        });
-
-        // 6. Восстанавливаем точку корня, если она была
-        if (savedRoot) {
-            // Небольшая задержка, чтобы график успел отрисоваться
-            setTimeout(() => {
-                this.markRoot(savedRoot.x, savedRoot.y, false); // false = не менять viewport
-            }, 150);
-        }
-
-        console.log('📈 Function rendered:', funcConfig.name);
-    }
-
-    /**
-     * Отметить найденный корень на графике красной точкой
-     */
     markRoot(x, y, changeViewport = true) {
-        if (!this.mainGraph?.calculator) {
-            console.error('❌ Graph calculator not ready');
-            return;
-        }
+        if (!this.mainGraph?.calculator) return;
 
-        // 1. Очищаем старые маркеры
         this.clearRootMarker();
+        const xR = Math.round(x * 10000) / 10000;
+        const yR = Math.round(y * 10000) / 10000;
 
-        // 2. Округляем для чистоты
-        const xRounded = Math.round(x * 10000) / 10000;
-        const yRounded = Math.round(y * 10000) / 10000;
-
-        console.log('🎯 Добавляем точку корня:', { x: xRounded, y: yRounded });
-
-        // 3. Добавляем точку как именованную переменную (надёжнее для Desmos)
+        // this.mainGraph.addExpression({
+        //     id: 'root_point', latex: `R=(${xR},${yR})`, color: '#ff0000', label: 'Корень', showLabel: true
+        // });
         this.mainGraph.addExpression({
-            id: 'root_point',
-            latex: `R=(${xRounded},${yRounded})`,  // ← Имя переменной R помогает стилизации
-            color: '#ff0000',
-            label: 'Корень',
-            showLabel: true
+            id: 'root_dot', latex: `(${xR},${yR})`, color: '#ff0000'
         });
-        this.rootExpressionIds.push('root_point');
-
-        // 4. Добавляем крупный маркер поверх для видимости
         this.mainGraph.addExpression({
-            id: 'root_dot',
-            latex: `(${xRounded},${yRounded})`,
-            color: '#ff0000'
+            id: 'root_coords', latex: `\\text{(${xR.toFixed(4)}; ${yR.toFixed(6)})}`, color: '#ff0000'
         });
-        this.rootExpressionIds.push('root_dot');
 
-        // 5. Подпись с координатами
-        this.mainGraph.addExpression({
-            id: 'root_coords',
-            latex: `\\text{(${xRounded.toFixed(4)}; ${yRounded.toFixed(6)})}`,
-            color: '#ff0000'
-        });
-        this.rootExpressionIds.push('root_coords');
+        this.rootExpressionIds.push('root_point', 'root_dot', 'root_coords');
 
-        // 6. Опционально: центрируем вид на точке (с задержкой для стабильности)
         if (changeViewport) {
             setTimeout(() => {
-                const padding = 1.5;
                 this.mainGraph.calculator.setMathBounds({
-                    left: xRounded - padding,
-                    right: xRounded + padding,
-                    bottom: Math.min(yRounded - padding, -0.5),  // не даём ужать по Y слишком сильно
-                    top: Math.max(yRounded + padding, 0.5)
+                    left: xR - 1.5, right: xR + 1.5,
+                    bottom: Math.min(yR - 1.5, -0.5), top: Math.max(yR + 1.5, 0.5)
                 });
             }, 150);
         }
-
-        // 7. Отладка: проверяем через 300мс, добавилась ли точка
-        setTimeout(() => {
-            const exprs = this.mainGraph.calculator.expressions?.list || [];
-            const rootExists = exprs.some(e => e.id === 'root_point' || e.id === 'root_dot');
-            console.log('🔍 Проверка точки через 300мс:', rootExists ? '✓ найдена' : '✗ не найдена');
-            if (!rootExists) {
-                console.warn('⚠️ Точка не отобразилась. Проверьте:');
-                console.warn('  - Координаты:', xRounded, yRounded);
-                console.warn('  - Viewport:', this.mainGraph.calculator.mathBounds);
-                console.warn('  - Все выражения:', exprs.map(e => ({id: e.id, latex: e.latex})));
-            }
-        }, 300);
     }
-    /**
-     * Очистить точку корня
-     */
+
     clearRootMarker() {
-        if (!this.mainGraph || !this.mainGraph.calculator) {
-            return;
-        }
-
-        // Удаляем все сохраненные ID точек корня
+        if (!this.mainGraph?.calculator) return;
         this.rootExpressionIds.forEach(id => {
-            try {
-                this.mainGraph.calculator.removeExpression({ id: id });
-            } catch(e) {
-                // Игнорируем ошибки, если выражение не найдено
-            }
+            try { this.mainGraph.calculator.removeExpression({ id }); } catch(e) {}
         });
-
         this.rootExpressionIds = [];
-    }
-
-    initDropdown(selectId, descriptionId, captionId) {
-        this.selectElement = document.getElementById(selectId);
-        this.descriptionElement = document.getElementById(descriptionId);
-        this.captionElement = document.getElementById(captionId);
-
-        if (!this.selectElement) {
-            console.error('Dropdown not found');
-            return;
-        }
-
-        this.selectElement.addEventListener('change', (e) => {
-            this.switchToGraph(e.target.value);
-        });
-
-        this.switchToGraph(this.selectElement.value);
     }
 }
 
