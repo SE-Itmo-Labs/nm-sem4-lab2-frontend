@@ -15,6 +15,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById('plot-area').innerHTML =
             '<div style="color:red;padding:20px">Ошибка загрузки. Проверьте консоль.</div>';
     }
+
+    // === Ускорение пирата при наведении ===
+    const pirateVideo = document.getElementById('pirateVideo');
+    if (pirateVideo) {
+        pirateVideo.addEventListener('mouseenter', () => {
+            pirateVideo.playbackRate = 3.0; // x3 скорость
+        });
+
+        pirateVideo.addEventListener('mouseleave', () => {
+            pirateVideo.playbackRate = 1.0; // нормальная скорость
+        });
+
+        // Для мобильных (touch)
+        pirateVideo.addEventListener('touchstart', () => {
+            pirateVideo.playbackRate = 3.0;
+        });
+
+        pirateVideo.addEventListener('touchend', () => {
+            pirateVideo.playbackRate = 1.0;
+        });
+    }
 });
 
 class FormManager {
