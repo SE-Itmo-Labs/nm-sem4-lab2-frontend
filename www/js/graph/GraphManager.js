@@ -22,6 +22,36 @@ class GraphManager {
         this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
     }
 
+    // В методе renderSystem() добавь проверку:
+    renderSystem(sysConfig) {
+        if (!this.mainGraph) return;
+
+        this.mainGraph.clearExpressions();
+        this.rootExpressionIds = [];
+        this.mainGraph.setViewport(sysConfig.viewport);
+
+        sysConfig.equations.forEach((eq, i) => {
+            this.mainGraph.addExpression({
+                id: `sys_eq${i+1}`,
+                latex: eq.latex,
+                color: eq.color,
+                label: eq.description,
+                showLabel: true
+            });
+        });
+
+        this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
+        this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
+
+        if (sysConfig.notes) {
+            this.mainGraph.addExpression({
+                id: 'sys_note',
+                latex: `\\text{"${sysConfig.notes}"}`,
+                color: '#ff6600'
+            });
+        }
+    }
+
     markRoot(x, y, changeViewport = true) {
         if (!this.mainGraph?.calculator) return;
 

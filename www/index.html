@@ -23,138 +23,192 @@
             <p>Выполнил: студент Р3215 Снагин С.М.</p>
         </div>
         <div class="header-img">
-<!--            <img src="img/pirate.gif" alt="Under Construction" width="200">-->
             <video id="pirateVideo" src="img/pirate.mp4" autoplay loop muted playsinline width="200"></video>
         </div>
     </header>
 
     <div class="marquee-container">
         <marquee scrollamount="5">
-            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ *** /// *** ТУТ ДЕЛАЮТСЯ ОЧЕНЬ ВАЖНЫЕ РАСЧЕТЫ ***
+            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ ***
         </marquee>
     </div>
 
-    <table class="nav-table">
-        <tr>
-            <td><a href="#equation">[ Уравнения ]</a></td>
-            <td><a href="#system">[ Система ]</a></td>
-            <td><a href="#report">[ Отчет ]</a></td>
-        </tr>
-    </table>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('equations')">Уравнения</button>
+        <button class="tab-btn" onclick="switchTab('systems')">Системы</button>
+    </div>
 
-    <table class="layout-table" width="100%" cellpadding="10">
-        <tr>
-            <td width="40%" valign="top">
-                <a name="equation"></a>
-                <h2>Входные данные</h2>
-                <form id="calcForm" class="retro-form">
-                    <div class="form-group">
-                        <label for="functionSelect"><b>Выберите функцию:</b></label>
-                        <select id="functionSelect" class="retro-select" required>
-                            <option value="">-- Выберите функцию --</option>
-                            <option value="g1">f(x) = 0.4x⁴ - (x - 0.1)² + 0.2</option>
-                            <option value="g2">f(x) = e^x + 4x² - 22.8x</option>
-                            <option value="g3">f(x) = sin(x²) + 0.3x</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="methodSelect"><b>Выберите метод:</b></label>
-                        <select id="methodSelect" class="retro-select" required>
-                            <option value="">-- Выберите метод --</option>
-                            <option value="bisection">Метод половинного деления</option>
-                            <option value="secant">Метод секущих</option>
-                            <option value="simple_iteration">Метод простой итерации</option>
-                            <option value="newton">Метод Ньютона</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label><b>Границы интервала:</b></label>
-                        <div class="input-row">
+    <div id="equationsTab" class="tab-content active">
+        <table class="layout-table" width="100%" cellpadding="10">
+            <tr>
+                <td width="40%" valign="top">
+                    <h2>Входные данные</h2>
+                    <form id="equationForm" class="retro-form">
+                        <div class="form-group">
+                            <label for="eqFunctionSelect"><b>Выберите функцию:</b></label>
+                            <select id="eqFunctionSelect" class="retro-select" required>
+                                <option value="">-- Выберите функцию --</option>
+                                <option value="g1">f(x) = 0.4x⁴ - (x - 0.1)² + 0.2</option>
+                                <option value="g2">f(x) = e^x + 4x² - 22.8x</option>
+                                <option value="g3">f(x) = sin(x²) + 0.3x</option>
+                            </select>
+                        </div>
 
-                            <input type="text" id="intervalA" placeholder="a (левая)"
+                        <div class="form-group">
+                            <label for="eqMethodSelect"><b>Выберите метод:</b></label>
+                            <select id="eqMethodSelect" class="retro-select" required>
+                                <option value="">-- Выберите метод --</option>
+                                <option value="bisection">Метод половинного деления</option>
+                                <option value="secant">Метод секущих</option>
+                                <option value="simple_iteration">Метод простой итерации</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><b>Границы интервала:</b></label>
+                            <div class="input-row">
+                                <input type="text" id="eqIntervalA" placeholder="a (левая)"
+                                       class="retro-input number-input" required>
+                                <input type="text" id="eqIntervalB" placeholder="b (правая)"
+                                       class="retro-input number-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eqX0Input"><b>Начальное приближение x₀:</b></label>
+                            <input type="text" id="eqX0Input" placeholder="x₀"
+                                   class="retro-input number-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eqEpsilonInput"><b>Точность (ε):</b></label>
+                            <input type="text" id="eqEpsilonInput" placeholder="ε"
                                    class="retro-input number-input"
-                                   pattern="[-+]?[0-9]*[.]?[0-9]{0,4}"
-                                   title="Введите число (макс. 4 знака после запятой)" required>
+                                   value="0.0001" required>
+                        </div>
 
-                            <input type="text" id="intervalB" placeholder="b (правая)"
+                        <div class="form-actions">
+                            <button type="submit" class="retro-btn retro-btn-primary">ВЫПОЛНИТЬ РАСЧЁТ</button>
+                            <button type="reset" class="retro-btn retro-btn-secondary">СБРОСИТЬ</button>
+                        </div>
+                        <div id="eqFormStatus" class="status-message"></div>
+                    </form>
+                </td>
+                <td width="60%" valign="top" align="center">
+                    <h2>График функции</h2>
+                    <div class="graph-box">
+                        <div id="eqCalculator" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <p id="eqGraphCaption">Выберите функцию для отображения</p>
+                    <div id="eqResultsPanel" class="results-panel" style="display: none;">
+                        <h3>Результаты вычислений</h3>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="result-label">Корень x:</span>
+                                <span class="result-value" id="eqResultRoot">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Значение f(x):</span>
+                                <span class="result-value" id="eqResultFValue">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Итераций:</span>
+                                <span class="result-value" id="eqResultIterations">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="systemsTab" class="tab-content">
+        <table class="layout-table" width="100%" cellpadding="10">
+            <tr>
+                <td width="40%" valign="top">
+                    <h2>Входные данные</h2>
+                    <form id="systemForm" class="retro-form">
+                        <div class="form-group">
+                            <label for="sysSelect"><b>Выберите систему уравнений:</b></label>
+                            <select id="sysSelect" class="retro-select" required>
+                                <option value="">-- Выберите систему --</option>
+                                <option value="sys13">{ sin(y)+2x=2; y+cos(x-1)=0.7 }</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sysX0Input"><b>Начальное приближение x₀:</b></label>
+                            <input type="text" id="sysX0Input" placeholder="x₀"
+                                   class="retro-input number-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sysY0Input"><b>Начальное приближение y₀:</b></label>
+                            <input type="text" id="sysY0Input" placeholder="y₀"
+                                   class="retro-input number-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sysEpsilonInput"><b>Точность (ε):</b></label>
+                            <input type="text" id="sysEpsilonInput" placeholder="ε"
                                    class="retro-input number-input"
-                                   pattern="[-+]?[0-9]*[.]?[0-9]{0,4}"
-                                   title="Введите число (макс. 4 знака после запятой)" required>
+                                   value="0.0001" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="retro-btn retro-btn-primary">ВЫПОЛНИТЬ РАСЧЁТ</button>
+                            <button type="reset" class="retro-btn retro-btn-secondary">СБРОСИТЬ</button>
+                        </div>
+                        <div id="sysFormStatus" class="status-message"></div>
+                    </form>
+                </td>
+                <td width="60%" valign="top" align="center">
+                    <h2>График системы</h2>
+                    <div class="graph-box">
+                        <div id="sysCalculator" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <p id="sysGraphCaption">Выберите систему для отображения</p>
+                    <div id="sysResultsPanel" class="results-panel" style="display: none;">
+                        <h3>Результаты вычислений</h3>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="result-label">Корень x:</span>
+                                <span class="result-value" id="sysResultX">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Корень y:</span>
+                                <span class="result-value" id="sysResultY">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Итераций:</span>
+                                <span class="result-value" id="sysResultIterations">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Вектор погрешности x:</span>
+                                <span class="result-value" id="sysResultDeltaX">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Вектор погрешности y:</span>
+                                <span class="result-value" id="sysResultDeltaY">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">F1(x*, y*):</span>
+                                <span class="result-value" id="sysResultF1">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">F2(x*, y*):</span>
+                                <span class="result-value" id="sysResultF2">-</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="x0Input"><b>Начальное приближение x₀:</b></label>
-                        <input type="text" id="x0Input" placeholder="x₀"
-                               class="retro-input number-input"
-                               pattern="[-+]?[0-9]*[.]?[0-9]+"
-                               title="Введите число" required>
-                    </div>
-                    <div class="form-group" id="y0Group" style="display: none;">
-                        <label for="y0Input"><b>Начальное приближение y₀:</b></label>
-                        <input type="text" id="y0Input" placeholder="y₀"
-                               class="retro-input number-input"
-                               pattern="[-+]?[0-9]*[.]?[0-9]+"
-                               title="Введите число">
-                    </div>
-                    <div class="form-group">
-                        <label for="epsilonInput"><b>Точность (ε):</b></label>
-                        <input type="text" id="epsilonInput" placeholder="ε"
-                               class="retro-input number-input"
-                               value="0.0001"
-                               pattern="[0-9]*[.]?[0-9]{0,4}"
-                               title="Введите число от 0.0001 до 0.9999" required>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="retro-btn retro-btn-primary" id="calcBtn">ВЫПОЛНИТЬ РАСЧЁТ</button>
-                        <button type="reset" class="retro-btn retro-btn-secondary" id="resetBtn">СБРОСИТЬ</button>
-                    </div>
-                    <div id="formStatus" class="status-message"></div>
-                </form>
-            </td>
-            <td width="60%" valign="top" align="center">
-                <a name="graphs"></a>
-                <h2>График функции</h2>
-                <div class="graph-box" id="plot-area">
-                    <div id="calculator" style="width: 100%; height: 100%;"></div>
-                </div>
-                <p class="graph-caption" id="graphCaption">Выберите функцию для отображения</p>
-                <div id="resultsPanel" class="results-panel" style="display: none;">
-                    <h3>Результаты вычислений</h3>
-                    <div class="results-grid">
-                        <div class="result-item">
-                            <span class="result-label">Корень x*:</span>
-                            <span class="result-value" id="resultRoot">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">f(x*):</span>
-                            <span class="result-value" id="resultFValue">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Итераций:</span>
-                            <span class="result-value" id="resultIterations">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Погрешность:</span>
-                            <span class="result-value" id="resultError">-</span>
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <footer>
         <p>© 2006 Кафедра Вычислительной Математики</p>
-        <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
-        <br><br>
         <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
-        <div class="footer-badges">
-            <img src="https://88x31.nl/gifs/devOnMintGreen.png">
-            <img src="https://88x31.nl/gifs/firefoxnow.gif">
-            <img src="https://88x31.nl/gifs/neo_now88.gif">
-            <img src="https://88x31.nl/gifs/lifewithoutangels.gif">
-            <img src="img/num.gif">
-        </div>
     </footer>
 </div>
 </body>

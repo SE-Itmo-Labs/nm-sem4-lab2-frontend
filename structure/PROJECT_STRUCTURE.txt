@@ -12,6 +12,7 @@ nm-sem4-lab2-frontend/
 │   ├── img
 │   │   ├── num.gif
 │   │   ├── pirate.gif
+│   │   ├── pirate.mp4
 │   │   └── professor.gif
 │   ├── js
 │   │   ├── config
@@ -384,7 +385,8 @@ www/index.html
             <p>Выполнил: студент Р3215 Снагин С.М.</p>
         </div>
         <div class="header-img">
-            <img src="img/pirate.gif" alt="Under Construction" width="200">
+<!--            <img src="img/pirate.gif" alt="Under Construction" width="200">-->
+            <video id="pirateVideo" src="img/pirate.mp4" autoplay loop muted playsinline width="200"></video>
         </div>
     </header>
 
@@ -417,6 +419,16 @@ www/index.html
                             <option value="g3">f(x) = sin(x²) + 0.3x</option>
                         </select>
                     </div>
+
+                    <div class="form-group" id="systemSelectGroup" style="display: none;">
+                        <label for="systemSelect"><b>Выберите систему:</b></label>
+                        <select id="systemSelect" class="retro-select">
+                            <option value="">-- Выберите систему --</option>
+                            <option value="sys13">Вариант 13: {sin(y)+2x=2; y+cos(x-1)=0.7}</option>
+                            <option value="sys_new">Новая: {2x²-2=0; (x/2)³+(y/1.7)²+(x/y)²=1}</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="methodSelect"><b>Выберите метод:</b></label>
                         <select id="methodSelect" class="retro-select" required>
@@ -461,7 +473,7 @@ www/index.html
                         <input type="text" id="epsilonInput" placeholder="ε"
                                class="retro-input number-input"
                                value="0.0001"
-                               pattern="[0-9]*[.]?[0-9]{4}"
+                               pattern="[0-9]*[.]?[0-9]{0,4}"
                                title="Введите число от 0.0001 до 0.9999" required>
                     </div>
                     <div class="form-actions">
@@ -504,7 +516,7 @@ www/index.html
     </table>
 
     <footer>
-        <p>© 2024 Кафедра Вычислительной Математики</p>
+        <p>© 2006 Кафедра Вычислительной Математики</p>
         <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
         <br><br>
         <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
@@ -540,6 +552,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById('plot-area').innerHTML =
             '<div style="color:red;padding:20px">Ошибка загрузки. Проверьте консоль.</div>';
     }
+
+    // === Ускорение пирата при наведении ===
+    const pirateVideo = document.getElementById('pirateVideo');
+    if (pirateVideo) {
+        pirateVideo.addEventListener('mouseenter', () => {
+            pirateVideo.playbackRate = 3.0; // x3 скорость
+        });
+
+        pirateVideo.addEventListener('mouseleave', () => {
+            pirateVideo.playbackRate = 1.0; // нормальная скорость
+        });
+
+        // Для мобильных (touch)
+        pirateVideo.addEventListener('touchstart', () => {
+            pirateVideo.playbackRate = 3.0;
+        });
+
+        pirateVideo.addEventListener('touchend', () => {
+            pirateVideo.playbackRate = 1.0;
+        });
+    }
 });
 
 class FormManager {
@@ -550,6 +583,27 @@ class FormManager {
     }
 
     init(graphManager) {
+
+        // В FormManager.init():
+        const methodSelect = document.getElementById('methodSelect');
+        const systemSelectGroup = document.getElementById('systemSelectGroup');
+        const systemSelect = document.getElementById('systemSelect');
+
+        methodSelect?.addEventListener('change', () => {
+            // Показываем поля для систем
+            const isSystem = ['sys13', 'sys_new'].includes(document.getElementById('functionSelect')?.value);
+            systemSelectGroup.style.display = isSystem ? 'block' : 'none';
+            document.getElementById('y0Group').style.display = isSystem ? 'block' : 'none';
+        });
+
+        systemSelect?.addEventListener('change', (e) => {
+            const sysId = e.target.value;
+            if (sysId && SYSTEMS_CONFIG[sysId]) {
+                this.graphManager.renderSystem(SYSTEMS_CONFIG[sysId]);
+                document.getElementById('graphCaption').textContent = SYSTEMS_CONFIG[sysId].name;
+            }
+        });
+
         this.form = document.getElementById('calcForm');
         this.graphManager = graphManager;
         if (!this.form) return;
@@ -636,10 +690,27 @@ class FormManager {
     }
 
     validateData(data) {
-        if (!data.function) return this.showStatus('Выберите функцию', 'error'), false;
-        if (!data.method) return this.showStatus('Выберите метод решения', 'error'), false;
-        if (data.intervalA === null || data.intervalB === null) return this.showStatus('Введите границы интервала [a, b]', 'error'), false;
-        if (data.intervalA >= data.intervalB) return this.showStatus('Левая граница должна быть меньше правой', 'error'), false;
+        if (!data.function) return this.showStatus('Выберите функцию/систему', 'error'), false;
+
+        // Если это система
+        if (['sys13', 'sys_new'].includes(data.function)) {
+            if (!data.method) return this.showStatus('Выберите метод', 'error'), false;
+            if (data.x0 === null || data.y0 === null) {
+                return this.showStatus('Для системы нужны x₀ и y₀', 'error'), false;
+            }
+            if (data.function === 'sys_new' && Math.abs(data.y0) < 0.1) {
+                return this.showStatus('⚠️ Для новой системы избегайте y₀ ≈ 0 (деление на ноль!)', 'error'), false;
+            }
+        } else {
+            // Валидация для уравнений (как было)
+            if (!data.method) return this.showStatus('Выберите метод решения', 'error'), false;
+            if (data.intervalA === null || data.intervalB === null) {
+                return this.showStatus('Введите границы интервала [a, b]', 'error'), false;
+            }
+            if (data.intervalA >= data.intervalB) {
+                return this.showStatus('Левая граница должна быть меньше правой', 'error'), false;
+            }
+        }
 
         if (data.epsilon < 0.0001 || data.epsilon > 0.9999) {
             return this.showStatus('Точность должна быть в диапазоне [0.0001; 0.9999]', 'error'), false;
@@ -716,16 +787,17 @@ const FUNCTIONS_CONFIG = {
 
 www/js/config/systems.config.js
 
+// www/js/config/systems.config.js
 const SYSTEMS_CONFIG = {
-    'sys13': {
-        name: 'Система варианта 13',
+    'sys_new': {
+        name: 'Новая система: {2x²-2=0; (x/2)³+(y/1.7)²+(x/y)²=1}',
         equations: [
-            { latex: 'y = 2 - \\sin(2x)', color: Desmos.Colors?.[0] || '#c74440' },
-            { latex: 'y = 0.7 - \\cos(x - 1)', color: Desmos.Colors?.[1] || '#2d70b3' }
+            { latex: '2x^2 - 2 = 0', color: '#c74440', description: 'f₁(x,y) = 0' },
+            { latex: '(x/2)^3 + (y/1.7)^2 + (x/y)^2 = 1', color: '#2d70b3', description: 'f₂(x,y) = 0' }
         ],
-        solution: { x: 1.146, y: -0.289 },
-        viewport: { xmin: -1, ymin: -2, xmax: 3, ymax: 2 },
-        method: 'Простая итерация'
+        viewport: { xmin: -3, ymin: -3, xmax: 3, ymax: 3 },
+        method: 'Простая итерация (релаксация)',
+        notes: '⚠️ Избегайте y=0 в начальном приближении!'
     }
 };
 
@@ -834,6 +906,36 @@ class GraphManager {
         this.mainGraph.addExpression({ id: 'func_curve', latex: funcConfig.latex, color: '#c74440' });
         this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
         this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
+    }
+
+    // В методе renderSystem() добавь проверку:
+    renderSystem(sysConfig) {
+        if (!this.mainGraph) return;
+
+        this.mainGraph.clearExpressions();
+        this.rootExpressionIds = [];
+        this.mainGraph.setViewport(sysConfig.viewport);
+
+        sysConfig.equations.forEach((eq, i) => {
+            this.mainGraph.addExpression({
+                id: `sys_eq${i+1}`,
+                latex: eq.latex,
+                color: eq.color,
+                label: eq.description,
+                showLabel: true
+            });
+        });
+
+        this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
+        this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
+
+        if (sysConfig.notes) {
+            this.mainGraph.addExpression({
+                id: 'sys_note',
+                latex: `\\text{"${sysConfig.notes}"}`,
+                color: '#ff6600'
+            });
+        }
     }
 
     markRoot(x, y, changeViewport = true) {

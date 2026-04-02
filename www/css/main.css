@@ -123,3 +123,38 @@ footer { margin-top: 30px; text-align: center; font-size: 12px; border-top: 2px 
     .header-flex { flex-direction: column; }
     .header-text, .header-img { width: 100%; }
 }
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.tab-btn {
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 3px outset var(--retro-border-dark);
+    background: linear-gradient(to bottom, #4a90e2, #2c5aa0);
+    color: #ffffff;
+    cursor: pointer;
+    font-family: var(--retro-font);
+}
+
+.tab-btn:active {
+    border-style: inset;
+}
+
+.tab-btn.active {
+    background: linear-gradient(to bottom, #2c5aa0, #1a3a6a);
+    border-style: inset;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}

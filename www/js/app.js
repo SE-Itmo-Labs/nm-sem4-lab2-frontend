@@ -1,186 +1,205 @@
-document.addEventListener('DOMContentLoaded', async function() {
-    const graphManager = new GraphManager();
-    const formManager = new FormManager();
+let eqGraphManager = null;
+let sysGraphManager = null;
 
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    if (tabName === 'equations') {
+        document.getElementById('equationsTab').classList.add('active');
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    } else {
+        document.getElementById('systemsTab').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
     try {
-        await graphManager.createMainGraph('calculator', {
+        eqGraphManager = new GraphManager();
+        await eqGraphManager.createMainGraph('eqCalculator', {
             viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 10 }
         });
-        formManager.init(graphManager);
 
-        window.graphManager = graphManager;
-        window.formManager = formManager;
+        sysGraphManager = new GraphManager();
+        await sysGraphManager.createMainGraph('sysCalculator', {
+            viewport: { xmin: -1, ymin: -2, xmax: 3, ymax: 2 }
+        });
+
+        initEquationForm();
+        initSystemForm();
+
+        window.eqGraphManager = eqGraphManager;
+        window.sysGraphManager = sysGraphManager;
     } catch (e) {
         console.error('Initialization failed:', e);
-        document.getElementById('plot-area').innerHTML =
-            '<div style="color:red;padding:20px">Ошибка загрузки. Проверьте консоль.</div>';
     }
 
-    // === Ускорение пирата при наведении ===
     const pirateVideo = document.getElementById('pirateVideo');
     if (pirateVideo) {
         pirateVideo.addEventListener('mouseenter', () => {
-            pirateVideo.playbackRate = 3.0; // x3 скорость
-        });
-
-        pirateVideo.addEventListener('mouseleave', () => {
-            pirateVideo.playbackRate = 1.0; // нормальная скорость
-        });
-
-        // Для мобильных (touch)
-        pirateVideo.addEventListener('touchstart', () => {
             pirateVideo.playbackRate = 3.0;
         });
-
-        pirateVideo.addEventListener('touchend', () => {
+        pirateVideo.addEventListener('mouseleave', () => {
             pirateVideo.playbackRate = 1.0;
         });
     }
 });
 
-class FormManager {
-    constructor() {
-        this.form = null;
-        this.graphManager = null;
-        this.formData = { function: '', method: '', intervalA: null, intervalB: null, x0: null, y0: null, epsilon: 0.0001 };
-    }
+function initEquationForm() {
+    const form = document.getElementById('equationForm');
+    form.addEventListener('submit', handleEquationSubmit);
+    form.addEventListener('reset', () => {
+        setTimeout(() => {
+            document.getElementById('eqFormStatus').className = 'status-message';
+            document.getElementById('eqResultsPanel').style.display = 'none';
+        }, 100);
+    });
 
-    init(graphManager) {
-        this.form = document.getElementById('calcForm');
-        this.graphManager = graphManager;
-        if (!this.form) return;
-
-        this.form.addEventListener('submit', e => { e.preventDefault(); this.handleSubmit(); });
-        this.form.addEventListener('reset', () => { setTimeout(() => { this.hideStatus(); this.hideResults(); }, 100); });
-
-        document.querySelectorAll('.number-input').forEach(input => {
-            input.addEventListener('input', e => this.validateNumberInput(e.target));
-            input.addEventListener('blur', e => this.normalizeNumberInput(e.target));
-        });
-
-        const funcSelect = document.getElementById('functionSelect');
-        if (funcSelect) {
-            funcSelect.addEventListener('change', e => {
-                const funcId = e.target.value;
-                if (funcId && FUNCTIONS_CONFIG[funcId]) {
-                    this.graphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
-                    document.getElementById('graphCaption').textContent = FUNCTIONS_CONFIG[funcId].name;
-                }
-            });
+    document.getElementById('eqFunctionSelect').addEventListener('change', function() {
+        const funcId = this.value;
+        if (funcId && FUNCTIONS_CONFIG[funcId]) {
+            eqGraphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
+            document.getElementById('eqGraphCaption').textContent = FUNCTIONS_CONFIG[funcId].name;
         }
-    }
+    });
+}
 
-    validateNumberInput(input) {
-        let value = input.value.replace(',', '.');
-        if (!/^[-+]?[0-9]*\.?[0-9]{0,4}$/.test(value) && value !== '') {
-            input.classList.add('error');
-            return false;
+function initSystemForm() {
+    const form = document.getElementById('systemForm');
+    form.addEventListener('submit', handleSystemSubmit);
+    form.addEventListener('reset', () => {
+        setTimeout(() => {
+            document.getElementById('sysFormStatus').className = 'status-message';
+            document.getElementById('sysResultsPanel').style.display = 'none';
+        }, 100);
+    });
+
+    document.getElementById('sysSelect').addEventListener('change', function() {
+        const sysId = this.value;
+        if (sysId && SYSTEMS_CONFIG[sysId]) {
+            sysGraphManager.renderSystem(SYSTEMS_CONFIG[sysId]);
+            document.getElementById('sysGraphCaption').textContent = SYSTEMS_CONFIG[sysId].name;
         }
-        input.classList.remove('error');
-        input.value = value;
-        return true;
+    });
+}
+
+async function handleEquationSubmit(e) {
+    e.preventDefault();
+
+    const data = {
+        function: document.getElementById('eqFunctionSelect').value,
+        method: document.getElementById('eqMethodSelect').value,
+        intervalA: parseFloat(document.getElementById('eqIntervalA').value),
+        intervalB: parseFloat(document.getElementById('eqIntervalB').value),
+        x0: parseFloat(document.getElementById('eqX0Input').value) || null,
+        epsilon: parseFloat(document.getElementById('eqEpsilonInput').value) || 0.0001
+    };
+
+    if (!data.function || !data.method || data.intervalA == null || data.intervalB == null) {
+        showStatus('eqFormStatus', 'Заполните все обязательные поля', 'error');
+        return;
     }
 
-    normalizeNumberInput(input) {
-        let value = input.value.trim();
-        if (!value) return;
-        value = value.replace(',', '.');
-        const num = parseFloat(value);
-        if (isNaN(num)) return input.classList.add('error');
-        input.value = num.toFixed(4).replace(/\.?0+$/, '');
-    }
-
-    collectFormData() {
-        return {
-            function: document.getElementById('functionSelect').value,
-            method: document.getElementById('methodSelect').value,
-            intervalA: this.parseNumber(document.getElementById('intervalA').value),
-            intervalB: this.parseNumber(document.getElementById('intervalB').value),
-            x0: this.parseNumber(document.getElementById('x0Input').value),
-            y0: this.parseNumber(document.getElementById('y0Input').value),
-            epsilon: this.parseNumber(document.getElementById('epsilonInput').value) || 0.0001
-        };
-    }
-
-    parseNumber(value) {
-        if (!value || value.trim() === '') return null;
-        const num = parseFloat(value.replace(',', '.'));
-        return isNaN(num) ? null : num;
-    }
-
-    async handleSubmit() {
-        if (this.graphManager) this.graphManager.clearRootMarker();
-        const data = this.collectFormData();
-        if (!this.validateData(data)) return;
-
-        this.formData = data;
-        try {
-            this.showStatus('🔄 Отправка данных на сервер...', 'info');
-            const result = await this.sendToAPI(data);
-            if (result.success) {
-                this.showStatus('✅ Расчёт завершён успешно!', 'success');
-                this.displayResults(result.data);
-            } else {
-                this.showStatus(`❌ Ошибка: ${result.error}`, 'error');
-            }
-        } catch (error) {
-            const msg = error.message.includes('Failed to fetch')
-                ? 'Не удалось соединиться с сервером. Проверьте интернет или CORS.'
-                : `Ошибка: ${error.message}`;
-            this.showStatus(msg, 'error');
-        }
-    }
-
-    validateData(data) {
-        if (!data.function) return this.showStatus('Выберите функцию', 'error'), false;
-        if (!data.method) return this.showStatus('Выберите метод решения', 'error'), false;
-        if (data.intervalA === null || data.intervalB === null) return this.showStatus('Введите границы интервала [a, b]', 'error'), false;
-        if (data.intervalA >= data.intervalB) return this.showStatus('Левая граница должна быть меньше правой', 'error'), false;
-
-        if (data.epsilon < 0.0001 || data.epsilon > 0.9999) {
-            return this.showStatus('Точность должна быть в диапазоне [0.0001; 0.9999]', 'error'), false;
-        }
-        return true;
-    }
-
-    async sendToAPI(data) {
-        const API_URL = 'https://itmo.ssngn.ru/lab5/api/calculate';
-        const response = await fetch(API_URL, {
+    try {
+        showStatus('eqFormStatus', 'Отправка данных...', 'info');
+        const response = await fetch('https://itmo.ssngn.ru/lab5/api/calculate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data),
-            mode: 'cors',
-            credentials: 'omit'
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
-        }
 
         const result = await response.json();
-        if (result.success && result.data) return { success: true, data: result.data };
-        return { success: false, error: result.error || 'Неизвестная ошибка сервера' };
-    }
 
-    displayResults(data) {
-        if (this.graphManager && data.root !== undefined) {
-            this.graphManager.markRoot(data.root, data.fValue ?? 0);
+        if (result.success && result.data) {
+            showStatus('eqFormStatus', 'Расчёт завершён успешно!', 'success');
+            displayEquationResults(result.data);
+        } else {
+            showStatus('eqFormStatus', 'Ошибка: ' + result.error, 'error');
         }
-    }
-
-    showStatus(message, type = 'info') {
-        const el = document.getElementById('formStatus');
-        if (el) { el.textContent = message; el.className = `status-message show ${type}`; }
-    }
-
-    hideStatus() {
-        const el = document.getElementById('formStatus');
-        if (el) el.className = 'status-message';
-    }
-
-    hideResults() {
-        const panel = document.getElementById('resultsPanel');
-        if (panel) panel.style.display = 'none';
+    } catch (error) {
+        showStatus('eqFormStatus', 'Ошибка соединения: ' + error.message, 'error');
     }
 }
+
+async function handleSystemSubmit(e) {
+    e.preventDefault();
+
+    const data = {
+        function: document.getElementById('sysSelect').value,
+        method: 'newton',
+        x0: parseFloat(document.getElementById('sysX0Input').value),
+        y0: parseFloat(document.getElementById('sysY0Input').value),
+        epsilon: parseFloat(document.getElementById('sysEpsilonInput').value) || 0.0001
+    };
+
+    if (!data.function || data.x0 == null || data.y0 == null) {
+        showStatus('sysFormStatus', 'Заполните все обязательные поля', 'error');
+        return;
+    }
+
+    try {
+        showStatus('sysFormStatus', 'Отправка данных...', 'info');
+        const response = await fetch('https://itmo.ssngn.ru/lab5/api/calculate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success && result.data) {
+            showStatus('sysFormStatus', 'Расчёт завершён успешно!', 'success');
+            displaySystemResults(result.data, result.iterations);
+        } else {
+            showStatus('sysFormStatus', 'Ошибка: ' + result.error, 'error');
+        }
+    } catch (error) {
+        showStatus('sysFormStatus', 'Ошибка соединения: ' + error.message, 'error');
+    }
+}
+
+function displayEquationResults(data) {
+    eqGraphManager.markRoot(data.root, data.fValue);
+
+    document.getElementById('eqResultRoot').textContent = data.root.toFixed(6);
+    document.getElementById('eqResultFValue').textContent = data.fValue.toFixed(10);
+    document.getElementById('eqResultIterations').textContent = data.iterationsCount;
+    document.getElementById('eqResultsPanel').style.display = 'block';
+}
+
+function displaySystemResults(data, iterations) {
+    sysGraphManager.markRoot(data.solution.x, data.solution.y);
+
+    let lastDeltaX = 0;
+    let lastDeltaY = 0;
+    if (iterations && iterations.length > 0) {
+        const lastStep = iterations[iterations.length - 1].values;
+        lastDeltaX = lastStep.deltaX || 0;
+        lastDeltaY = lastStep.deltaY || 0;
+    }
+
+    document.getElementById('sysResultX').textContent = data.solution.x.toFixed(6);
+    document.getElementById('sysResultY').textContent = data.solution.y.toFixed(6);
+    document.getElementById('sysResultIterations').textContent = data.iterationsCount;
+    document.getElementById('sysResultDeltaX').textContent = lastDeltaX.toExponential(6);
+    document.getElementById('sysResultDeltaY').textContent = lastDeltaY.toExponential(6);
+    document.getElementById('sysResultF1').textContent = Functions.fSys1(data.solution.x, data.solution.y).toExponential(6);
+    document.getElementById('sysResultF2').textContent = Functions.fSys2(data.solution.x, data.solution.y).toExponential(6);
+    document.getElementById('sysResultsPanel').style.display = 'block';
+}
+
+function showStatus(elementId, message, type) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.className = 'status-message show ' + type;
+}
+
+const Functions = {
+    fSys1: (x, y) => Math.sin(y) + 2 * x - 2.0,
+    fSys2: (x, y) => y + Math.cos(x - 1.0) - 0.7
+};
