@@ -1,351 +1,205 @@
-/**
- * Точка входа приложения
- */
+let eqGraphManager = null;
+let sysGraphManager = null;
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    if (tabName === 'equations') {
+        document.getElementById('equationsTab').classList.add('active');
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    } else {
+        document.getElementById('systemsTab').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 Initializing LabWork App v1.0...');
-
-    const graphManager = new GraphManager();
-    const formManager = new FormManager();
-
     try {
-        // Инициализация графика
-        await graphManager.createMainGraph('calculator', {
+        eqGraphManager = new GraphManager();
+        await eqGraphManager.createMainGraph('eqCalculator', {
             viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 10 }
         });
-        console.log('✅ Graph initialized');
 
-        // Инициализация формы
-        formManager.init(graphManager);
+        sysGraphManager = new GraphManager();
+        await sysGraphManager.createMainGraph('sysCalculator', {
+            viewport: { xmin: -1, ymin: -2, xmax: 3, ymax: 2 }
+        });
 
-        // Сохраняем для отладки
-        window.graphManager = graphManager;
-        window.formManager = formManager;
+        initEquationForm();
+        initSystemForm();
 
+        window.eqGraphManager = eqGraphManager;
+        window.sysGraphManager = sysGraphManager;
     } catch (e) {
-        console.error('❌ Failed to initialize:', e);
-        document.getElementById('plot-area').innerHTML =
-            '<div style="color:red;padding:20px">⚠️ Ошибка загрузки. Проверьте консоль.</div>';
+        console.error('Initialization failed:', e);
+    }
+
+    const pirateVideo = document.getElementById('pirateVideo');
+    if (pirateVideo) {
+        pirateVideo.addEventListener('mouseenter', () => {
+            pirateVideo.playbackRate = 3.0;
+        });
+        pirateVideo.addEventListener('mouseleave', () => {
+            pirateVideo.playbackRate = 1.0;
+        });
     }
 });
 
-/**
- * Менеджер формы: валидация, сбор данных, отправка на API
- */
-class FormManager {
-    constructor() {
-        this.form = null;
-        this.graphManager = null;
-        this.formData = {
-            function: '',
-            method: '',
-            intervalA: null,
-            intervalB: null,
-            x0: null,
-            y0: null,
-            epsilon: 0.0001
-        };
-    }
+function initEquationForm() {
+    const form = document.getElementById('equationForm');
+    form.addEventListener('submit', handleEquationSubmit);
+    form.addEventListener('reset', () => {
+        setTimeout(() => {
+            document.getElementById('eqFormStatus').className = 'status-message';
+            document.getElementById('eqResultsPanel').style.display = 'none';
+        }, 100);
+    });
 
-    init(graphManager) {
-        this.form = document.getElementById('calcForm');
-        this.graphManager = graphManager;
-
-        if (!this.form) {
-            console.error('Form not found');
-            return;
+    document.getElementById('eqFunctionSelect').addEventListener('change', function() {
+        const funcId = this.value;
+        if (funcId && FUNCTIONS_CONFIG[funcId]) {
+            eqGraphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
+            document.getElementById('eqGraphCaption').textContent = FUNCTIONS_CONFIG[funcId].name;
         }
+    });
+}
 
-        // Привязка событий
-        this.bindEvents();
+function initSystemForm() {
+    const form = document.getElementById('systemForm');
+    form.addEventListener('submit', handleSystemSubmit);
+    form.addEventListener('reset', () => {
+        setTimeout(() => {
+            document.getElementById('sysFormStatus').className = 'status-message';
+            document.getElementById('sysResultsPanel').style.display = 'none';
+        }, 100);
+    });
 
-        // Инициализация выбора функции
-        this.initFunctionSelector();
+    document.getElementById('sysSelect').addEventListener('change', function() {
+        const sysId = this.value;
+        if (sysId && SYSTEMS_CONFIG[sysId]) {
+            sysGraphManager.renderSystem(SYSTEMS_CONFIG[sysId]);
+            document.getElementById('sysGraphCaption').textContent = SYSTEMS_CONFIG[sysId].name;
+        }
+    });
+}
+
+async function handleEquationSubmit(e) {
+    e.preventDefault();
+
+    const data = {
+        function: document.getElementById('eqFunctionSelect').value,
+        method: document.getElementById('eqMethodSelect').value,
+        intervalA: parseFloat(document.getElementById('eqIntervalA').value),
+        intervalB: parseFloat(document.getElementById('eqIntervalB').value),
+        x0: parseFloat(document.getElementById('eqX0Input').value) || null,
+        epsilon: parseFloat(document.getElementById('eqEpsilonInput').value) || 0.0001
+    };
+
+    if (!data.function || !data.method || data.intervalA == null || data.intervalB == null) {
+        showStatus('eqFormStatus', 'Заполните все обязательные поля', 'error');
+        return;
     }
 
-    bindEvents() {
-        // Отправка формы
-        this.form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.handleSubmit();
+    try {
+        showStatus('eqFormStatus', 'Отправка данных...', 'info');
+        const response = await fetch('https://itmo.ssngn.ru/lab5/api/calculate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
 
-        // Сброс формы
-        this.form.addEventListener('reset', () => {
-            setTimeout(() => {
-                this.hideStatus();
-                this.hideResults();
-            }, 100);
-        });
+        const result = await response.json();
 
-        // Валидация числовых полей в реальном времени
-        const numberInputs = document.querySelectorAll('.number-input');
-        numberInputs.forEach(input => {
-            input.addEventListener('input', (e) => {
-                this.validateNumberInput(e.target);
-            });
-
-            input.addEventListener('blur', (e) => {
-                this.normalizeNumberInput(e.target);
-            });
-        });
-    }
-
-    initFunctionSelector() {
-        const funcSelect = document.getElementById('functionSelect');
-        if (!funcSelect) return;
-
-        funcSelect.addEventListener('change', (e) => {
-            const funcId = e.target.value;
-            if (funcId && FUNCTIONS_CONFIG[funcId]) {
-                this.graphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
-                document.getElementById('graphCaption').textContent =
-                    FUNCTIONS_CONFIG[funcId].name;
-            }
-        });
-    }
-
-    /**
-     * Валидация числового поля
-     */
-    validateNumberInput(input) {
-        let value = input.value;
-
-        // Замена запятой на точку
-        value = value.replace(',', '.');
-
-        // Разрешаем только цифры, точку и минус в начале
-        if (!/^[-+]?[0-9]*\.?[0-9]{0,4}$/.test(value) && value !== '') {
-            input.classList.add('error');
-            return false;
+        if (result.success && result.data) {
+            showStatus('eqFormStatus', 'Расчёт завершён успешно!', 'success');
+            displayEquationResults(result.data);
+        } else {
+            showStatus('eqFormStatus', 'Ошибка: ' + result.error, 'error');
         }
-
-        input.classList.remove('error');
-        input.value = value;
-        return true;
-    }
-
-    /**
-     * Нормализация числа (округление до 4 знаков)
-     */
-    normalizeNumberInput(input) {
-        let value = input.value.trim();
-        if (!value) return;
-
-        // Замена запятой
-        value = value.replace(',', '.');
-
-        // Парсинг числа
-        const num = parseFloat(value);
-        if (isNaN(num)) {
-            input.classList.add('error');
-            return;
-        }
-
-        // Округление до 4 знаков
-        input.value = num.toFixed(4).replace(/\.?0+$/, '');
-    }
-
-    /**
-     * Сбор данных из формы
-     */
-    collectFormData() {
-        const data = {
-            function: document.getElementById('functionSelect').value,
-            method: document.getElementById('methodSelect').value,
-            intervalA: this.parseNumber(document.getElementById('intervalA').value),
-            intervalB: this.parseNumber(document.getElementById('intervalB').value),
-            x0: this.parseNumber(document.getElementById('x0Input').value),
-            y0: this.parseNumber(document.getElementById('y0Input').value),
-            epsilon: this.parseNumber(document.getElementById('epsilonInput').value) || 0.0001
-        };
-
-        return data;
-    }
-
-    /**
-     * Парсинг числа (запятая -> точка)
-     */
-    parseNumber(value) {
-        if (!value || value.trim() === '') return null;
-        const normalized = value.replace(',', '.');
-        const num = parseFloat(normalized);
-        return isNaN(num) ? null : num;
-    }
-
-    /**
-     * Обработка отправки формы
-     */
-    async handleSubmit() {
-        // Очистить старую точку корня перед новым расчетом
-        if (this.graphManager) {
-            this.graphManager.clearRootMarker();
-        }
-
-        // ✅ ВАЖНО: Сначала собираем данные!
-        const data = this.collectFormData();
-
-        // Валидация
-        if (!this.validateData(data)) {
-            return;
-        }
-
-        // Сохранение
-        this.formData = data;
-
-        // Отправка на API
-        try {
-            this.showStatus('🔄 Отправка данных на сервер...', 'info');
-            const result = await this.sendToAPI(data);
-
-            if (result.success) {
-                this.showStatus('✅ Расчёт завершён успешно!', 'success');
-                this.displayResults(result.data);
-            } else {
-                this.showStatus(`❌ Ошибка: ${result.error}`, 'error');
-            }
-        } catch (error) {
-            console.error('API Error:', error);
-
-            // 🔥 Обработка сетевых ошибок
-            if (error.message.includes('Failed to fetch')) {
-                this.showStatus('❌ Не удалось соединиться с сервером. Проверьте интернет или CORS.', 'error');
-            } else {
-                this.showStatus(`❌ Ошибка: ${error.message}`, 'error');
-            }
-        }
-    }
-
-    /**
-     * Валидация данных
-     */
-    validateData(data) {
-        // Проверка функции
-        if (!data.function) {
-            this.showStatus('⚠️ Выберите функцию', 'error');
-            return false;
-        }
-
-        // Проверка метода
-        if (!data.method) {
-            this.showStatus('⚠️ Выберите метод решения', 'error');
-            return false;
-        }
-
-        // Проверка интервала
-        if (data.intervalA === null || data.intervalB === null) {
-            this.showStatus('⚠️ Введите границы интервала [a, b]', 'error');
-            return false;
-        }
-
-        if (data.intervalA >= data.intervalB) {
-            this.showStatus('⚠️ Левая граница должна быть меньше правой', 'error');
-            return false;
-        }
-
-        // Проверка точности
-        if (data.epsilon <= 0 || data.epsilon > 1) {
-            this.showStatus('⚠️ Точность должна быть в диапазоне (0, 1]', 'error');
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Отправка данных на реальный API бэкенда
-     */
-    async sendToAPI(data) {
-        // ✅ URL твоего задеплоенного бэкенда
-        const API_URL = 'https://itmo.ssngn.ru/lab5/api/calculate';
-
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(data),
-                // Важно для CORS с кукими/авторизацией (если понадобится)
-                mode: 'cors',
-                credentials: 'omit'
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-            }
-
-            const result = await response.json();
-
-            // ✅ Бэкенд возвращает {success: true, data: {...}}
-            if (result.success && result.data) {
-                return {
-                    success: true,
-                    data: result.data
-                };
-            } else {
-                // Обработка ошибки от бэкенда
-                return {
-                    success: false,
-                    error: result.error || 'Неизвестная ошибка сервера'
-                };
-            }
-
-        } catch (error) {
-            console.error('API Error:', error);
-            throw error; // Пробрасываем ошибку выше для обработки в handleSubmit
-        }
-    }
-
-    displayResults(data) {
-        console.log('📊 displayResults вызван с данными:', data);
-
-        // ... обновление UI ...
-
-        if (this.graphManager && data.root !== undefined) {
-            const x = data.root;
-            const y = data.fValue ?? 0;
-
-            console.log('📍 Вызов markRoot:', { x, y });
-            console.log('🔧 Состояние графика:', {
-                calculator: !!this.graphManager.mainGraph?.calculator,
-                rootIds: this.graphManager.rootExpressionIds
-            });
-
-            this.graphManager.markRoot(x, y);
-        }
-    }
-
-
-    /**
-     * Показать статус
-     */
-    showStatus(message, type = 'info') {
-        const statusEl = document.getElementById('formStatus');
-        if (!statusEl) return;
-
-        statusEl.textContent = message;
-        statusEl.className = `status-message show ${type}`;
-    }
-
-    /**
-     * Скрыть статус
-     */
-    hideStatus() {
-        const statusEl = document.getElementById('formStatus');
-        if (statusEl) {
-            statusEl.className = 'status-message';
-        }
-    }
-
-    /**
-     * Скрыть результаты
-     */
-    hideResults() {
-        const panel = document.getElementById('resultsPanel');
-        if (panel) {
-            panel.style.display = 'none';
-        }
+    } catch (error) {
+        showStatus('eqFormStatus', 'Ошибка соединения: ' + error.message, 'error');
     }
 }
+
+async function handleSystemSubmit(e) {
+    e.preventDefault();
+
+    const data = {
+        function: document.getElementById('sysSelect').value,
+        method: 'newton',
+        x0: parseFloat(document.getElementById('sysX0Input').value),
+        y0: parseFloat(document.getElementById('sysY0Input').value),
+        epsilon: parseFloat(document.getElementById('sysEpsilonInput').value) || 0.0001
+    };
+
+    if (!data.function || data.x0 == null || data.y0 == null) {
+        showStatus('sysFormStatus', 'Заполните все обязательные поля', 'error');
+        return;
+    }
+
+    try {
+        showStatus('sysFormStatus', 'Отправка данных...', 'info');
+        const response = await fetch('https://itmo.ssngn.ru/lab5/api/calculate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success && result.data) {
+            showStatus('sysFormStatus', 'Расчёт завершён успешно!', 'success');
+            displaySystemResults(result.data, result.iterations);
+        } else {
+            showStatus('sysFormStatus', 'Ошибка: ' + result.error, 'error');
+        }
+    } catch (error) {
+        showStatus('sysFormStatus', 'Ошибка соединения: ' + error.message, 'error');
+    }
+}
+
+function displayEquationResults(data) {
+    eqGraphManager.markRoot(data.root, data.fValue);
+
+    document.getElementById('eqResultRoot').textContent = data.root.toFixed(6);
+    document.getElementById('eqResultFValue').textContent = data.fValue.toFixed(10);
+    document.getElementById('eqResultIterations').textContent = data.iterationsCount;
+    document.getElementById('eqResultsPanel').style.display = 'block';
+}
+
+function displaySystemResults(data, iterations) {
+    sysGraphManager.markRoot(data.solution.x, data.solution.y);
+
+    let lastDeltaX = 0;
+    let lastDeltaY = 0;
+    if (iterations && iterations.length > 0) {
+        const lastStep = iterations[iterations.length - 1].values;
+        lastDeltaX = lastStep.deltaX || 0;
+        lastDeltaY = lastStep.deltaY || 0;
+    }
+
+    document.getElementById('sysResultX').textContent = data.solution.x.toFixed(6);
+    document.getElementById('sysResultY').textContent = data.solution.y.toFixed(6);
+    document.getElementById('sysResultIterations').textContent = data.iterationsCount;
+    document.getElementById('sysResultDeltaX').textContent = lastDeltaX.toExponential(6);
+    document.getElementById('sysResultDeltaY').textContent = lastDeltaY.toExponential(6);
+    document.getElementById('sysResultF1').textContent = Functions.fSys1(data.solution.x, data.solution.y).toExponential(6);
+    document.getElementById('sysResultF2').textContent = Functions.fSys2(data.solution.x, data.solution.y).toExponential(6);
+    document.getElementById('sysResultsPanel').style.display = 'block';
+}
+
+function showStatus(elementId, message, type) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.className = 'status-message show ' + type;
+}
+
+const Functions = {
+    fSys1: (x, y) => Math.sin(y) + 2 * x - 2.0,
+    fSys2: (x, y) => y + Math.cos(x - 1.0) - 0.7
+};

@@ -1,6 +1,3 @@
-/**
- * Конфигурация функций — 3 графика для отображения (без корней)
- */
 const FUNCTIONS_CONFIG = {
     'g1': {
         name: 'f(x) = 0.4x⁴ - (x - 0.1)² + 0.2',
@@ -9,7 +6,7 @@ const FUNCTIONS_CONFIG = {
         description: 'Полином 4-й степени'
     },
     'g2': {
-        name: 'f(x) = e^x + 4x² - 22.8*x',
+        name: 'f(x) = e^x + 4x² - 22.8x',
         latex: 'e^x + 4x^2 - 22.8x',
         viewport: { xmin: -2, ymin: -10, xmax: 4, ymax: 20 },
         description: 'Экспонента и квадратичная функция'
