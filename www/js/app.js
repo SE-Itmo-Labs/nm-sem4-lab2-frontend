@@ -181,7 +181,7 @@ class FormManager {
             this.graphManager.clearRootMarker();
         }
 
-        // Сбор данных
+        // ✅ СОБРАТЬ ДАННЫЕ ИЗ ФОРМЫ
         const data = this.collectFormData();
 
         // Валидация
@@ -195,7 +195,6 @@ class FormManager {
         // Отправка на API
         try {
             this.showStatus('🔄 Отправка данных на сервер...', 'info');
-
             const result = await this.sendToAPI(data);
 
             if (result.success) {
@@ -204,10 +203,15 @@ class FormManager {
             } else {
                 this.showStatus(`❌ Ошибка: ${result.error}`, 'error');
             }
-
         } catch (error) {
             console.error('API Error:', error);
-            this.showStatus(`❌ Ошибка соединения: ${error.message}`, 'error');
+
+            // 🔥 Обработка сетевых ошибок (CORS, нет интернета, неверный URL)
+            if (error.message.includes('Failed to fetch')) {
+                this.showStatus('❌ Не удалось соединиться с сервером. Проверьте интернет или CORS.', 'error');
+            } else {
+                this.showStatus(`❌ Ошибка: ${error.message}`, 'error');
+            }
         }
     }
 
@@ -248,54 +252,50 @@ class FormManager {
     }
 
     /**
-     * Отправка данных на API (MOCK)
+     * Отправка данных на реальный API бэкенда
      */
     async sendToAPI(data) {
-        // TODO: Замените на реальный URL вашего API
-        const API_URL = '/api/calculate';
+        // ✅ URL твоего задеплоенного бэкенда
+        const API_URL = 'https://itmo.ssngn.ru/lab5/api/calculate';
 
-        // Для демонстрации — мок-ответ
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Имитация вычисления корня для разных функций
-                let mockRoot, mockFValue;
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data),
+                // Важно для CORS с кукими/авторизацией (если понадобится)
+                mode: 'cors',
+                credentials: 'omit'
+            });
 
-                switch(data.function) {
-                    case 'g1':
-                        // f(x) = 0.4x⁴ - (x - 0.1)² + 0.2
-                        mockRoot = 0.5;
-                        mockFValue = 0.0001;
-                        break;
-                    case 'g2':
-                        // f(x) = e^x + 4x² - 22.8x
-                        mockRoot = 2.146;
-                        mockFValue = -0.0002;
-                        break;
-                    case 'g3':
-                        // f(x) = sin(x²) + 0.3x
-                        mockRoot = 1.234;
-                        mockFValue = 0.00005;
-                        break;
-                    default:
-                        mockRoot = 1.2345;
-                        mockFValue = 0.0001;
-                }
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
 
-                // Имитация ответа сервера
-                resolve({
+            const result = await response.json();
+
+            // ✅ Бэкенд возвращает {success: true, data: {...}}
+            if (result.success && result.data) {
+                return {
                     success: true,
-                    data: {
-                        root: mockRoot,
-                        fValue: mockFValue,
-                        iterations: Math.floor(Math.random() * 10) + 3,
-                        error: Math.random() * 0.0001,
-                        method: data.method,
-                        function: data.function
-                    }
-                });
+                    data: result.data
+                };
+            } else {
+                // Обработка ошибки от бэкенда
+                return {
+                    success: false,
+                    error: result.error || 'Неизвестная ошибка сервера'
+                };
+            }
 
-            }, 1000);
-        });
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error; // Пробрасываем ошибку выше для обработки в handleSubmit
+        }
     }
 
     displayResults(data) {
