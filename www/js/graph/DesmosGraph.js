@@ -1,6 +1,3 @@
-/**
- * Класс для управления одним графиком Desmos
- */
 class DesmosGraph {
     constructor(elementId, config = {}) {
         this.elementId = elementId;
@@ -8,18 +5,9 @@ class DesmosGraph {
         this.calculator = null;
         this.expressions = [];
         this.config = {
-            expressions: false,
-            settingsMenu: false,
-            zoomButtons: false,
-            trace: false,
-            showGrid: true,
-            showXAxis: true,
-            showYAxis: true,
-            xAxisNumbers: true,
-            yAxisNumbers: true,
-            lockedViewport: false,
-            allowUndo: false,
-            border: false,
+            expressions: false, settingsMenu: false, zoomButtons: false, trace: false,
+            showGrid: true, showXAxis: true, showYAxis: true, xAxisNumbers: true, yAxisNumbers: true,
+            lockedViewport: false, allowUndo: false, border: false,
             viewport: { xmin: -10, ymin: -10, xmax: 10, ymax: 10 },
             ...config
         };
@@ -27,24 +15,19 @@ class DesmosGraph {
 
     init() {
         return new Promise((resolve, reject) => {
-            if (!this.element) {
-                console.error(`Element "${this.elementId}" not found`);
-                reject('Element not found');
-                return;
-            }
+            if (!this.element) return reject('Element not found');
 
             if (typeof Desmos === 'undefined' || !Desmos.GraphingCalculator) {
-                console.warn('Desmos API not ready, waiting...');
+                let attempts = 0;
                 const checkInterval = setInterval(() => {
                     if (Desmos?.GraphingCalculator) {
                         clearInterval(checkInterval);
                         this._createCalculator(resolve);
+                    } else if (++attempts > 50) {
+                        clearInterval(checkInterval);
+                        reject('Desmos API timeout');
                     }
                 }, 100);
-                setTimeout(() => {
-                    clearInterval(checkInterval);
-                    reject('Desmos API timeout');
-                }, 5000);
             } else {
                 this._createCalculator(resolve);
             }
@@ -57,17 +40,15 @@ class DesmosGraph {
             this.setViewport(this.config.viewport);
             callback();
         } catch (e) {
-            console.error('Failed to create Desmos calculator:', e);
+            reject('Failed to create Desmos calculator');
         }
     }
 
     setViewport(viewport) {
         if (this.calculator) {
             this.calculator.setMathBounds({
-                left: viewport.xmin,
-                right: viewport.xmax,
-                bottom: viewport.ymin,
-                top: viewport.ymax
+                left: viewport.xmin, right: viewport.xmax,
+                bottom: viewport.ymin, top: viewport.ymax
             });
         }
     }
@@ -90,8 +71,6 @@ class DesmosGraph {
 
     destroy() {
         this.clearExpressions();
-        if (this.calculator) {
-            this.calculator.destroy();
-        }
+        if (this.calculator) this.calculator.destroy();
     }
 }
