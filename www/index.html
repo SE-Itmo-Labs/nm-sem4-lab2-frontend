@@ -53,19 +53,21 @@
                 <a name="equation"></a>
                 <h2>Уравнение</h2>
 
-                <div class="graph-selector-container">
-                    <label for="graphSelect"><b>Выберите график для отображения:</b></label>
-                    <select id="graphSelect" class="retro-select">
-                        <option value="full">Полный график f(x) (все корни)</option>
-                        <option value="root1">Корень x₁ (метод хорд) [-9; -4]</option>
-                        <option value="root2">Корень x₂ (метод Ньютона) [-4; 1.5]</option>
-                        <option value="root3">Корень x₃ (метод итерации) [1.5; 5]</option>
-                        <option value="system">Система уравнений</option>
-                    </select>
-                </div>
+                <form>
+                    <div class="graph-selector-container">
+                        <label for="graphSelect"><b>Выберите график для отображения:</b></label>
+                        <select id="graphSelect" class="retro-select">
+                            <option value="g1">f(x) = 0.4x⁴ - (x - 0.1)² + 0.2</option>
+                            <option value="g2">f(x) = e^x - 4x²</option>
+                            <option value="g3">f(x) = sin(x²) + 0.3x</option>
+                            <option value="system">Система уравнений</option>
+                        </select>
+                    </div>
+                </form>
 
                 <div id="graph-description" class="graph-info">
                     <p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>
+<!--                     f(x) = x³ + 4.81x² - 17.37x + 5.38-->
                     <p><b>Корни:</b> x₁ ≈ -7.291, x₂ ≈ 0.345, x₃ ≈ 2.136</p>
                 </div>
 

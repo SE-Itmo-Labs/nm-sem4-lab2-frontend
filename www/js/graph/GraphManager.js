@@ -24,21 +24,9 @@ class GraphManager {
         this.mainGraph.clearExpressions();
 
         switch(graphType) {
-            case 'full':
+            case 'g1':
             case 'var13_full':
                 this._setupFullGraph();
-                break;
-            case 'root1':
-            case 'var13_x1':
-                this._setupRootGraph('x1');
-                break;
-            case 'root2':
-            case 'var13_x2':
-                this._setupRootGraph('x2');
-                break;
-            case 'root3':
-            case 'var13_x3':
-                this._setupRootGraph('x3');
                 break;
             case 'system':
             case 'sys13':
@@ -49,7 +37,7 @@ class GraphManager {
                 this._setupFullGraph();
         }
 
-        this._updateDescription(graphType);
+        // this._updateDescription(graphType);
     }
 
     _setupFullGraph() {
@@ -120,42 +108,42 @@ class GraphManager {
         });
     }
 
-    _updateDescription(graphType) {
-        if (!this.descriptionElement) return;
-
-        const map = {
-            'full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
-            'var13_full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
-            'root1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
-            'var13_x1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
-            'root2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
-            'var13_x2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
-            'root3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
-            'var13_x3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
-            'system': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' },
-            'sys13': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' }
-        };
-
-        const data = map[graphType] || map['full'];
-        let html = `<h3>${data.title}</h3><p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>`;
-
-        if (data.roots) html += `<p><b>Корни:</b> ${data.roots}</p>`;
-        if (data.interval) html += `<p><b>Интервал:</b> ${data.interval}</p><p><b>Результат:</b> ${data.result}</p>`;
-        if (data.sys) html += `<p><b>Система:</b> ${data.sys}</p><p><b>Решение:</b> ${data.sol}</p>`;
-
-        this.descriptionElement.innerHTML = html;
-
-        if (this.captionElement) {
-            const captions = {
-                'full': 'Рис. 1. Полный график функции',
-                'root1': 'Рис. 2. Интервал корня x₁',
-                'root2': 'Рис. 3. Интервал корня x₂',
-                'root3': 'Рис. 4. Интервал корня x₃',
-                'system': 'Рис. 5. Система уравнений'
-            };
-            this.captionElement.textContent = captions[graphType] || captions['full'];
-        }
-    }
+    // _updateDescription(graphType) {
+    //     if (!this.descriptionElement) return;
+    //
+    //     const map = {
+    //         'full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
+    //         'var13_full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
+    //         'root1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
+    //         'var13_x1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
+    //         'root2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
+    //         'var13_x2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
+    //         'root3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
+    //         'var13_x3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
+    //         'system': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' },
+    //         'sys13': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' }
+    //     };
+    //
+    //     const data = map[graphType] || map['full'];
+    //     let html = `<h3>${data.title}</h3><p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>`;
+    //
+    //     if (data.roots) html += `<p><b>Корни:</b> ${data.roots}</p>`;
+    //     if (data.interval) html += `<p><b>Интервал:</b> ${data.interval}</p><p><b>Результат:</b> ${data.result}</p>`;
+    //     if (data.sys) html += `<p><b>Система:</b> ${data.sys}</p><p><b>Решение:</b> ${data.sol}</p>`;
+    //
+    //     this.descriptionElement.innerHTML = html;
+    //
+    //     if (this.captionElement) {
+    //         const captions = {
+    //             'full': 'Рис. 1. Полный график функции',
+    //             'root1': 'Рис. 2. Интервал корня x₁',
+    //             'root2': 'Рис. 3. Интервал корня x₂',
+    //             'root3': 'Рис. 4. Интервал корня x₃',
+    //             'system': 'Рис. 5. Система уравнений'
+    //         };
+    //         this.captionElement.textContent = captions[graphType] || captions['full'];
+    //     }
+    // }
 
     initDropdown(selectId, descriptionId, captionId) {
         this.selectElement = document.getElementById(selectId);
