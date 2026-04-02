@@ -959,9 +959,27 @@ class FormManager {
         return isNaN(num) ? null : num;
     }
 
+    /**
+     * Обработка отправки формы
+     */
     async handleSubmit() {
-        // ... существующий код ...
+        // Очистить старую точку корня перед новым расчетом
+        if (this.graphManager) {
+            this.graphManager.clearRootMarker();
+        }
 
+        // ✅ СОБРАТЬ ДАННЫЕ ИЗ ФОРМЫ
+        const data = this.collectFormData();
+
+        // Валидация
+        if (!this.validateData(data)) {
+            return;
+        }
+
+        // Сохранение
+        this.formData = data;
+
+        // Отправка на API
         try {
             this.showStatus('🔄 Отправка данных на сервер...', 'info');
             const result = await this.sendToAPI(data);

@@ -181,7 +181,7 @@ class FormManager {
             this.graphManager.clearRootMarker();
         }
 
-        // ✅ СОБРАТЬ ДАННЫЕ ИЗ ФОРМЫ
+        // ✅ ВАЖНО: Сначала собираем данные!
         const data = this.collectFormData();
 
         // Валидация
@@ -206,7 +206,7 @@ class FormManager {
         } catch (error) {
             console.error('API Error:', error);
 
-            // 🔥 Обработка сетевых ошибок (CORS, нет интернета, неверный URL)
+            // 🔥 Обработка сетевых ошибок
             if (error.message.includes('Failed to fetch')) {
                 this.showStatus('❌ Не удалось соединиться с сервером. Проверьте интернет или CORS.', 'error');
             } else {
