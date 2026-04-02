@@ -1,0 +1,2131 @@
+=========== PROJECT STRUCTURE ==============
+
+Дерево
+nm-sem4-lab2-frontend/
+├── structure
+│   └── PROJECT_STRUCTURE.txt
+├── www
+│   ├── css
+│   │   ├── animations.css
+│   │   ├── components.css
+│   │   └── main.css
+│   ├── img
+│   │   ├── num.gif
+│   │   ├── pirate.gif
+│   │   └── professor.gif
+│   ├── js
+│   │   ├── config
+│   │   │   ├── functions.config.js
+│   │   │   └── systems.config.js
+│   │   ├── graph
+│   │   │   ├── DesmosGraph.js
+│   │   │   └── GraphManager.js
+│   │   └── app.js
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── LICENSE
+├── README.md
+├── package-lock.json
+├── package.json
+├── project_structure.py
+└── tsconfig.json
+
+
+README.md
+
+# Nuxt Minimal Starter
+
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+## Setup
+
+Make sure to install dependencies:
+
+```bash
+# npm
+npm install
+
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
+```
+
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+
+
+package.json
+
+{
+  "name": "nm-sem4-lab2-frontend",
+  "version": "1.0.0",
+  "description": "Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.",
+  "homepage": "https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend.git"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  },
+  "license": "Apache-2.0",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "prod": "gh-pages -d www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "desmos": "^1.5.4"
+  }
+}
+
+
+
+tsconfig.json
+
+{
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "files": [],
+  "references": [
+    {
+      "path": "./.nuxt/tsconfig.app.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.server.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.shared.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.node.json"
+    }
+  ]
+}
+
+
+
+www/css/animations.css
+
+/* === АНИМАЦИИ === */
+
+/* Мигающий текст */
+.blink {
+    animation: blinker 1s linear infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Бегущая строка */
+.marquee-container {
+    background-color: #000000;
+    color: #00ff00;
+    font-family: var(--retro-mono);
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 2px inset var(--retro-border-dark);
+}
+
+
+www/css/components.css
+
+/* === СТИЛИ КОМПОНЕНТОВ === */
+
+/* Навигация */
+.nav-table {
+    width: 100%;
+    background-color: var(--retro-secondary);
+    margin-bottom: 15px;
+}
+
+.nav-table a {
+    display: block;
+    color: var(--retro-accent);
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+.nav-table a:hover {
+    background-color: var(--retro-primary);
+    color: #ffffff;
+}
+
+/* Таблицы данных */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px outset var(--retro-border-dark);
+    margin-bottom: 20px;
+}
+
+.data-table th, .data-table td {
+    border: 1px inset var(--retro-border-dark);
+    padding: 5px;
+    text-align: center;
+}
+
+.data-table th {
+    background-color: var(--retro-bg);
+    color: #000000;
+}
+
+/* Dropdown */
+.graph-selector-container {
+    background-color: var(--retro-bg);
+    border: 3px outset var(--retro-border-dark);
+    padding: 10px;
+    margin: 15px 0;
+    font-family: var(--retro-font);
+}
+
+.graph-selector-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--retro-primary);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.retro-select {
+    width: 100%;
+    padding: 5px;
+    font-family: var(--retro-font);
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 2px inset var(--retro-border-dark);
+    color: #000000;
+    cursor: pointer;
+}
+
+.retro-select:focus {
+    outline: none;
+    border: 2px outset var(--retro-primary);
+    background-color: #ffffcc;
+}
+
+/* Блок информации */
+.graph-info {
+    background-color: #ffffcc;
+    border: 2px dashed var(--retro-primary);
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.graph-info h3 {
+    margin-top: 0;
+    color: var(--retro-primary);
+    font-size: 16px;
+    border-bottom: 1px solid var(--retro-primary);
+    padding-bottom: 5px;
+}
+
+.graph-info p {
+    margin: 5px 0;
+}
+
+/* Стили для точки корня на графике */
+.root-marker {
+    /* Точка управляется через Desmos API */
+}
+
+/* Анимация появления точки */
+@keyframes rootAppear {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Подпись к корню */
+.root-label {
+    font-family: var(--retro-mono);
+    font-size: 12px;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+
+www/css/main.css
+
+/* === БАЗОВЫЕ СТИЛИ === */
+
+:root {
+    --retro-bg: #c0c0c0;
+    --retro-fg: #000000;
+    --retro-primary: #000080;
+    --retro-secondary: #008080;
+    --retro-accent: #ffff00;
+    --retro-border-light: #ffffff;
+    --retro-border-dark: #808080;
+    --retro-font: "Times New Roman", Times, serif;
+    --retro-mono: "Courier New", monospace;
+}
+
+body {
+    background-color: var(--retro-bg);
+    background-image:
+            linear-gradient(45deg, #ccc 25%, transparent 25%),
+            linear-gradient(-45deg, #ccc 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #ccc 75%),
+            linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+    font-family: var(--retro-font);
+    margin: 0;
+    padding: 10px;
+    color: var(--retro-fg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 5px ridge var(--retro-border-dark);
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    border-bottom: 3px double var(--retro-primary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--retro-primary);
+    font-size: 24px;
+    margin: 5px;
+    text-shadow: 2px 2px var(--retro-accent);
+}
+
+h2 {
+    background-color: var(--retro-primary);
+    color: #ffffff;
+    font-size: 18px;
+    padding: 5px;
+    border: 2px outset var(--retro-border-dark);
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    border-top: 2px solid #000000;
+    padding-top: 10px;
+}
+
+.graph-box {
+    width: 100%;
+    height: 600px;
+    border: 4px inset var(--retro-primary);
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* === ФОРМЫ И ВВОД === */
+
+.retro-form {
+    background-color: var(--retro-bg);
+    border: 3px outset var(--retro-border-dark);
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--retro-primary);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.input-row .retro-input {
+    flex: 1;
+}
+
+.retro-input {
+    width: 100%;
+    padding: 6px 8px;
+    font-family: var(--retro-mono);
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 2px inset var(--retro-border-dark);
+    color: #000000;
+    box-sizing: border-box;
+}
+
+.retro-input:focus {
+    outline: none;
+    border: 2px outset var(--retro-primary);
+    background-color: #ffffcc;
+}
+
+.retro-input:invalid {
+    border-color: #ff0000;
+}
+
+.retro-input.error {
+    border-color: #ff0000;
+    background-color: #ffeeee;
+}
+
+/* Кнопки */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.retro-btn {
+    flex: 1;
+    padding: 10px 15px;
+    font-family: var(--retro-font);
+    font-size: 14px;
+    font-weight: bold;
+    border: 3px outset var(--retro-border-dark);
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.retro-btn:active {
+    border-style: inset;
+    transform: translate(1px, 1px);
+}
+
+.retro-btn-primary {
+    background: linear-gradient(to bottom, #4a90e2, #2c5aa0);
+    color: #ffffff;
+}
+
+.retro-btn-primary:hover {
+    background: linear-gradient(to bottom, #5aa0f2, #3c6ab0);
+}
+
+.retro-btn-secondary {
+    background: linear-gradient(to bottom, #e0e0e0, #a0a0a0);
+    color: #000000;
+}
+
+.retro-btn-secondary:hover {
+    background: linear-gradient(to bottom, #f0f0f0, #b0b0b0);
+}
+
+/* Статус сообщения */
+.status-message {
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px inset var(--retro-border-dark);
+    font-size: 13px;
+    display: none;
+}
+
+.status-message.show {
+    display: block;
+}
+
+.status-message.success {
+    background-color: #ccffcc;
+    border-color: #00aa00;
+    color: #006600;
+}
+
+.status-message.error {
+    background-color: #ffcccc;
+    border-color: #aa0000;
+    color: #660000;
+}
+
+.status-message.info {
+    background-color: #cce5ff;
+    border-color: #0066cc;
+    color: #004080;
+}
+
+/* Панель результатов */
+.results-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border: 3px ridge var(--retro-border-dark);
+}
+
+.results-panel h3 {
+    margin-top: 0;
+    color: var(--retro-primary);
+    font-size: 16px;
+    border-bottom: 2px solid var(--retro-primary);
+    padding-bottom: 5px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    background-color: #ffffff;
+    border: 2px inset var(--retro-border-dark);
+}
+
+.result-label {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 3px;
+}
+
+.result-value {
+    font-family: var(--retro-mono);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--retro-primary);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .input-row {
+        flex-direction: column;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+www/index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ЛР №2 | ВычМат | Вариант 13</title>
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Desmos API -->
+    <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=329897ff1088408ebb1aadda32aa3ae6"></script>
+
+    <!-- Скрипты -->
+    <script src="js/config/functions.config.js"></script>
+    <script src="js/config/systems.config.js"></script>
+    <script src="js/graph/DesmosGraph.js"></script>
+    <script src="js/graph/GraphManager.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <header style="display: flex">
+        <div style="width: 50%">
+            <h1>Лабораторная работа №2</h1>
+            <h3>Численное решение нелинейных уравнений</h3>
+            <p>Выполнил: студент Р3215 Снагин С.М.</p>
+        </div>
+        <div style="width: 50%">
+            <img src="img/pirate.gif" alt="Under Construction" width="200">
+        </div>
+    </header>
+
+    <div class="marquee-container">
+        <marquee scrollamount="5">
+            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ *** /// *** ТУТ ДЕЛАЮТСЯ ОЧЕНЬ ВАЖНЫЕ РАСЧЕТЫ *** ///
+        </marquee>
+    </div>
+
+    <table class="nav-table">
+        <tr>
+            <td><a href="#equation">[ Уравнения ]</a></td>
+            <td><a href="#system">[ Система ]</a></td>
+            <td><a href="#report">[ Отчет ]</a></td>
+        </tr>
+    </table>
+
+    <table width="100%" cellpadding="10">
+        <tr>
+            <!-- ЛЕВАЯ КОЛОНКА: ФОРМА -->
+            <td width="40%" valign="top">
+                <a name="equation"></a>
+                <h2>Входные данные</h2>
+
+                <form id="calcForm" class="retro-form">
+                    <!-- Выбор функции -->
+                    <div class="form-group">
+                        <label for="functionSelect"><b>Выберите функцию:</b></label>
+                        <select id="functionSelect" class="retro-select" required>
+                            <option value="">-- Выберите функцию --</option>
+                            <option value="g1">f(x) = 0.4x⁴ - (x - 0.1)² + 0.2</option>
+                            <option value="g2">f(x) = e^x + 4x² - 22.8x</option>
+                            <option value="g3">f(x) = sin(x²) + 0.3x</option>
+                        </select>
+                    </div>
+
+                    <!-- Выбор метода -->
+                    <div class="form-group">
+                        <label for="methodSelect"><b>Выберите метод:</b></label>
+                        <select id="methodSelect" class="retro-select" required>
+                            <option value="">-- Выберите метод --</option>
+                            <option value="bisection">Метод половинного деления</option>
+                            <option value="secant">Метод секущих</option>
+                            <option value="simple_iteration">Метод простой итерации</option>
+                            <option value="newton">Метод Ньютона</option>
+                        </select>
+                    </div>
+
+                    <!-- Границы интервала [a, b] -->
+                    <div class="form-group">
+                        <label><b>Границы интервала:</b></label>
+                        <div class="input-row">
+                            <input type="text" id="intervalA" placeholder="a (левая)"
+                                   class="retro-input number-input"
+                                   pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                                   title="Введите число (макс. 4 знака после запятой)"
+                                   required>
+                            <input type="text" id="intervalB" placeholder="b (правая)"
+                                   class="retro-input number-input"
+                                   pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                                   title="Введите число (макс. 4 знака после запятой)"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Начальное приближение x0 -->
+                    <div class="form-group">
+                        <label for="x0Input"><b>Начальное приближение x₀:</b></label>
+                        <input type="text" id="x0Input" placeholder="x₀"
+                               class="retro-input number-input"
+                               pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                               title="Введите число (макс. 4 знака после запятой)">
+                    </div>
+
+                    <!-- Начальное приближение y0 (для систем) -->
+                    <div class="form-group" id="y0Group" style="display: none;">
+                        <label for="y0Input"><b>Начальное приближение y₀:</b></label>
+                        <input type="text" id="y0Input" placeholder="y₀"
+                               class="retro-input number-input"
+                               pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                               title="Введите число (макс. 4 знака после запятой)">
+                    </div>
+
+                    <!-- Точность -->
+                    <div class="form-group">
+                        <label for="epsilonInput"><b>Точность (ε):</b></label>
+                        <input type="text" id="epsilonInput" placeholder="ε"
+                               class="retro-input number-input"
+                               value="0.0001"
+                               pattern="[0-9]*\.?[0-9]{0,4}"
+                               title="Введите положительное число"
+                               required>
+                    </div>
+
+                    <!-- Кнопка расчета -->
+                    <div class="form-actions">
+                        <button type="submit" class="retro-btn retro-btn-primary" id="calcBtn">
+                            🔢 ВЫПОЛНИТЬ РАСЧЁТ
+                        </button>
+                        <button type="reset" class="retro-btn retro-btn-secondary" id="resetBtn">
+                            🔄 СБРОСИТЬ
+                        </button>
+                    </div>
+
+                    <!-- Статус -->
+                    <div id="formStatus" class="status-message"></div>
+                </form>
+            </td>
+
+            <!-- ПРАВАЯ КОЛОНКА: ГРАФИК -->
+            <td width="60%" valign="top" align="center">
+                <a name="graphs"></a>
+                <h2>График функции</h2>
+                <div class="graph-box" id="plot-area">
+                    <div id="calculator" style="width: 100%; height: 100%;"></div>
+                </div>
+                <p class="graph-caption" id="graphCaption">Выберите функцию для отображения</p>
+
+                <!-- Результаты вычислений -->
+                <div id="resultsPanel" class="results-panel" style="display: none;">
+                    <h3>Результаты вычислений</h3>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <span class="result-label">Корень x*:</span>
+                            <span class="result-value" id="resultRoot">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">f(x*):</span>
+                            <span class="result-value" id="resultFValue">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Итераций:</span>
+                            <span class="result-value" id="resultIterations">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Погрешность:</span>
+                            <span class="result-value" id="resultError">-</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <footer>
+        <p>© 2024 Кафедра Вычислительной Математики</p>
+        <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
+        <br><br>
+        <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center">
+            <img src="https://88x31.nl/gifs/devOnMintGreen.png">
+            <img src="https://88x31.nl/gifs/firefoxnow.gif">
+            <img src="https://88x31.nl/gifs/neo_now88.gif">
+            <img src="https://88x31.nl/gifs/lifewithoutangels.gif">
+            <img src="img/num.gif">
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
+
+
+www/js/app.js
+
+/**
+ * Точка входа приложения
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 Initializing LabWork App v1.0...');
+
+    const graphManager = new GraphManager();
+    const formManager = new FormManager();
+
+    try {
+        // Инициализация графика
+        await graphManager.createMainGraph('calculator', {
+            viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 10 }
+        });
+        console.log('✅ Graph initialized');
+
+        // Инициализация формы
+        formManager.init(graphManager);
+
+        // Сохраняем для отладки
+        window.graphManager = graphManager;
+        window.formManager = formManager;
+
+    } catch (e) {
+        console.error('❌ Failed to initialize:', e);
+        document.getElementById('plot-area').innerHTML =
+            '<div style="color:red;padding:20px">⚠️ Ошибка загрузки. Проверьте консоль.</div>';
+    }
+});
+
+/**
+ * Менеджер формы: валидация, сбор данных, отправка на API
+ */
+class FormManager {
+    constructor() {
+        this.form = null;
+        this.graphManager = null;
+        this.formData = {
+            function: '',
+            method: '',
+            intervalA: null,
+            intervalB: null,
+            x0: null,
+            y0: null,
+            epsilon: 0.0001
+        };
+    }
+
+    init(graphManager) {
+        this.form = document.getElementById('calcForm');
+        this.graphManager = graphManager;
+
+        if (!this.form) {
+            console.error('Form not found');
+            return;
+        }
+
+        // Привязка событий
+        this.bindEvents();
+
+        // Инициализация выбора функции
+        this.initFunctionSelector();
+    }
+
+    bindEvents() {
+        // Отправка формы
+        this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+        });
+
+        // Сброс формы
+        this.form.addEventListener('reset', () => {
+            setTimeout(() => {
+                this.hideStatus();
+                this.hideResults();
+            }, 100);
+        });
+
+        // Валидация числовых полей в реальном времени
+        const numberInputs = document.querySelectorAll('.number-input');
+        numberInputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                this.validateNumberInput(e.target);
+            });
+
+            input.addEventListener('blur', (e) => {
+                this.normalizeNumberInput(e.target);
+            });
+        });
+    }
+
+    initFunctionSelector() {
+        const funcSelect = document.getElementById('functionSelect');
+        if (!funcSelect) return;
+
+        funcSelect.addEventListener('change', (e) => {
+            const funcId = e.target.value;
+            if (funcId && FUNCTIONS_CONFIG[funcId]) {
+                this.graphManager.renderFunction(FUNCTIONS_CONFIG[funcId]);
+                document.getElementById('graphCaption').textContent =
+                    FUNCTIONS_CONFIG[funcId].name;
+            }
+        });
+    }
+
+    /**
+     * Валидация числового поля
+     */
+    validateNumberInput(input) {
+        let value = input.value;
+
+        // Замена запятой на точку
+        value = value.replace(',', '.');
+
+        // Разрешаем только цифры, точку и минус в начале
+        if (!/^[-+]?[0-9]*\.?[0-9]{0,4}$/.test(value) && value !== '') {
+            input.classList.add('error');
+            return false;
+        }
+
+        input.classList.remove('error');
+        input.value = value;
+        return true;
+    }
+
+    /**
+     * Нормализация числа (округление до 4 знаков)
+     */
+    normalizeNumberInput(input) {
+        let value = input.value.trim();
+        if (!value) return;
+
+        // Замена запятой
+        value = value.replace(',', '.');
+
+        // Парсинг числа
+        const num = parseFloat(value);
+        if (isNaN(num)) {
+            input.classList.add('error');
+            return;
+        }
+
+        // Округление до 4 знаков
+        input.value = num.toFixed(4).replace(/\.?0+$/, '');
+    }
+
+    /**
+     * Сбор данных из формы
+     */
+    collectFormData() {
+        const data = {
+            function: document.getElementById('functionSelect').value,
+            method: document.getElementById('methodSelect').value,
+            intervalA: this.parseNumber(document.getElementById('intervalA').value),
+            intervalB: this.parseNumber(document.getElementById('intervalB').value),
+            x0: this.parseNumber(document.getElementById('x0Input').value),
+            y0: this.parseNumber(document.getElementById('y0Input').value),
+            epsilon: this.parseNumber(document.getElementById('epsilonInput').value) || 0.0001
+        };
+
+        return data;
+    }
+
+    /**
+     * Парсинг числа (запятая -> точка)
+     */
+    parseNumber(value) {
+        if (!value || value.trim() === '') return null;
+        const normalized = value.replace(',', '.');
+        const num = parseFloat(normalized);
+        return isNaN(num) ? null : num;
+    }
+
+    /**
+     * Обработка отправки формы
+     */
+    async handleSubmit() {
+        // Очистить старую точку корня перед новым расчетом
+        if (this.graphManager) {
+            this.graphManager.clearRootMarker();
+        }
+
+        // Сбор данных
+        const data = this.collectFormData();
+
+        // Валидация
+        if (!this.validateData(data)) {
+            return;
+        }
+
+        // Сохранение
+        this.formData = data;
+
+        // Отправка на API
+        try {
+            this.showStatus('🔄 Отправка данных на сервер...', 'info');
+
+            const result = await this.sendToAPI(data);
+
+            if (result.success) {
+                this.showStatus('✅ Расчёт завершён успешно!', 'success');
+                this.displayResults(result.data);
+            } else {
+                this.showStatus(`❌ Ошибка: ${result.error}`, 'error');
+            }
+
+        } catch (error) {
+            console.error('API Error:', error);
+            this.showStatus(`❌ Ошибка соединения: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * Валидация данных
+     */
+    validateData(data) {
+        // Проверка функции
+        if (!data.function) {
+            this.showStatus('⚠️ Выберите функцию', 'error');
+            return false;
+        }
+
+        // Проверка метода
+        if (!data.method) {
+            this.showStatus('⚠️ Выберите метод решения', 'error');
+            return false;
+        }
+
+        // Проверка интервала
+        if (data.intervalA === null || data.intervalB === null) {
+            this.showStatus('⚠️ Введите границы интервала [a, b]', 'error');
+            return false;
+        }
+
+        if (data.intervalA >= data.intervalB) {
+            this.showStatus('⚠️ Левая граница должна быть меньше правой', 'error');
+            return false;
+        }
+
+        // Проверка точности
+        if (data.epsilon <= 0 || data.epsilon > 1) {
+            this.showStatus('⚠️ Точность должна быть в диапазоне (0, 1]', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Отправка данных на API (MOCK)
+     */
+    async sendToAPI(data) {
+        // TODO: Замените на реальный URL вашего API
+        const API_URL = '/api/calculate';
+
+        // Для демонстрации — мок-ответ
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                // Имитация вычисления корня для разных функций
+                let mockRoot, mockFValue;
+
+                switch(data.function) {
+                    case 'g1':
+                        // f(x) = 0.4x⁴ - (x - 0.1)² + 0.2
+                        mockRoot = 0.5;
+                        mockFValue = 0.0001;
+                        break;
+                    case 'g2':
+                        // f(x) = e^x + 4x² - 22.8x
+                        mockRoot = 2.146;
+                        mockFValue = -0.0002;
+                        break;
+                    case 'g3':
+                        // f(x) = sin(x²) + 0.3x
+                        mockRoot = 1.234;
+                        mockFValue = 0.00005;
+                        break;
+                    default:
+                        mockRoot = 1.2345;
+                        mockFValue = 0.0001;
+                }
+
+                // Имитация ответа сервера
+                resolve({
+                    success: true,
+                    data: {
+                        root: mockRoot,
+                        fValue: mockFValue,
+                        iterations: Math.floor(Math.random() * 10) + 3,
+                        error: Math.random() * 0.0001,
+                        method: data.method,
+                        function: data.function
+                    }
+                });
+
+            }, 1000);
+        });
+    }
+
+    displayResults(data) {
+        // ... отображение результатов ...
+
+        if (this.graphManager && data.root !== undefined) {
+            const x = data.root;
+            const y = data.fValue ?? 0;
+
+            console.log('📍 markRoot вызван с:', { x, y });
+            console.log('📊 Calculator ready:', !!this.graphManager.mainGraph?.calculator);
+
+            this.graphManager.markRoot(x, y);
+
+            // Проверка через 500мс: добавилась ли точка?
+            setTimeout(() => {
+                const expressions = this.graphManager.mainGraph?.calculator?.expressions?.list || [];
+                const hasRoot = expressions.some(e => e.id === 'root_point');
+                console.log('🔍 Точка корня в expressions:', hasRoot);
+            }, 500);
+        }
+    }
+    /**
+     * Показать статус
+     */
+    showStatus(message, type = 'info') {
+        const statusEl = document.getElementById('formStatus');
+        if (!statusEl) return;
+
+        statusEl.textContent = message;
+        statusEl.className = `status-message show ${type}`;
+    }
+
+    /**
+     * Скрыть статус
+     */
+    hideStatus() {
+        const statusEl = document.getElementById('formStatus');
+        if (statusEl) {
+            statusEl.className = 'status-message';
+        }
+    }
+
+    /**
+     * Скрыть результаты
+     */
+    hideResults() {
+        const panel = document.getElementById('resultsPanel');
+        if (panel) {
+            panel.style.display = 'none';
+        }
+    }
+}
+
+
+www/js/config/functions.config.js
+
+/**
+ * Конфигурация функций — 3 графика для отображения (без корней)
+ */
+const FUNCTIONS_CONFIG = {
+    'g1': {
+        name: 'f(x) = 0.4x⁴ - (x - 0.1)² + 0.2',
+        latex: '0.4x^4 - (x - 0.1)^2 + 0.2',
+        viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 10 },
+        description: 'Полином 4-й степени'
+    },
+    'g2': {
+        name: 'f(x) = e^x + 4x² - 22.8*x',
+        latex: 'e^x + 4x^2 - 22.8x',
+        viewport: { xmin: -2, ymin: -10, xmax: 4, ymax: 20 },
+        description: 'Экспонента и квадратичная функция'
+    },
+    'g3': {
+        name: 'f(x) = sin(x²) + 0.3x',
+        latex: '\\sin(x^2) + 0.3x',
+        viewport: { xmin: -4, ymin: -5, xmax: 4, ymax: 5 },
+        description: 'Трансцендентная функция'
+    }
+};
+
+
+www/js/config/systems.config.js
+
+/**
+ * Конфигурация систем уравнений
+ */
+const SYSTEMS_CONFIG = {
+    'sys13': {
+        name: 'Система варианта 13',
+        equations: [
+            { latex: 'y = 2 - \\sin(2x)', color: Desmos.Colors?.[0] || '#c74440' },
+            { latex: 'y = 0.7 - \\cos(x - 1)', color: Desmos.Colors?.[1] || '#2d70b3' }
+        ],
+        solution: { x: 1.146, y: -0.289 },
+        viewport: { xmin: -1, ymin: -2, xmax: 3, ymax: 2 },
+        method: 'Простая итерация'
+    }
+};
+
+
+www/js/graph/DesmosGraph.js
+
+/**
+ * Класс для управления одним графиком Desmos
+ */
+class DesmosGraph {
+    constructor(elementId, config = {}) {
+        this.elementId = elementId;
+        this.element = document.getElementById(elementId);
+        this.calculator = null;
+        this.expressions = [];
+        this.config = {
+            expressions: false,
+            settingsMenu: false,
+            zoomButtons: false,
+            trace: false,
+            showGrid: true,
+            showXAxis: true,
+            showYAxis: true,
+            xAxisNumbers: true,
+            yAxisNumbers: true,
+            lockedViewport: false,
+            allowUndo: false,
+            border: false,
+            viewport: { xmin: -10, ymin: -10, xmax: 10, ymax: 10 },
+            ...config
+        };
+    }
+
+    init() {
+        return new Promise((resolve, reject) => {
+            if (!this.element) {
+                console.error(`Element "${this.elementId}" not found`);
+                reject('Element not found');
+                return;
+            }
+
+            if (typeof Desmos === 'undefined' || !Desmos.GraphingCalculator) {
+                console.warn('Desmos API not ready, waiting...');
+                const checkInterval = setInterval(() => {
+                    if (Desmos?.GraphingCalculator) {
+                        clearInterval(checkInterval);
+                        this._createCalculator(resolve);
+                    }
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    reject('Desmos API timeout');
+                }, 5000);
+            } else {
+                this._createCalculator(resolve);
+            }
+        });
+    }
+
+    _createCalculator(callback) {
+        try {
+            this.calculator = Desmos.GraphingCalculator(this.element, this.config);
+            this.setViewport(this.config.viewport);
+            callback();
+        } catch (e) {
+            console.error('Failed to create Desmos calculator:', e);
+        }
+    }
+
+    setViewport(viewport) {
+        if (this.calculator) {
+            this.calculator.setMathBounds({
+                left: viewport.xmin,
+                right: viewport.xmax,
+                bottom: viewport.ymin,
+                top: viewport.ymax
+            });
+        }
+    }
+
+    addExpression(expr) {
+        if (this.calculator) {
+            this.calculator.setExpression(expr);
+            this.expressions.push(expr.id);
+        }
+    }
+
+    clearExpressions() {
+        if (this.calculator) {
+            this.expressions.forEach(id => {
+                try { this.calculator.removeExpression({ id }); } catch(e) {}
+            });
+            this.expressions = [];
+        }
+    }
+
+    destroy() {
+        this.clearExpressions();
+        if (this.calculator) {
+            this.calculator.destroy();
+        }
+    }
+}
+
+
+www/js/graph/GraphManager.js
+
+/**
+ * Менеджер для управления графиками
+ */
+class GraphManager {
+    constructor() {
+        this.mainGraph = null;
+        this.selectElement = null;
+        this.descriptionElement = null;
+        this.captionElement = null;
+        this.rootExpressionIds = []; // Храним ID точек корня
+    }
+
+    async createMainGraph(elementId, config) {
+        this.mainGraph = new DesmosGraph(elementId, config);
+        await this.mainGraph.init();
+        return this.mainGraph;
+    }
+
+    switchToGraph(graphType) {
+        if (!this.mainGraph) {
+            console.error('Main graph not initialized');
+            return;
+        }
+
+        this.mainGraph.clearExpressions();
+        this.rootExpressionIds = []; // Очищаем ID корней
+
+        switch(graphType) {
+            case 'g1':
+            case 'var13_full':
+                this._setupFullGraph();
+                break;
+            case 'system':
+            case 'sys13':
+                this._setupSystemGraph();
+                break;
+            default:
+                console.warn(`Unknown graph type: ${graphType}`);
+                this._setupFullGraph();
+        }
+    }
+
+    _setupFullGraph() {
+        const func = FUNCTIONS_CONFIG['var13'];
+        this.mainGraph.setViewport(func.viewport);
+
+        this.mainGraph.addExpression({
+            id: 'func1',
+            latex: `f(x) = ${func.latex}`,
+            color: '#c74440'
+        });
+        this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
+        this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
+    }
+
+    _setupSystemGraph() {
+        const sys = SYSTEMS_CONFIG['sys13'];
+        this.mainGraph.setViewport(sys.viewport);
+
+        sys.equations.forEach((eq, i) => {
+            this.mainGraph.addExpression({
+                id: `sys_eq${i+1}`,
+                latex: eq.latex,
+                color: eq.color
+            });
+        });
+
+        this.mainGraph.addExpression({
+            id: 'solution',
+            latex: `(${sys.solution.x}, ${sys.solution.y})`,
+            color: '#ff0000',
+            pointSize: Desmos.PointSize?.LARGE || 'large'
+        });
+    }
+
+    /**
+     * Отобразить функцию без корней (чистый график)
+     */
+    renderFunction(funcConfig) {
+        if (!this.mainGraph) {
+            console.error('❌ Graph not initialized');
+            return;
+        }
+
+        // 1. Сохраняем координаты корня, если он есть
+        let savedRoot = null;
+        if (this.rootExpressionIds.includes('root_point') && this.mainGraph.calculator) {
+            const exprs = this.mainGraph.calculator.expressions?.list || [];
+            const rootExpr = exprs.find(e => e.id === 'root_point');
+            if (rootExpr?.latex) {
+                // Парсим координаты из латекса вида "R=(x,y)" или "(x,y)"
+                const match = rootExpr.latex.match(/\(([^,]+),\s*([^)]+)\)/);
+                if (match) {
+                    savedRoot = {
+                        x: parseFloat(match[1]),
+                        y: parseFloat(match[2])
+                    };
+                }
+            }
+        }
+
+        // 2. Очищаем все выражения и сбрасываем трекинг
+        this.mainGraph.clearExpressions();
+        this.rootExpressionIds = [];
+
+        // 3. Устанавливаем viewport из конфига функции
+        this.mainGraph.setViewport(funcConfig.viewport);
+
+        // 4. Добавляем саму функцию
+        this.mainGraph.addExpression({
+            id: 'func_curve',
+            latex: funcConfig.latex,  // ← Важно: без "f(x) =", просто выражение
+            color: '#c74440',
+            hidden: false
+        });
+
+        // 5. Добавляем оси координат
+        this.mainGraph.addExpression({
+            id: 'xaxis',
+            latex: 'y = 0',
+            color: '#000000',
+            lineWidth: 1,
+            hidden: false
+        });
+        this.mainGraph.addExpression({
+            id: 'yaxis',
+            latex: 'x = 0',
+            color: '#000000',
+            lineWidth: 1,
+            hidden: false
+        });
+
+        // 6. Восстанавливаем точку корня, если она была
+        if (savedRoot) {
+            // Небольшая задержка, чтобы график успел отрисоваться
+            setTimeout(() => {
+                this.markRoot(savedRoot.x, savedRoot.y, false); // false = не менять viewport
+            }, 150);
+        }
+
+        console.log('📈 Function rendered:', funcConfig.name);
+    }
+
+    /**
+     * Отметить найденный корень на графике красной точкой
+     * @param {number} x - координата X
+     * @param {number} y - координата Y
+     * @param {boolean} changeViewport - менять ли масштаб (по умолчанию true)
+     */
+    markRoot(x, y, changeViewport = true) {
+        if (!this.mainGraph?.calculator) {
+            console.error('❌ Graph calculator not ready');
+            return;
+        }
+
+        this.clearRootMarker();
+
+        const xRounded = Math.round(x * 10000) / 10000;
+        const yRounded = Math.round(y * 10000) / 10000;
+
+        // Точка корня
+        this.mainGraph.addExpression({
+            id: 'root_point',
+            latex: `(${xRounded},${yRounded})`,
+            color: '#ff0000',
+            pointSize: Desmos.PointSize?.LARGE || 'large',
+            pointStyle: Desmos.PointStyle?.POINT || 'point'
+        });
+        this.rootExpressionIds.push('root_point');
+
+        // Подпись
+        this.mainGraph.addExpression({
+            id: 'root_label',
+            latex: `\\text{(${xRounded.toFixed(4)}; ${yRounded.toFixed(6)})}`,
+            color: '#ff0000'
+        });
+        this.rootExpressionIds.push('root_label');
+
+        // Опциональное центрирование
+        if (changeViewport) {
+            this.mainGraph.calculator.setMathBounds({
+                left: xRounded - 2,
+                right: xRounded + 2,
+                bottom: yRounded - 2,
+                top: yRounded + 2
+            });
+        }
+
+        console.log('✅ Точка корня добавлена:', xRounded, yRounded);
+    }
+
+    /**
+     * Очистить точку корня
+     */
+    clearRootMarker() {
+        if (!this.mainGraph || !this.mainGraph.calculator) {
+            return;
+        }
+
+        // Удаляем все сохраненные ID точек корня
+        this.rootExpressionIds.forEach(id => {
+            try {
+                this.mainGraph.calculator.removeExpression({ id: id });
+            } catch(e) {
+                // Игнорируем ошибки, если выражение не найдено
+            }
+        });
+
+        this.rootExpressionIds = [];
+    }
+
+    initDropdown(selectId, descriptionId, captionId) {
+        this.selectElement = document.getElementById(selectId);
+        this.descriptionElement = document.getElementById(descriptionId);
+        this.captionElement = document.getElementById(captionId);
+
+        if (!this.selectElement) {
+            console.error('Dropdown not found');
+            return;
+        }
+
+        this.selectElement.addEventListener('change', (e) => {
+            this.switchToGraph(e.target.value);
+        });
+
+        this.switchToGraph(this.selectElement.value);
+    }
+}
+
+
+www/script.js
+
+/**
+ * === КОНФИГУРАЦИИ (должны быть вверху!) ===
+ */
+
+/**
+ * Конфигурация функций — Вариант 13 (основной) + дополнительные
+ */
+const FUNCTIONS_CONFIG = {
+    'var13': {
+        name: 'f(x) = x³ + 4.81x² - 17.37x + 5.38 (Вариант 13)',
+        latex: 'x^3 + 4.81x^2 - 17.37x + 5.38',
+        roots: {
+            x1: { value: -7.291, interval: [-9, -4], method: 'Хорд' },
+            x2: { value: 0.345, interval: [-4, 1.5], method: 'Ньютона' },
+            x3: { value: 2.136, interval: [1.5, 5], method: 'Простой итерации' }
+        },
+        viewport: { xmin: -10, ymin: -200, xmax: 6, ymax: 200 }
+    },
+    'func1': {
+        name: 'f(x) = 2x³ + 3.41x² - 23.74x + 2.95',
+        latex: '2x^3 + 3.41x^2 - 23.74x + 2.95',
+        roots: {
+            x1: { value: -4.234, interval: [-5, -3], method: 'Хорд' },
+            x2: { value: 0.125, interval: [0, 1], method: 'Ньютона' },
+            x3: { value: 2.856, interval: [2, 4], method: 'Простой итерации' }
+        },
+        viewport: { xmin: -6, ymin: -50, xmax: 5, ymax: 50 }
+    },
+    'func2': {
+        name: 'f(x) = sin(x) - x/2 + 1',
+        latex: '\\sin(x) - x/2 + 1',
+        roots: {
+            x1: { value: -1.456, interval: [-2, -1], method: 'Хорд' },
+            x2: { value: 2.345, interval: [2, 3], method: 'Ньютона' }
+        },
+        viewport: { xmin: -3, ymin: -3, xmax: 4, ymax: 3 }
+    },
+    'func3': {
+        name: 'f(x) = e^{-x} - x² + 2',
+        latex: 'e^{-x} - x^2 + 2',
+        roots: {
+            x1: { value: -1.123, interval: [-2, 0], method: 'Ньютона' },
+            x2: { value: 1.567, interval: [1, 2], method: 'Простой итерации' }
+        },
+        viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 5 }
+    },
+    'func4': {
+        name: 'f(x) = x³ - 3.125x² - 3.5x + 2.458',
+        latex: 'x^3 - 3.125x^2 - 3.5x + 2.458',
+        roots: {
+            x1: { value: -1.234, interval: [-2, -1], method: 'Хорд' },
+            x2: { value: 0.567, interval: [0, 1], method: 'Ньютона' },
+            x3: { value: 3.792, interval: [3, 4], method: 'Простой итерации' }
+        },
+        viewport: { xmin: -3, ymin: -10, xmax: 5, ymax: 10 }
+    }
+};
+
+/**
+ * Конфигурация систем уравнений
+ */
+const SYSTEMS_CONFIG = {
+    'sys13': {
+        name: 'Система варианта 13',
+        equations: [
+            { latex: 'y = 2 - \\sin(2x)', color: Desmos.Colors?.[0] || '#c74440' },
+            { latex: 'y = 0.7 - \\cos(x - 1)', color: Desmos.Colors?.[1] || '#2d70b3' }
+        ],
+        solution: { x: 1.146, y: -0.289 },
+        viewport: { xmin: -1, ymin: -2, xmax: 3, ymax: 2 },
+        method: 'Простая итерация'
+    }
+};
+
+/**
+ * === КЛАССЫ ===
+ */
+
+class DesmosGraph {
+    constructor(elementId, config = {}) {
+        this.elementId = elementId;
+        this.element = document.getElementById(elementId);
+        this.calculator = null;
+        this.expressions = [];
+        this.config = {
+            expressions: false,
+            settingsMenu: false,
+            zoomButtons: false,
+            trace: false,
+            showGrid: true,
+            showXAxis: true,
+            showYAxis: true,
+            xAxisNumbers: true,
+            yAxisNumbers: true,
+            lockedViewport: false,
+            allowUndo: false,
+            border: false,
+            viewport: { xmin: -10, ymin: -10, xmax: 10, ymax: 10 },
+            ...config
+        };
+    }
+
+    init() {
+        return new Promise((resolve, reject) => {
+            if (!this.element) {
+                console.error(`Element "${this.elementId}" not found`);
+                reject('Element not found');
+                return;
+            }
+
+            // Ждём готовности Desmos API
+            if (typeof Desmos === 'undefined' || !Desmos.GraphingCalculator) {
+                console.warn('Desmos API not ready, waiting...');
+                const checkInterval = setInterval(() => {
+                    if (Desmos?.GraphingCalculator) {
+                        clearInterval(checkInterval);
+                        this._createCalculator(resolve);
+                    }
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    reject('Desmos API timeout');
+                }, 5000);
+            } else {
+                this._createCalculator(resolve);
+            }
+        });
+    }
+
+    _createCalculator(callback) {
+        try {
+            this.calculator = Desmos.GraphingCalculator(this.element, this.config);
+            this.setViewport(this.config.viewport);
+            callback();
+        } catch (e) {
+            console.error('Failed to create Desmos calculator:', e);
+        }
+    }
+
+    setViewport(viewport) {
+        if (this.calculator) {
+            this.calculator.setMathBounds({
+                left: viewport.xmin,
+                right: viewport.xmax,
+                bottom: viewport.ymin,
+                top: viewport.ymax
+            });
+        }
+    }
+
+    addExpression(expr) {
+        if (this.calculator) {
+            this.calculator.setExpression(expr);
+            this.expressions.push(expr.id);
+        }
+    }
+
+    clearExpressions() {
+        if (this.calculator) {
+            this.expressions.forEach(id => {
+                try { this.calculator.removeExpression({ id }); } catch(e) {}
+            });
+            this.expressions = [];
+        }
+    }
+
+    destroy() {
+        this.clearExpressions();
+        if (this.calculator) {
+            this.calculator.destroy();
+        }
+    }
+}
+
+class GraphManager {
+    constructor() {
+        this.mainGraph = null;
+        this.selectElement = null;
+        this.descriptionElement = null;
+        this.captionElement = null;
+    }
+
+    async createMainGraph(elementId, config) {
+        this.mainGraph = new DesmosGraph(elementId, config);
+        await this.mainGraph.init();
+        return this.mainGraph;
+    }
+
+    switchToGraph(graphType) {
+        if (!this.mainGraph) {
+            console.error('Main graph not initialized');
+            return;
+        }
+
+        this.mainGraph.clearExpressions();
+
+        switch(graphType) {
+            case 'full':
+            case 'var13_full':
+                this._setupFullGraph();
+                break;
+            case 'root1':
+            case 'var13_x1':
+                this._setupRootGraph('x1');
+                break;
+            case 'root2':
+            case 'var13_x2':
+                this._setupRootGraph('x2');
+                break;
+            case 'root3':
+            case 'var13_x3':
+                this._setupRootGraph('x3');
+                break;
+            case 'system':
+            case 'sys13':
+                this._setupSystemGraph();
+                break;
+            default:
+                console.warn(`Unknown graph type: ${graphType}`);
+                this._setupFullGraph(); // fallback
+        }
+
+        this._updateDescription(graphType);
+    }
+
+    _setupFullGraph() {
+        const func = FUNCTIONS_CONFIG['var13'];
+        this.mainGraph.setViewport(func.viewport);
+
+        this.mainGraph.addExpression({
+            id: 'func1',
+            latex: `f(x) = ${func.latex}`,
+            color: '#c74440'
+        });
+        this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
+        this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
+
+        Object.entries(func.roots).forEach(([name, data], i) => {
+            this.mainGraph.addExpression({
+                id: name,
+                latex: `x = ${data.value}`,
+                color: ['#2d70b3', '#388c46', '#6042a6'][i] || '#c74440',
+                lineStyle: Desmos.LineStyle?.DASHED || 'dashed'
+            });
+        });
+    }
+
+    _setupRootGraph(rootName) {
+        const func = FUNCTIONS_CONFIG['var13'];
+        const root = func.roots[rootName];
+        if (!root) return;
+
+        const [a, b] = root.interval;
+        const padding = (b - a) * 0.3;
+        this.mainGraph.setViewport({
+            xmin: a - padding, ymin: -50, xmax: b + padding, ymax: 50
+        });
+
+        this.mainGraph.addExpression({
+            id: 'func1',
+            latex: `f(x) = ${func.latex}`,
+            color: '#c74440'
+        });
+        this.mainGraph.addExpression({ id: 'int_a', latex: `x = ${a}`, color: '#ff0000', lineStyle: 'dotted' });
+        this.mainGraph.addExpression({ id: 'int_b', latex: `x = ${b}`, color: '#ff0000', lineStyle: 'dotted' });
+        this.mainGraph.addExpression({
+            id: 'root',
+            latex: `x = ${root.value}`,
+            color: '#2d70b3',
+            lineStyle: Desmos.LineStyle?.DASHED || 'dashed'
+        });
+    }
+
+    _setupSystemGraph() {
+        const sys = SYSTEMS_CONFIG['sys13'];
+        this.mainGraph.setViewport(sys.viewport);
+
+        sys.equations.forEach((eq, i) => {
+            this.mainGraph.addExpression({
+                id: `sys_eq${i+1}`,
+                latex: eq.latex,
+                color: eq.color
+            });
+        });
+
+        this.mainGraph.addExpression({
+            id: 'solution',
+            latex: `(${sys.solution.x}, ${sys.solution.y})`,
+            color: '#ff0000',
+            pointSize: Desmos.PointSize?.LARGE || 'large'
+        });
+    }
+
+    _updateDescription(graphType) {
+        if (!this.descriptionElement) return;
+
+        const map = {
+            'full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
+            'var13_full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
+            'root1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
+            'var13_x1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
+            'root2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
+            'var13_x2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
+            'root3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
+            'var13_x3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
+            'system': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' },
+            'sys13': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' }
+        };
+
+        const data = map[graphType] || map['full'];
+        let html = `<h3>${data.title}</h3><p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>`;
+
+        if (data.roots) html += `<p><b>Корни:</b> ${data.roots}</p>`;
+        if (data.interval) html += `<p><b>Интервал:</b> ${data.interval}</p><p><b>Результат:</b> ${data.result}</p>`;
+        if (data.sys) html += `<p><b>Система:</b> ${data.sys}</p><p><b>Решение:</b> ${data.sol}</p>`;
+
+        this.descriptionElement.innerHTML = html;
+
+        if (this.captionElement) {
+            const captions = {
+                'full': 'Рис. 1. Полный график функции',
+                'root1': 'Рис. 2. Интервал корня x₁',
+                'root2': 'Рис. 3. Интервал корня x₂',
+                'root3': 'Рис. 4. Интервал корня x₃',
+                'system': 'Рис. 5. Система уравнений'
+            };
+            this.captionElement.textContent = captions[graphType] || captions['full'];
+        }
+    }
+
+    initDropdown(selectId, descriptionId, captionId) {
+        this.selectElement = document.getElementById(selectId);
+        this.descriptionElement = document.getElementById(descriptionId);
+        this.captionElement = document.getElementById(captionId);
+
+        if (!this.selectElement) {
+            console.error('Dropdown not found');
+            return;
+        }
+
+        this.selectElement.addEventListener('change', (e) => {
+            this.switchToGraph(e.target.value);
+        });
+
+        // Инициализируем с текущим значением
+        this.switchToGraph(this.selectElement.value);
+    }
+}
+
+/**
+ * === ИНИЦИАЛИЗАЦИЯ ===
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('📊 Initializing graphs...');
+
+    const graphManager = new GraphManager();
+
+    try {
+        await graphManager.createMainGraph('calculator', {
+            viewport: { xmin: -10, ymin: -200, xmax: 6, ymax: 200 }
+        });
+        console.log('✅ Graph initialized');
+
+        graphManager.initDropdown('graphSelect', 'graph-description', 'graph-caption');
+        window.graphManager = graphManager; // для отладки
+    } catch (e) {
+        console.error('❌ Failed to initialize:', e);
+        document.getElementById('plot-area').innerHTML =
+            '<div style="color:red;padding:20px">⚠️ Ошибка загрузки графика. Проверьте консоль.</div>';
+    }
+});
+
+
+www/style.css
+
+/* Стили эпохи Web 1.0 */
+body {
+    background-color: #c0c0c0; /* Классический серый фон */
+    font-family: "Times New Roman", Times, serif;
+    margin: 0;
+    padding: 10px;
+    /* Имитация текстуры */
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+}
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 5px ridge #808080;
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    border-bottom: 3px double #000080;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #000080;
+    font-size: 24px;
+    margin: 5px;
+    text-shadow: 2px 2px #ffff00;
+}
+
+h2 {
+    background-color: #000080;
+    color: #ffffff;
+    font-size: 18px;
+    padding: 5px;
+    border: 2px outset #808080;
+}
+
+/* Навигация как в старину */
+.nav-table {
+    width: 100%;
+    background-color: #008080;
+    margin-bottom: 15px;
+}
+
+.nav-table a {
+    display: block;
+    color: #ffff00;
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+.nav-table a:hover {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+/* Таблицы с данными */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px outset #808080;
+    margin-bottom: 20px;
+}
+
+.data-table th, .data-table td {
+    border: 1px inset #808080;
+    padding: 5px;
+    text-align: center;
+}
+
+.data-table th {
+    background-color: #c0c0c0;
+    color: #000000;
+}
+
+/* Блок для графика */
+.graph-box {
+    width: 100%;
+    height: 400px;
+    border: 4px inset #000080;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.graph-placeholder {
+    color: #ff0000;
+    font-weight: bold;
+    border: 2px dashed #ff0000;
+    padding: 20px;
+    background: #ffffcc;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    border-top: 2px solid #000000;
+    padding-top: 10px;
+}
+
+.counter {
+    background-color: #000000;
+    color: #00ff00;
+    font-family: "Courier New", monospace;
+    padding: 2px 10px;
+    border: 2px inset #808080;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+.marquee-container {
+    background-color: #000000;
+    color: #00ff00;
+    font-family: "Courier New", monospace;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 2px inset #808080;
+}
+
+.graph-box {
+    width: 100%;
+    height: 600px;  /* Увеличили высоту с 400px до 600px */
+    border: 4px inset #000080;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;  /* Скрываем всё что выходит за границы */
+}
+
+.graph-selector-container {
+    background-color: #c0c0c0;
+    border: 3px outset #808080;
+    padding: 10px;
+    margin: 15px 0;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.graph-selector-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #000080;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.retro-select {
+    width: 100%;
+    padding: 5px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 2px inset #808080;
+    color: #000000;
+    cursor: pointer;
+}
+
+.retro-select:focus {
+    outline: none;
+    border: 2px outset #000080;
+    background-color: #ffffcc;
+}
+
+.retro-select option {
+    padding: 5px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.retro-select option:hover {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+/* Стили для описания графика */
+.graph-info {
+    background-color: #ffffcc;
+    border: 2px dashed #000080;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.graph-info h3 {
+    margin-top: 0;
+    color: #000080;
+    font-size: 16px;
+    border-bottom: 1px solid #000080;
+    padding-bottom: 5px;
+}
+
+.graph-info p {
+    margin: 5px 0;
+}
+
+/* Адаптация graph-box */
+.graph-box {
+    width: 100%;
+    height: 600px;
+    border: 4px inset #000080;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+=========== PROJECT STRUCTURE ==============

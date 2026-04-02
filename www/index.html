@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ЛР №2 | ВычМат | Вариант 13</title>
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Desmos API -->
+    <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=329897ff1088408ebb1aadda32aa3ae6"></script>
+
+    <!-- Скрипты -->
+    <script src="js/config/functions.config.js"></script>
+    <script src="js/config/systems.config.js"></script>
+    <script src="js/graph/DesmosGraph.js"></script>
+    <script src="js/graph/GraphManager.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <header style="display: flex">
+        <div style="width: 50%">
+            <h1>Лабораторная работа №2</h1>
+            <h3>Численное решение нелинейных уравнений</h3>
+            <p>Выполнил: студент Р3215 Снагин С.М.</p>
+        </div>
+        <div style="width: 50%">
+            <img src="img/pirate.gif" alt="Under Construction" width="200">
+        </div>
+    </header>
+
+    <div class="marquee-container">
+        <marquee scrollamount="5">
+            *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ *** /// *** ТУТ ДЕЛАЮТСЯ ОЧЕНЬ ВАЖНЫЕ РАСЧЕТЫ *** ///
+        </marquee>
+    </div>
+
+    <table class="nav-table">
+        <tr>
+            <td><a href="#equation">[ Уравнения ]</a></td>
+            <td><a href="#system">[ Система ]</a></td>
+            <td><a href="#report">[ Отчет ]</a></td>
+        </tr>
+    </table>
+
+    <table width="100%" cellpadding="10">
+        <tr>
+            <!-- ЛЕВАЯ КОЛОНКА: ФОРМА -->
+            <td width="40%" valign="top">
+                <a name="equation"></a>
+                <h2>Входные данные</h2>
+
+                <form id="calcForm" class="retro-form">
+                    <!-- Выбор функции -->
+                    <div class="form-group">
+                        <label for="functionSelect"><b>Выберите функцию:</b></label>
+                        <select id="functionSelect" class="retro-select" required>
+                            <option value="">-- Выберите функцию --</option>
+                            <option value="g1">f(x) = 0.4x⁴ - (x - 0.1)² + 0.2</option>
+                            <option value="g2">f(x) = e^x + 4x² - 22.8x</option>
+                            <option value="g3">f(x) = sin(x²) + 0.3x</option>
+                        </select>
+                    </div>
+
+                    <!-- Выбор метода -->
+                    <div class="form-group">
+                        <label for="methodSelect"><b>Выберите метод:</b></label>
+                        <select id="methodSelect" class="retro-select" required>
+                            <option value="">-- Выберите метод --</option>
+                            <option value="bisection">Метод половинного деления</option>
+                            <option value="secant">Метод секущих</option>
+                            <option value="simple_iteration">Метод простой итерации</option>
+                            <option value="newton">Метод Ньютона</option>
+                        </select>
+                    </div>
+
+                    <!-- Границы интервала [a, b] -->
+                    <div class="form-group">
+                        <label><b>Границы интервала:</b></label>
+                        <div class="input-row">
+                            <input type="text" id="intervalA" placeholder="a (левая)"
+                                   class="retro-input number-input"
+                                   pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                                   title="Введите число (макс. 4 знака после запятой)"
+                                   required>
+                            <input type="text" id="intervalB" placeholder="b (правая)"
+                                   class="retro-input number-input"
+                                   pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                                   title="Введите число (макс. 4 знака после запятой)"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- Начальное приближение x0 -->
+                    <div class="form-group">
+                        <label for="x0Input"><b>Начальное приближение x₀:</b></label>
+                        <input type="text" id="x0Input" placeholder="x₀"
+                               class="retro-input number-input"
+                               pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                               title="Введите число (макс. 4 знака после запятой)">
+                    </div>
+
+                    <!-- Начальное приближение y0 (для систем) -->
+                    <div class="form-group" id="y0Group" style="display: none;">
+                        <label for="y0Input"><b>Начальное приближение y₀:</b></label>
+                        <input type="text" id="y0Input" placeholder="y₀"
+                               class="retro-input number-input"
+                               pattern="[-+]?[0-9]*\.?[0-9]{0,4}"
+                               title="Введите число (макс. 4 знака после запятой)">
+                    </div>
+
+                    <!-- Точность -->
+                    <div class="form-group">
+                        <label for="epsilonInput"><b>Точность (ε):</b></label>
+                        <input type="text" id="epsilonInput" placeholder="ε"
+                               class="retro-input number-input"
+                               value="0.0001"
+                               pattern="[0-9]*\.?[0-9]{0,4}"
+                               title="Введите положительное число"
+                               required>
+                    </div>
+
+                    <!-- Кнопка расчета -->
+                    <div class="form-actions">
+                        <button type="submit" class="retro-btn retro-btn-primary" id="calcBtn">
+                            🔢 ВЫПОЛНИТЬ РАСЧЁТ
+                        </button>
+                        <button type="reset" class="retro-btn retro-btn-secondary" id="resetBtn">
+                            🔄 СБРОСИТЬ
+                        </button>
+                    </div>
+
+                    <!-- Статус -->
+                    <div id="formStatus" class="status-message"></div>
+                </form>
+            </td>
+
+            <!-- ПРАВАЯ КОЛОНКА: ГРАФИК -->
+            <td width="60%" valign="top" align="center">
+                <a name="graphs"></a>
+                <h2>График функции</h2>
+                <div class="graph-box" id="plot-area">
+                    <div id="calculator" style="width: 100%; height: 100%;"></div>
+                </div>
+                <p class="graph-caption" id="graphCaption">Выберите функцию для отображения</p>
+
+                <!-- Результаты вычислений -->
+                <div id="resultsPanel" class="results-panel" style="display: none;">
+                    <h3>Результаты вычислений</h3>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <span class="result-label">Корень x*:</span>
+                            <span class="result-value" id="resultRoot">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">f(x*):</span>
+                            <span class="result-value" id="resultFValue">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Итераций:</span>
+                            <span class="result-value" id="resultIterations">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Погрешность:</span>
+                            <span class="result-value" id="resultError">-</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <footer>
+        <p>© 2024 Кафедра Вычислительной Математики</p>
+        <p>Лучше всего смотреть в Netscape Navigator 4.0</p>
+        <br><br>
+        <a href="mailto:s_lstoo@bk.ru">Написать автору</a>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center">
+            <img src="https://88x31.nl/gifs/devOnMintGreen.png">
+            <img src="https://88x31.nl/gifs/firefoxnow.gif">
+            <img src="https://88x31.nl/gifs/neo_now88.gif">
+            <img src="https://88x31.nl/gifs/lifewithoutangels.gif">
+            <img src="img/num.gif">
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>

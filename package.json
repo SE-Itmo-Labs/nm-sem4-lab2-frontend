@@ -1,22 +1,27 @@
 {
   "name": "nm-sem4-lab2-frontend",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "deploy": "gh-pages -d dist",
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "tyap-lyap-i-v-prod": "nuxt generate & gh-pages -d dist"
+  "version": "1.0.0",
+  "description": "Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.",
+  "homepage": "https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend/issues"
   },
-  "dependencies": {
-    "nuxt": "^4.4.2",
-    "vue": "^3.5.30",
-    "vue-router": "^5.0.3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SE-Itmo-Labs/nm-sem4-lab2-frontend.git"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
+  },
+  "license": "Apache-2.0",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "prod": "gh-pages -d www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "desmos": "^1.5.4"
   }
 }
