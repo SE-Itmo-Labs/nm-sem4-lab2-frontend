@@ -5,10 +5,22 @@ nm-sem4-lab2-frontend/
 ├── structure
 │   └── PROJECT_STRUCTURE.txt
 ├── www
+│   ├── css
+│   │   ├── animations.css
+│   │   ├── components.css
+│   │   └── main.css
 │   ├── img
 │   │   ├── num.gif
 │   │   ├── pirate.gif
 │   │   └── professor.gif
+│   ├── js
+│   │   ├── config
+│   │   │   ├── functions.config.js
+│   │   │   └── systems.config.js
+│   │   ├── graph
+│   │   │   ├── DesmosGraph.js
+│   │   │   └── GraphManager.js
+│   │   └── app.js
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
@@ -155,18 +167,236 @@ tsconfig.json
 
 
 
+www/css/animations.css
+
+/* === АНИМАЦИИ === */
+
+/* Мигающий текст */
+.blink {
+    animation: blinker 1s linear infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Бегущая строка */
+.marquee-container {
+    background-color: #000000;
+    color: #00ff00;
+    font-family: var(--retro-mono);
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 2px inset var(--retro-border-dark);
+}
+
+
+www/css/components.css
+
+/* === СТИЛИ КОМПОНЕНТОВ === */
+
+/* Навигация */
+.nav-table {
+    width: 100%;
+    background-color: var(--retro-secondary);
+    margin-bottom: 15px;
+}
+
+.nav-table a {
+    display: block;
+    color: var(--retro-accent);
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+.nav-table a:hover {
+    background-color: var(--retro-primary);
+    color: #ffffff;
+}
+
+/* Таблицы данных */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px outset var(--retro-border-dark);
+    margin-bottom: 20px;
+}
+
+.data-table th, .data-table td {
+    border: 1px inset var(--retro-border-dark);
+    padding: 5px;
+    text-align: center;
+}
+
+.data-table th {
+    background-color: var(--retro-bg);
+    color: #000000;
+}
+
+/* Dropdown */
+.graph-selector-container {
+    background-color: var(--retro-bg);
+    border: 3px outset var(--retro-border-dark);
+    padding: 10px;
+    margin: 15px 0;
+    font-family: var(--retro-font);
+}
+
+.graph-selector-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--retro-primary);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.retro-select {
+    width: 100%;
+    padding: 5px;
+    font-family: var(--retro-font);
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 2px inset var(--retro-border-dark);
+    color: #000000;
+    cursor: pointer;
+}
+
+.retro-select:focus {
+    outline: none;
+    border: 2px outset var(--retro-primary);
+    background-color: #ffffcc;
+}
+
+/* Блок информации */
+.graph-info {
+    background-color: #ffffcc;
+    border: 2px dashed var(--retro-primary);
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.graph-info h3 {
+    margin-top: 0;
+    color: var(--retro-primary);
+    font-size: 16px;
+    border-bottom: 1px solid var(--retro-primary);
+    padding-bottom: 5px;
+}
+
+.graph-info p {
+    margin: 5px 0;
+}
+
+
+www/css/main.css
+
+/* === БАЗОВЫЕ СТИЛИ === */
+
+:root {
+    --retro-bg: #c0c0c0;
+    --retro-fg: #000000;
+    --retro-primary: #000080;
+    --retro-secondary: #008080;
+    --retro-accent: #ffff00;
+    --retro-border-light: #ffffff;
+    --retro-border-dark: #808080;
+    --retro-font: "Times New Roman", Times, serif;
+    --retro-mono: "Courier New", monospace;
+}
+
+body {
+    background-color: var(--retro-bg);
+    background-image:
+            linear-gradient(45deg, #ccc 25%, transparent 25%),
+            linear-gradient(-45deg, #ccc 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #ccc 75%),
+            linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+    font-family: var(--retro-font);
+    margin: 0;
+    padding: 10px;
+    color: var(--retro-fg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 5px ridge var(--retro-border-dark);
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    border-bottom: 3px double var(--retro-primary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--retro-primary);
+    font-size: 24px;
+    margin: 5px;
+    text-shadow: 2px 2px var(--retro-accent);
+}
+
+h2 {
+    background-color: var(--retro-primary);
+    color: #ffffff;
+    font-size: 18px;
+    padding: 5px;
+    border: 2px outset var(--retro-border-dark);
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    border-top: 2px solid #000000;
+    padding-top: 10px;
+}
+
+.graph-box {
+    width: 100%;
+    height: 600px;
+    border: 4px inset var(--retro-primary);
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+
 www/index.html
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>ЛР №2 | ВычМат | Вариант 16</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ЛР №2 | ВычМат | Вариант 13</title>
 
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Desmos API -->
     <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=329897ff1088408ebb1aadda32aa3ae6"></script>
 
-    <script src="script.js"></script>
+    <!-- Скрипты (строго по порядку!) -->
+    <script src="js/config/functions.config.js"></script>
+    <script src="js/config/systems.config.js"></script>
+    <script src="js/graph/DesmosGraph.js"></script>
+    <script src="js/graph/GraphManager.js"></script>
+    <script src="js/app.js"></script>
 </head>
 <body>
 
@@ -182,14 +412,12 @@ www/index.html
         </div>
     </header>
 
-    <!-- Бегущая строка для атмосферы -->
     <div class="marquee-container">
         <marquee scrollamount="5">
             *** ДОБРО ПОЖАЛОВАТЬ НА СТРАНИЦУ ЛАБОРАТОРНОЙ РАБОТЫ *** /// *** ТУТ ДЕЛАЮТСЯ ОЧЕНЬ ВАЖНЫЕ РАСЧЕТЫ *** ///
         </marquee>
     </div>
 
-    <!-- Навигация таблицей -->
     <table class="nav-table">
         <tr>
             <td><a href="#equation">[ Уравнения ]</a></td>
@@ -198,28 +426,27 @@ www/index.html
         </tr>
     </table>
 
-    <!-- Основной контент -->
     <table width="100%" cellpadding="10">
         <tr>
-            <!-- Левая колонка: Текст -->
             <td width="60%" valign="top">
                 <a name="equation"></a>
                 <h2>Уравнение</h2>
 
-                <!-- Dropdown для выбора графика -->
-                <div class="graph-selector-container">
-                    <label for="graphSelect"><b>Выберите график для отображения:</b></label>
-                    <select id="graphSelect" class="retro-select">
-                        <option value="full">Полный график f(x) (все корни)</option>
-                        <option value="root1">Корень x₁ (метод хорд) [-9; -4]</option>
-                        <option value="root2">Корень x₂ (метод Ньютона) [-4; 1.5]</option>
-                        <option value="root3">Корень x₃ (метод итерации) [1.5; 5]</option>
-                        <option value="system">Система уравнений</option>
-                    </select>
-                </div>
+                <form>
+                    <div class="graph-selector-container">
+                        <label for="graphSelect"><b>Выберите график для отображения:</b></label>
+                        <select id="graphSelect" class="retro-select">
+                            <option value="g1">f(x) = 0.4x⁴ - (x - 0.1)² + 0.2</option>
+                            <option value="g2">f(x) = e^x - 4x²</option>
+                            <option value="g3">f(x) = sin(x²) + 0.3x</option>
+                            <option value="system">Система уравнений</option>
+                        </select>
+                    </div>
+                </form>
 
                 <div id="graph-description" class="graph-info">
                     <p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>
+<!--                     f(x) = x³ + 4.81x² - 17.37x + 5.38-->
                     <p><b>Корни:</b> x₁ ≈ -7.291, x₂ ≈ 0.345, x₃ ≈ 2.136</p>
                 </div>
 
@@ -229,7 +456,6 @@ www/index.html
                 <p class="blink">!!! ВНИМАНИЕ: ИДЕТ ВЫЧИСЛЕНИЕ !!!</p>
             </td>
 
-            <!-- Правая колонка: Графики -->
             <td width="40%" valign="top" align="center">
                 <a name="graphs"></a>
                 <h2>Графики</h2>
@@ -258,6 +484,377 @@ www/index.html
 
 </body>
 </html>
+
+
+www/js/app.js
+
+/**
+ * Точка входа приложения
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('📊 Initializing graphs...');
+
+    const graphManager = new GraphManager();
+
+    try {
+        await graphManager.createMainGraph('calculator', {
+            viewport: { xmin: -10, ymin: -200, xmax: 6, ymax: 200 }
+        });
+        console.log('✅ Graph initialized');
+
+        graphManager.initDropdown('graphSelect', 'graph-description', 'graph-caption');
+        window.graphManager = graphManager;
+    } catch (e) {
+        console.error('❌ Failed to initialize:', e);
+        document.getElementById('plot-area').innerHTML =
+            '<div style="color:red;padding:20px">⚠️ Ошибка загрузки графика. Проверьте консоль.</div>';
+    }
+});
+
+
+www/js/config/functions.config.js
+
+/**
+ * Конфигурация функций — Вариант 13 + дополнительные
+ */
+const FUNCTIONS_CONFIG = {
+    'var13': {
+        name: 'f(x) = x³ + 4.81x² - 17.37x + 5.38 (Вариант 13)',
+        latex: 'x^4 + 4.81x^2 - 17.37x + 5.38',
+        roots: {
+            x1: { value: -7.291, y_value: 1, interval: [-9, -4], method: 'Хорд' },
+            x2: { value: 0.345, y_value: 1, interval: [-4, 1.5], method: 'Ньютона' },
+            x3: { value: 2.136, y_value: 1, interval: [1.5, 5], method: 'Простой итерации' }
+        },
+        viewport: { xmin: -10, ymin: -200, xmax: 6, ymax: 200 }
+    },
+    // 'func1': {
+    //     name: 'f(x) = 2x³ + 3.41x² - 23.74x + 2.95',
+    //     latex: '2x^3 + 3.41x^2 - 23.74x + 2.95',
+    //     roots: {
+    //         x1: { value: -4.234, interval: [-5, -3], method: 'Хорд' },
+    //         x2: { value: 0.125, interval: [0, 1], method: 'Ньютона' },
+    //         x3: { value: 2.856, interval: [2, 4], method: 'Простой итерации' }
+    //     },
+    //     viewport: { xmin: -6, ymin: -50, xmax: 5, ymax: 50 }
+    // },
+    // 'func2': {
+    //     name: 'f(x) = sin(x) - x/2 + 1',
+    //     latex: '\\sin(x) - x/2 + 1',
+    //     roots: {
+    //         x1: { value: -1.456, interval: [-2, -1], method: 'Хорд' },
+    //         x2: { value: 2.345, interval: [2, 3], method: 'Ньютона' }
+    //     },
+    //     viewport: { xmin: -3, ymin: -3, xmax: 4, ymax: 3 }
+    // },
+    // 'func3': {
+    //     name: 'f(x) = e^{-x} - x² + 2',
+    //     latex: 'e^{-x} - x^2 + 2',
+    //     roots: {
+    //         x1: { value: -1.123, interval: [-2, 0], method: 'Ньютона' },
+    //         x2: { value: 1.567, interval: [1, 2], method: 'Простой итерации' }
+    //     },
+    //     viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 5 }
+    // },
+    // 'func4': {
+    //     name: 'f(x) = x³ - 3.125x² - 3.5x + 2.458',
+    //     latex: 'x^3 - 3.125x^2 - 3.5x + 2.458',
+    //     roots: {
+    //         x1: { value: -1.234, interval: [-2, -1], method: 'Хорд' },
+    //         x2: { value: 0.567, interval: [0, 1], method: 'Ньютона' },
+    //         x3: { value: 3.792, interval: [3, 4], method: 'Простой итерации' }
+    //     },
+    //     viewport: { xmin: -3, ymin: -10, xmax: 5, ymax: 10 }
+    // }
+};
+
+
+www/js/config/systems.config.js
+
+/**
+ * Конфигурация систем уравнений
+ */
+const SYSTEMS_CONFIG = {
+    'sys13': {
+        name: 'Система варианта 13',
+        equations: [
+            { latex: 'y = 2 - \\sin(2x)', color: Desmos.Colors?.[0] || '#c74440' },
+            { latex: 'y = 0.7 - \\cos(x - 1)', color: Desmos.Colors?.[1] || '#2d70b3' }
+        ],
+        solution: { x: 1.146, y: -0.289 },
+        viewport: { xmin: -1, ymin: -2, xmax: 3, ymax: 2 },
+        method: 'Простая итерация'
+    }
+};
+
+
+www/js/graph/DesmosGraph.js
+
+/**
+ * Класс для управления одним графиком Desmos
+ */
+class DesmosGraph {
+    constructor(elementId, config = {}) {
+        this.elementId = elementId;
+        this.element = document.getElementById(elementId);
+        this.calculator = null;
+        this.expressions = [];
+        this.config = {
+            expressions: false,
+            settingsMenu: false,
+            zoomButtons: false,
+            trace: false,
+            showGrid: true,
+            showXAxis: true,
+            showYAxis: true,
+            xAxisNumbers: true,
+            yAxisNumbers: true,
+            lockedViewport: false,
+            allowUndo: false,
+            border: false,
+            viewport: { xmin: -10, ymin: -10, xmax: 10, ymax: 10 },
+            ...config
+        };
+    }
+
+    init() {
+        return new Promise((resolve, reject) => {
+            if (!this.element) {
+                console.error(`Element "${this.elementId}" not found`);
+                reject('Element not found');
+                return;
+            }
+
+            if (typeof Desmos === 'undefined' || !Desmos.GraphingCalculator) {
+                console.warn('Desmos API not ready, waiting...');
+                const checkInterval = setInterval(() => {
+                    if (Desmos?.GraphingCalculator) {
+                        clearInterval(checkInterval);
+                        this._createCalculator(resolve);
+                    }
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    reject('Desmos API timeout');
+                }, 5000);
+            } else {
+                this._createCalculator(resolve);
+            }
+        });
+    }
+
+    _createCalculator(callback) {
+        try {
+            this.calculator = Desmos.GraphingCalculator(this.element, this.config);
+            this.setViewport(this.config.viewport);
+            callback();
+        } catch (e) {
+            console.error('Failed to create Desmos calculator:', e);
+        }
+    }
+
+    setViewport(viewport) {
+        if (this.calculator) {
+            this.calculator.setMathBounds({
+                left: viewport.xmin,
+                right: viewport.xmax,
+                bottom: viewport.ymin,
+                top: viewport.ymax
+            });
+        }
+    }
+
+    addExpression(expr) {
+        if (this.calculator) {
+            this.calculator.setExpression(expr);
+            this.expressions.push(expr.id);
+        }
+    }
+
+    clearExpressions() {
+        if (this.calculator) {
+            this.expressions.forEach(id => {
+                try { this.calculator.removeExpression({ id }); } catch(e) {}
+            });
+            this.expressions = [];
+        }
+    }
+
+    destroy() {
+        this.clearExpressions();
+        if (this.calculator) {
+            this.calculator.destroy();
+        }
+    }
+}
+
+
+www/js/graph/GraphManager.js
+
+/**
+ * Менеджер для управления графиками
+ */
+class GraphManager {
+    constructor() {
+        this.mainGraph = null;
+        this.selectElement = null;
+        this.descriptionElement = null;
+        this.captionElement = null;
+    }
+
+    async createMainGraph(elementId, config) {
+        this.mainGraph = new DesmosGraph(elementId, config);
+        await this.mainGraph.init();
+        return this.mainGraph;
+    }
+
+    switchToGraph(graphType) {
+        if (!this.mainGraph) {
+            console.error('Main graph not initialized');
+            return;
+        }
+
+        this.mainGraph.clearExpressions();
+
+        switch(graphType) {
+            case 'g1':
+            case 'var13_full':
+                this._setupFullGraph();
+                break;
+            case 'system':
+            case 'sys13':
+                this._setupSystemGraph();
+                break;
+            default:
+                console.warn(`Unknown graph type: ${graphType}`);
+                this._setupFullGraph();
+        }
+
+        // this._updateDescription(graphType);
+    }
+
+    _setupFullGraph() {
+        const func = FUNCTIONS_CONFIG['var13'];
+        this.mainGraph.setViewport(func.viewport);
+
+        this.mainGraph.addExpression({
+            id: 'func1',
+            latex: `f(x) = ${func.latex}`,
+            color: '#c74440'
+        });
+        this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
+        this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
+
+        Object.entries(func.roots).forEach(([name, data], i) => {
+            this.mainGraph.addExpression({
+                id: name,
+                latex: `x = ${data.value}`,
+                color: ['#2d70b3', '#388c46', '#6042a6'][i] || '#c74440',
+                lineStyle: Desmos.LineStyle?.DASHED || 'dashed'
+            });
+        });
+    }
+
+    _setupRootGraph(rootName) {
+        const func = FUNCTIONS_CONFIG['var13'];
+        const root = func.roots[rootName];
+        if (!root) return;
+
+        const [a, b] = root.interval;
+        const padding = (b - a) * 0.3;
+        this.mainGraph.setViewport({
+            xmin: a - padding, ymin: -50, xmax: b + padding, ymax: 50
+        });
+
+        this.mainGraph.addExpression({
+            id: 'func1',
+            latex: `f(x) = ${func.latex}`,
+            color: '#c74440'
+        });
+        this.mainGraph.addExpression({ id: 'int_a', latex: `x = ${a}`, color: '#ff0000', lineStyle: 'dotted' });
+        this.mainGraph.addExpression({ id: 'int_b', latex: `x = ${b}`, color: '#ff0000', lineStyle: 'dotted' });
+        this.mainGraph.addExpression({
+            id: 'root',
+            latex: `x = ${root.value}`,
+            color: '#2d70b3',
+            lineStyle: Desmos.LineStyle?.DASHED || 'dashed'
+        });
+    }
+
+    _setupSystemGraph() {
+        const sys = SYSTEMS_CONFIG['sys13'];
+        this.mainGraph.setViewport(sys.viewport);
+
+        sys.equations.forEach((eq, i) => {
+            this.mainGraph.addExpression({
+                id: `sys_eq${i+1}`,
+                latex: eq.latex,
+                color: eq.color
+            });
+        });
+
+        this.mainGraph.addExpression({
+            id: 'solution',
+            latex: `(${sys.solution.x}, ${sys.solution.y})`,
+            color: '#ff0000',
+            pointSize: Desmos.PointSize?.LARGE || 'large'
+        });
+    }
+
+    // _updateDescription(graphType) {
+    //     if (!this.descriptionElement) return;
+    //
+    //     const map = {
+    //         'full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
+    //         'var13_full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
+    //         'root1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
+    //         'var13_x1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
+    //         'root2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
+    //         'var13_x2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
+    //         'root3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
+    //         'var13_x3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
+    //         'system': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' },
+    //         'sys13': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' }
+    //     };
+    //
+    //     const data = map[graphType] || map['full'];
+    //     let html = `<h3>${data.title}</h3><p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>`;
+    //
+    //     if (data.roots) html += `<p><b>Корни:</b> ${data.roots}</p>`;
+    //     if (data.interval) html += `<p><b>Интервал:</b> ${data.interval}</p><p><b>Результат:</b> ${data.result}</p>`;
+    //     if (data.sys) html += `<p><b>Система:</b> ${data.sys}</p><p><b>Решение:</b> ${data.sol}</p>`;
+    //
+    //     this.descriptionElement.innerHTML = html;
+    //
+    //     if (this.captionElement) {
+    //         const captions = {
+    //             'full': 'Рис. 1. Полный график функции',
+    //             'root1': 'Рис. 2. Интервал корня x₁',
+    //             'root2': 'Рис. 3. Интервал корня x₂',
+    //             'root3': 'Рис. 4. Интервал корня x₃',
+    //             'system': 'Рис. 5. Система уравнений'
+    //         };
+    //         this.captionElement.textContent = captions[graphType] || captions['full'];
+    //     }
+    // }
+
+    initDropdown(selectId, descriptionId, captionId) {
+        this.selectElement = document.getElementById(selectId);
+        this.descriptionElement = document.getElementById(descriptionId);
+        this.captionElement = document.getElementById(captionId);
+
+        if (!this.selectElement) {
+            console.error('Dropdown not found');
+            return;
+        }
+
+        this.selectElement.addEventListener('change', (e) => {
+            this.switchToGraph(e.target.value);
+        });
+
+        this.switchToGraph(this.selectElement.value);
+    }
+}
 
 
 www/script.js

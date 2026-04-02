@@ -161,4 +161,41 @@ class GraphManager {
 
         this.switchToGraph(this.selectElement.value);
     }
+
+    // Добавить в класс GraphManager:
+
+    /**
+     * Отобразить функцию без корней (чистый график)
+     */
+    renderFunction(funcConfig) {
+        if (!this.mainGraph) {
+            console.error('Graph not initialized');
+            return;
+        }
+
+        this.mainGraph.clearExpressions();
+        this.mainGraph.setViewport(funcConfig.viewport);
+
+        // Добавляем функцию
+        this.mainGraph.addExpression({
+            id: 'func1',
+            latex: `f(x) = ${funcConfig.latex}`,
+            color: '#c74440'
+        });
+
+        // Оси координат
+        this.mainGraph.addExpression({
+            id: 'xaxis',
+            latex: 'y = 0',
+            color: '#000000',
+            lineWidth: 1
+        });
+
+        this.mainGraph.addExpression({
+            id: 'yaxis',
+            latex: 'x = 0',
+            color: '#000000',
+            lineWidth: 1
+        });
+    }
 }
