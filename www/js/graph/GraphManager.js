@@ -7,6 +7,7 @@ class GraphManager {
         this.selectElement = null;
         this.descriptionElement = null;
         this.captionElement = null;
+        this.rootExpressionIds = []; // Храним ID точек корня
     }
 
     async createMainGraph(elementId, config) {
@@ -22,6 +23,7 @@ class GraphManager {
         }
 
         this.mainGraph.clearExpressions();
+        this.rootExpressionIds = []; // Очищаем ID корней
 
         switch(graphType) {
             case 'g1':
@@ -36,8 +38,6 @@ class GraphManager {
                 console.warn(`Unknown graph type: ${graphType}`);
                 this._setupFullGraph();
         }
-
-        // this._updateDescription(graphType);
     }
 
     _setupFullGraph() {
@@ -51,41 +51,6 @@ class GraphManager {
         });
         this.mainGraph.addExpression({ id: 'xaxis', latex: 'y = 0', color: '#000000', lineWidth: 1 });
         this.mainGraph.addExpression({ id: 'yaxis', latex: 'x = 0', color: '#000000', lineWidth: 1 });
-
-        Object.entries(func.roots).forEach(([name, data], i) => {
-            this.mainGraph.addExpression({
-                id: name,
-                latex: `x = ${data.value}`,
-                color: ['#2d70b3', '#388c46', '#6042a6'][i] || '#c74440',
-                lineStyle: Desmos.LineStyle?.DASHED || 'dashed'
-            });
-        });
-    }
-
-    _setupRootGraph(rootName) {
-        const func = FUNCTIONS_CONFIG['var13'];
-        const root = func.roots[rootName];
-        if (!root) return;
-
-        const [a, b] = root.interval;
-        const padding = (b - a) * 0.3;
-        this.mainGraph.setViewport({
-            xmin: a - padding, ymin: -50, xmax: b + padding, ymax: 50
-        });
-
-        this.mainGraph.addExpression({
-            id: 'func1',
-            latex: `f(x) = ${func.latex}`,
-            color: '#c74440'
-        });
-        this.mainGraph.addExpression({ id: 'int_a', latex: `x = ${a}`, color: '#ff0000', lineStyle: 'dotted' });
-        this.mainGraph.addExpression({ id: 'int_b', latex: `x = ${b}`, color: '#ff0000', lineStyle: 'dotted' });
-        this.mainGraph.addExpression({
-            id: 'root',
-            latex: `x = ${root.value}`,
-            color: '#2d70b3',
-            lineStyle: Desmos.LineStyle?.DASHED || 'dashed'
-        });
     }
 
     _setupSystemGraph() {
@@ -108,42 +73,163 @@ class GraphManager {
         });
     }
 
-    // _updateDescription(graphType) {
-    //     if (!this.descriptionElement) return;
-    //
-    //     const map = {
-    //         'full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
-    //         'var13_full': { title: 'Полный график', roots: 'x₁≈-7.291, x₂≈0.345, x₃≈2.136' },
-    //         'root1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
-    //         'var13_x1': { title: 'Корень x₁ (хорды)', interval: '[-9; -4]', result: 'x₁ ≈ -7.291' },
-    //         'root2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
-    //         'var13_x2': { title: 'Корень x₂ (Ньютон)', interval: '[-4; 1.5]', result: 'x₂ ≈ 0.345' },
-    //         'root3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
-    //         'var13_x3': { title: 'Корень x₃ (итерации)', interval: '[1.5; 5]', result: 'x₃ ≈ 2.136' },
-    //         'system': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' },
-    //         'sys13': { title: 'Система уравнений', sys: '{ sin(y+2x)=2; y+cos(x-1)=0.7 }', sol: 'x≈1.146, y≈-0.289' }
-    //     };
-    //
-    //     const data = map[graphType] || map['full'];
-    //     let html = `<h3>${data.title}</h3><p><b>Функция:</b> f(x) = x³ + 4.81x² - 17.37x + 5.38</p>`;
-    //
-    //     if (data.roots) html += `<p><b>Корни:</b> ${data.roots}</p>`;
-    //     if (data.interval) html += `<p><b>Интервал:</b> ${data.interval}</p><p><b>Результат:</b> ${data.result}</p>`;
-    //     if (data.sys) html += `<p><b>Система:</b> ${data.sys}</p><p><b>Решение:</b> ${data.sol}</p>`;
-    //
-    //     this.descriptionElement.innerHTML = html;
-    //
-    //     if (this.captionElement) {
-    //         const captions = {
-    //             'full': 'Рис. 1. Полный график функции',
-    //             'root1': 'Рис. 2. Интервал корня x₁',
-    //             'root2': 'Рис. 3. Интервал корня x₂',
-    //             'root3': 'Рис. 4. Интервал корня x₃',
-    //             'system': 'Рис. 5. Система уравнений'
-    //         };
-    //         this.captionElement.textContent = captions[graphType] || captions['full'];
-    //     }
-    // }
+    /**
+     * Отобразить функцию без корней (чистый график)
+     */
+    renderFunction(funcConfig) {
+        if (!this.mainGraph) {
+            console.error('❌ Graph not initialized');
+            return;
+        }
+
+        // 1. Сохраняем координаты корня, если он есть
+        let savedRoot = null;
+        if (this.rootExpressionIds.includes('root_point') && this.mainGraph.calculator) {
+            const exprs = this.mainGraph.calculator.expressions?.list || [];
+            const rootExpr = exprs.find(e => e.id === 'root_point');
+            if (rootExpr?.latex) {
+                // Парсим координаты из латекса вида "R=(x,y)" или "(x,y)"
+                const match = rootExpr.latex.match(/\(([^,]+),\s*([^)]+)\)/);
+                if (match) {
+                    savedRoot = {
+                        x: parseFloat(match[1]),
+                        y: parseFloat(match[2])
+                    };
+                }
+            }
+        }
+
+        // 2. Очищаем все выражения и сбрасываем трекинг
+        this.mainGraph.clearExpressions();
+        this.rootExpressionIds = [];
+
+        // 3. Устанавливаем viewport из конфига функции
+        this.mainGraph.setViewport(funcConfig.viewport);
+
+        // 4. Добавляем саму функцию
+        this.mainGraph.addExpression({
+            id: 'func_curve',
+            latex: funcConfig.latex,  // ← Важно: без "f(x) =", просто выражение
+            color: '#c74440',
+            hidden: false
+        });
+
+        // 5. Добавляем оси координат
+        this.mainGraph.addExpression({
+            id: 'xaxis',
+            latex: 'y = 0',
+            color: '#000000',
+            lineWidth: 1,
+            hidden: false
+        });
+        this.mainGraph.addExpression({
+            id: 'yaxis',
+            latex: 'x = 0',
+            color: '#000000',
+            lineWidth: 1,
+            hidden: false
+        });
+
+        // 6. Восстанавливаем точку корня, если она была
+        if (savedRoot) {
+            // Небольшая задержка, чтобы график успел отрисоваться
+            setTimeout(() => {
+                this.markRoot(savedRoot.x, savedRoot.y, false); // false = не менять viewport
+            }, 150);
+        }
+
+        console.log('📈 Function rendered:', funcConfig.name);
+    }
+
+    /**
+     * Отметить найденный корень на графике красной точкой
+     */
+    markRoot(x, y, changeViewport = true) {
+        if (!this.mainGraph?.calculator) {
+            console.error('❌ Graph calculator not ready');
+            return;
+        }
+
+        // 1. Очищаем старые маркеры
+        this.clearRootMarker();
+
+        // 2. Округляем для чистоты
+        const xRounded = Math.round(x * 10000) / 10000;
+        const yRounded = Math.round(y * 10000) / 10000;
+
+        console.log('🎯 Добавляем точку корня:', { x: xRounded, y: yRounded });
+
+        // 3. Добавляем точку как именованную переменную (надёжнее для Desmos)
+        this.mainGraph.addExpression({
+            id: 'root_point',
+            latex: `R=(${xRounded},${yRounded})`,  // ← Имя переменной R помогает стилизации
+            color: '#ff0000',
+            label: 'Корень',
+            showLabel: true
+        });
+        this.rootExpressionIds.push('root_point');
+
+        // 4. Добавляем крупный маркер поверх для видимости
+        this.mainGraph.addExpression({
+            id: 'root_dot',
+            latex: `(${xRounded},${yRounded})`,
+            color: '#ff0000'
+        });
+        this.rootExpressionIds.push('root_dot');
+
+        // 5. Подпись с координатами
+        this.mainGraph.addExpression({
+            id: 'root_coords',
+            latex: `\\text{(${xRounded.toFixed(4)}; ${yRounded.toFixed(6)})}`,
+            color: '#ff0000'
+        });
+        this.rootExpressionIds.push('root_coords');
+
+        // 6. Опционально: центрируем вид на точке (с задержкой для стабильности)
+        if (changeViewport) {
+            setTimeout(() => {
+                const padding = 1.5;
+                this.mainGraph.calculator.setMathBounds({
+                    left: xRounded - padding,
+                    right: xRounded + padding,
+                    bottom: Math.min(yRounded - padding, -0.5),  // не даём ужать по Y слишком сильно
+                    top: Math.max(yRounded + padding, 0.5)
+                });
+            }, 150);
+        }
+
+        // 7. Отладка: проверяем через 300мс, добавилась ли точка
+        setTimeout(() => {
+            const exprs = this.mainGraph.calculator.expressions?.list || [];
+            const rootExists = exprs.some(e => e.id === 'root_point' || e.id === 'root_dot');
+            console.log('🔍 Проверка точки через 300мс:', rootExists ? '✓ найдена' : '✗ не найдена');
+            if (!rootExists) {
+                console.warn('⚠️ Точка не отобразилась. Проверьте:');
+                console.warn('  - Координаты:', xRounded, yRounded);
+                console.warn('  - Viewport:', this.mainGraph.calculator.mathBounds);
+                console.warn('  - Все выражения:', exprs.map(e => ({id: e.id, latex: e.latex})));
+            }
+        }, 300);
+    }
+    /**
+     * Очистить точку корня
+     */
+    clearRootMarker() {
+        if (!this.mainGraph || !this.mainGraph.calculator) {
+            return;
+        }
+
+        // Удаляем все сохраненные ID точек корня
+        this.rootExpressionIds.forEach(id => {
+            try {
+                this.mainGraph.calculator.removeExpression({ id: id });
+            } catch(e) {
+                // Игнорируем ошибки, если выражение не найдено
+            }
+        });
+
+        this.rootExpressionIds = [];
+    }
 
     initDropdown(selectId, descriptionId, captionId) {
         this.selectElement = document.getElementById(selectId);
@@ -160,42 +246,5 @@ class GraphManager {
         });
 
         this.switchToGraph(this.selectElement.value);
-    }
-
-    // Добавить в класс GraphManager:
-
-    /**
-     * Отобразить функцию без корней (чистый график)
-     */
-    renderFunction(funcConfig) {
-        if (!this.mainGraph) {
-            console.error('Graph not initialized');
-            return;
-        }
-
-        this.mainGraph.clearExpressions();
-        this.mainGraph.setViewport(funcConfig.viewport);
-
-        // Добавляем функцию
-        this.mainGraph.addExpression({
-            id: 'func1',
-            latex: `f(x) = ${funcConfig.latex}`,
-            color: '#c74440'
-        });
-
-        // Оси координат
-        this.mainGraph.addExpression({
-            id: 'xaxis',
-            latex: 'y = 0',
-            color: '#000000',
-            lineWidth: 1
-        });
-
-        this.mainGraph.addExpression({
-            id: 'yaxis',
-            latex: 'x = 0',
-            color: '#000000',
-            lineWidth: 1
-        });
     }
 }

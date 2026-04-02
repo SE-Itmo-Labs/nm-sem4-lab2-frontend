@@ -176,6 +176,11 @@ class FormManager {
      * Обработка отправки формы
      */
     async handleSubmit() {
+        // Очистить старую точку корня перед новым расчетом
+        if (this.graphManager) {
+            this.graphManager.clearRootMarker();
+        }
+
         // Сбор данных
         const data = this.collectFormData();
 
@@ -252,54 +257,66 @@ class FormManager {
         // Для демонстрации — мок-ответ
         return new Promise((resolve) => {
             setTimeout(() => {
+                // Имитация вычисления корня для разных функций
+                let mockRoot, mockFValue;
+
+                switch(data.function) {
+                    case 'g1':
+                        // f(x) = 0.4x⁴ - (x - 0.1)² + 0.2
+                        mockRoot = 0.5;
+                        mockFValue = 0.0001;
+                        break;
+                    case 'g2':
+                        // f(x) = e^x + 4x² - 22.8x
+                        mockRoot = 2.146;
+                        mockFValue = -0.0002;
+                        break;
+                    case 'g3':
+                        // f(x) = sin(x²) + 0.3x
+                        mockRoot = 1.234;
+                        mockFValue = 0.00005;
+                        break;
+                    default:
+                        mockRoot = 1.2345;
+                        mockFValue = 0.0001;
+                }
+
                 // Имитация ответа сервера
                 resolve({
                     success: true,
                     data: {
-                        root: 1.2345,
-                        fValue: 0.0001,
-                        iterations: 5,
-                        error: 0.00001,
+                        root: mockRoot,
+                        fValue: mockFValue,
+                        iterations: Math.floor(Math.random() * 10) + 3,
+                        error: Math.random() * 0.0001,
                         method: data.method,
                         function: data.function
                     }
                 });
 
-                // Реальная отправка (раскомментируйте когда будет API):
-                /*
-                fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => resolve(result))
-                .catch(error => resolve({ success: false, error: error.message }));
-                */
             }, 1000);
         });
     }
 
-    /**
-     * Отображение результатов
-     */
     displayResults(data) {
-        const panel = document.getElementById('resultsPanel');
-        if (!panel) return;
+        console.log('📊 displayResults вызван с данными:', data);
 
-        document.getElementById('resultRoot').textContent =
-            data.root !== undefined ? data.root.toFixed(6) : '-';
-        document.getElementById('resultFValue').textContent =
-            data.fValue !== undefined ? data.fValue.toExponential(4) : '-';
-        document.getElementById('resultIterations').textContent =
-            data.iterations !== undefined ? data.iterations : '-';
-        document.getElementById('resultError').textContent =
-            data.error !== undefined ? data.error.toExponential(4) : '-';
+        // ... обновление UI ...
 
-        panel.style.display = 'block';
+        if (this.graphManager && data.root !== undefined) {
+            const x = data.root;
+            const y = data.fValue ?? 0;
+
+            console.log('📍 Вызов markRoot:', { x, y });
+            console.log('🔧 Состояние графика:', {
+                calculator: !!this.graphManager.mainGraph?.calculator,
+                rootIds: this.graphManager.rootExpressionIds
+            });
+
+            this.graphManager.markRoot(x, y);
+        }
     }
+
 
     /**
      * Показать статус

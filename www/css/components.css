@@ -94,3 +94,31 @@
 .graph-info p {
     margin: 5px 0;
 }
+
+/* Стили для точки корня на графике */
+.root-marker {
+    /* Точка управляется через Desmos API */
+}
+
+/* Анимация появления точки */
+@keyframes rootAppear {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Подпись к корню */
+.root-label {
+    font-family: var(--retro-mono);
+    font-size: 12px;
+    color: #ff0000;
+    font-weight: bold;
+}
