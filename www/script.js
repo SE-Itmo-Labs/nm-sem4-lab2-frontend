@@ -1,10 +1,4 @@
-/**
- * === КОНФИГУРАЦИИ (должны быть вверху!) ===
- */
 
-/**
- * Конфигурация функций — Вариант 13 (основной) + дополнительные
- */
 const FUNCTIONS_CONFIG = {
     'var13': {
         name: 'f(x) = x³ + 4.81x² - 17.37x + 5.38 (Вариант 13)',
@@ -56,9 +50,6 @@ const FUNCTIONS_CONFIG = {
     }
 };
 
-/**
- * Конфигурация систем уравнений
- */
 const SYSTEMS_CONFIG = {
     'sys13': {
         name: 'Система варианта 13',
@@ -71,10 +62,6 @@ const SYSTEMS_CONFIG = {
         method: 'Простая итерация'
     }
 };
-
-/**
- * === КЛАССЫ ===
- */
 
 class DesmosGraph {
     constructor(elementId, config = {}) {
