@@ -172,9 +172,27 @@ class FormManager {
         return isNaN(num) ? null : num;
     }
 
+    /**
+     * Обработка отправки формы
+     */
     async handleSubmit() {
-        // ... существующий код ...
+        // Очистить старую точку корня перед новым расчетом
+        if (this.graphManager) {
+            this.graphManager.clearRootMarker();
+        }
 
+        // ✅ ВАЖНО: Сначала собираем данные!
+        const data = this.collectFormData();
+
+        // Валидация
+        if (!this.validateData(data)) {
+            return;
+        }
+
+        // Сохранение
+        this.formData = data;
+
+        // Отправка на API
         try {
             this.showStatus('🔄 Отправка данных на сервер...', 'info');
             const result = await this.sendToAPI(data);
@@ -188,7 +206,7 @@ class FormManager {
         } catch (error) {
             console.error('API Error:', error);
 
-            // 🔥 Обработка сетевых ошибок (CORS, нет интернета, неверный URL)
+            // 🔥 Обработка сетевых ошибок
             if (error.message.includes('Failed to fetch')) {
                 this.showStatus('❌ Не удалось соединиться с сервером. Проверьте интернет или CORS.', 'error');
             } else {
