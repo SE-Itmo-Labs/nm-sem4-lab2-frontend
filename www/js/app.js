@@ -155,6 +155,8 @@ async function handleEquationSubmit(e) {
         }
     } catch (error) {
         showStatus('eqFormStatus', 'Ошибка соединения: ' + error.message, 'error');
+
+        document.getElementById('eqResultsPanel').style.display = 'none';
     }
 }
 
@@ -196,6 +198,8 @@ async function handleSystemSubmit(e) {
         }
     } catch (error) {
         showStatus('sysFormStatus', 'Ошибка соединения: ' + error.message, 'error');
+
+        document.getElementById('sysResultsPanel').style.display = 'none';
     }
 }
 

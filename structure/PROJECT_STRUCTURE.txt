@@ -26,6 +26,7 @@ nm-sem4-lab2-frontend/
 │   │   │   ├── DesmosGraph.js
 │   │   │   └── GraphManager.js
 │   │   ├── app.js
+│   │   ├── fileDownloader.js
 │   │   └── fileLoader.js
 │   ├── index.html
 │   └── style.css
@@ -452,6 +453,7 @@ www/index.html
     <script src="js/graph/GraphManager.js"></script>
     <script src="js/app.js"></script>
     <script src="js/fileLoader.js"></script>
+    <script src="js/fileDownloader.js"></script>
 </head>
 <body>
 <div class="container">
@@ -475,7 +477,7 @@ www/index.html
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('equations')">Уравнения</button>
         <button class="tab-btn" onclick="switchTab('systems')">Системы</button>
-        
+
         <div style="text-align: center; margin-bottom: 10px;">
             <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
             <button class="retro-btn retro-btn-secondary" onclick="document.getElementById('jsonFileInput').click()" style="padding: 5px 15px;">
@@ -564,6 +566,9 @@ www/index.html
                                 <span class="result-label">Итераций:</span>
                                 <span class="result-value" id="eqResultIterations">-</span>
                             </div>
+                            <button class="retro-btn retro-btn-secondary" style="width: 100%; margin-top: 15px;" onclick="downloadResults('eq')">
+                                Скачать отчет
+                            </button>
                         </div>
                     </div>
                 </td>
@@ -650,6 +655,9 @@ www/index.html
                                 <span class="result-label">F2(x*, y*):</span>
                                 <span class="result-value" id="sysResultF2">-</span>
                             </div>
+                            <button class="retro-btn retro-btn-secondary" style="width: 100%; margin-top: 15px;" onclick="downloadResults('sys')">
+                                Скачать отчет
+                            </button>
                         </div>
                     </div>
                 </td>
@@ -991,6 +999,63 @@ const SYSTEMS_CONFIG = {
         viewport: { xmin: -5, ymin: -8, xmax: 5, ymax: 8 }
     }
 };
+
+
+www/js/fileDownloader.js
+
+
+
+function downloadResults(type) {
+    let content = "=== РЕЗУЛЬТАТЫ ВЫЧИСЛЕНИЙ ===\n\n";
+
+    if (type === 'eq') {
+        const funcName = document.getElementById('eqGraphCaption').textContent;
+        const root = document.getElementById('eqResultRoot').textContent;
+        const fValue = document.getElementById('eqResultFValue').textContent;
+        const iterations = document.getElementById('eqResultIterations').textContent;
+
+        content += `Уравнение: ${funcName}\n`;
+        content += `Корень x: ${root}\n`;
+        content += `Значение f(x): ${fValue}\n`;
+        content += `Итераций: ${iterations}\n`;
+
+    } else if (type === 'sys') {
+        const sysName = document.getElementById('sysGraphCaption').textContent;
+        const rootX = document.getElementById('sysResultX').textContent;
+        const rootY = document.getElementById('sysResultY').textContent;
+        const iterations = document.getElementById('sysResultIterations').textContent;
+        const deltaX = document.getElementById('sysResultDeltaX').textContent;
+        const deltaY = document.getElementById('sysResultDeltaY').textContent;
+        const f1 = document.getElementById('sysResultF1').textContent;
+        const f2 = document.getElementById('sysResultF2').textContent;
+
+        content += `Система: ${sysName}\n`;
+        content += `Корень x: ${rootX}\n`;
+        content += `Корень y: ${rootY}\n`;
+        content += `Итераций: ${iterations}\n`;
+        content += `Погрешность x: ${deltaX}\n`;
+        content += `Погрешность y: ${deltaY}\n`;
+        content += `F1(x*, y*): ${f1}\n`;
+        content += `F2(x*, y*): ${f2}\n`;
+    } else {
+        console.error("Неизвестный тип для скачивания:", type);
+        return;
+    }
+
+    content += "\n=============================\n";
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `report_${type}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
 
 
 www/js/fileLoader.js
