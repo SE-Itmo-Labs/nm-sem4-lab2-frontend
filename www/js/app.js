@@ -48,6 +48,35 @@ document.addEventListener('DOMContentLoaded', async function() {
             pirateVideo.playbackRate = 1.0;
         });
     }
+
+    document.querySelectorAll('.number-input').forEach(input => {
+        input.addEventListener('input', function() {
+
+            let val = this.value.replace(/,/g, '.');
+
+            val = val.replace(/[^\d.-]/g, '');
+
+            if (val.indexOf('-') > 0) {
+                val = val.replace(/-/g, '');
+            } else if ((val.match(/-/g) ||[]).length > 1) {
+                val = '-' + val.replace(/-/g, '');
+            }
+
+            let parts = val.split('.');
+            if (parts.length > 2) {
+                val = parts[0] + '.' + parts.slice(1).join('');
+            }
+
+            parts = val.split('.');
+            if (parts.length === 2 && parts[1].length > 5) {
+                val = parts[0] + '.' + parts[1].substring(0, 5);
+            }
+
+            if (this.value !== val) {
+                this.value = val;
+            }
+        });
+    });
 });
 
 function initEquationForm() {
@@ -191,7 +220,7 @@ function displaySystemResults(data, iterations) {
         lastDeltaX = lastStep.deltaX || 0;
         lastDeltaY = lastStep.deltaY || 0;
     }
-    
+
     document.getElementById('sysResultX').textContent = data.solution.x.toFixed(6);
     document.getElementById('sysResultY').textContent = data.solution.y.toFixed(6);
     document.getElementById('sysResultIterations').textContent = data.iterations;
