@@ -117,7 +117,7 @@ async function handleEquationSubmit(e) {
 
         if (result.success && result.data) {
             showStatus('eqFormStatus', 'Расчёт завершён успешно!', 'success');
-            displayEquationResults(result.data);
+            displayEquationResults(result);
         } else {
             showStatus('eqFormStatus', 'Ошибка: ' + result.error, 'error');
         }
@@ -164,11 +164,13 @@ async function handleSystemSubmit(e) {
 }
 
 function displayEquationResults(data) {
-    eqGraphManager.markRoot(data.root, data.fValue);
+    eqGraphManager.markRoot(data.data.root, data.data.fValue);
 
-    document.getElementById('eqResultRoot').textContent = data.root.toFixed(6);
-    document.getElementById('eqResultFValue').textContent = data.fValue.toFixed(10);
-    document.getElementById('eqResultIterations').textContent = data.iterationsCount;
+    console.log(data);
+
+    document.getElementById('eqResultRoot').textContent = data.data.root.toFixed(6);
+    document.getElementById('eqResultFValue').textContent = data.data.fValue.toFixed(10);
+    document.getElementById('eqResultIterations').textContent = data.data.iterations;
     document.getElementById('eqResultsPanel').style.display = 'block';
 }
 
@@ -185,7 +187,7 @@ function displaySystemResults(data, iterations) {
 
     document.getElementById('sysResultX').textContent = data.solution.x.toFixed(6);
     document.getElementById('sysResultY').textContent = data.solution.y.toFixed(6);
-    document.getElementById('sysResultIterations').textContent = data.iterationsCount;
+    document.getElementById('sysResultIterations').textContent = data.iterations;
     document.getElementById('sysResultDeltaX').textContent = lastDeltaX.toExponential(6);
     document.getElementById('sysResultDeltaY').textContent = lastDeltaY.toExponential(6);
     document.getElementById('sysResultF1').textContent = Functions.fSys1(data.solution.x, data.solution.y).toExponential(6);
