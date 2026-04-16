@@ -1,0 +1,9 @@
+{
+  "type": "eq",
+  "function": "g2",
+  "method": "secant",
+  "intervalA": 1,
+  "intervalB": 4,
+  "x0": -1,
+  "epsilon": 0.001
+}

@@ -1,0 +1,7 @@
+{
+  "type": "sys",
+  "function": "s1",
+  "x0": 1,
+  "y0": 2,
+  "epsilon": 0.0001
+}
