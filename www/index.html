@@ -13,6 +13,7 @@
     <script src="js/graph/DesmosGraph.js"></script>
     <script src="js/graph/GraphManager.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/fileLoader.js"></script>
 </head>
 <body>
 <div class="container">
@@ -36,6 +37,16 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('equations')">Уравнения</button>
         <button class="tab-btn" onclick="switchTab('systems')">Системы</button>
+        
+        <div style="text-align: center; margin-bottom: 10px;">
+            <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+            <button class="retro-btn retro-btn-secondary" onclick="document.getElementById('jsonFileInput').click()" style="padding: 5px 15px;">
+                ЗАГРУЗИТЬ ФАЙЛ (JSON)
+            </button>
+            <div>
+                <span id="fileLoadStatus" style="margin-left: 10px; font-weight: bold; font-family: var(--retro-mono);"></span>
+            </div>
+        </div>
     </div>
 
     <div id="equationsTab" class="tab-content active">

@@ -1,0 +1,9 @@
+{
+  "type": "eq",
+  "function": "g1",
+  "method": "bisection",
+  "intervalA": -2,
+  "intervalB": 0.5,
+  "x0": -1,
+  "epsilon": 0.001
+}
