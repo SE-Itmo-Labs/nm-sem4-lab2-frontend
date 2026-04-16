@@ -2,6 +2,10 @@
 
 Дерево
 nm-sem4-lab2-frontend/
+├── examples
+│   ├── equation.json
+│   ├── equation_err.json
+│   └── sys_equation.json
 ├── structure
 │   └── PROJECT_STRUCTURE.txt
 ├── www
@@ -21,7 +25,8 @@ nm-sem4-lab2-frontend/
 │   │   ├── graph
 │   │   │   ├── DesmosGraph.js
 │   │   │   └── GraphManager.js
-│   │   └── app.js
+│   │   ├── app.js
+│   │   └── fileLoader.js
 │   ├── index.html
 │   └── style.css
 ├── LICENSE
@@ -110,6 +115,43 @@ bun run preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
+
+
+examples/equation.json
+
+{
+  "type": "eq",
+  "function": "g2",
+  "method": "secant",
+  "intervalA": 1,
+  "intervalB": 4,
+  "x0": -1,
+  "epsilon": 0.001
+}
+
+
+examples/equation_err.json
+
+{
+  "type": "eq",
+  "function": "g1",
+  "method": "bisection",
+  "intervalA": -2,
+  "intervalB": 0.5,
+  "x0": -1,
+  "epsilon": 0.001
+}
+
+
+examples/sys_equation.json
+
+{
+  "type": "sys",
+  "function": "s1",
+  "x0": 1,
+  "y0": 2,
+  "epsilon": 0.0001
+}
 
 
 package.json
@@ -409,6 +451,7 @@ www/index.html
     <script src="js/graph/DesmosGraph.js"></script>
     <script src="js/graph/GraphManager.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/fileLoader.js"></script>
 </head>
 <body>
 <div class="container">
@@ -432,6 +475,16 @@ www/index.html
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('equations')">Уравнения</button>
         <button class="tab-btn" onclick="switchTab('systems')">Системы</button>
+        
+        <div style="text-align: center; margin-bottom: 10px;">
+            <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+            <button class="retro-btn retro-btn-secondary" onclick="document.getElementById('jsonFileInput').click()" style="padding: 5px 15px;">
+                ЗАГРУЗИТЬ ФАЙЛ (JSON)
+            </button>
+            <div>
+                <span id="fileLoadStatus" style="margin-left: 10px; font-weight: bold; font-family: var(--retro-mono);"></span>
+            </div>
+        </div>
     </div>
 
     <div id="equationsTab" class="tab-content active">
@@ -893,19 +946,19 @@ const FUNCTIONS_CONFIG = {
         name: 'f(x) = 0.4x⁴ - (x - 0.1)² + 0.2',
         latex: '0.4x^4 - (x - 0.1)^2 + 0.2',
         viewport: { xmin: -3, ymin: -5, xmax: 3, ymax: 10 },
-        description: 'Полином 4-й степени'
+        description: ''
     },
     'g2': {
         name: 'f(x) = e^x + 4x² - 22.8x',
         latex: 'e^x + 4x^2 - 22.8x',
         viewport: { xmin: -2, ymin: -10, xmax: 4, ymax: 20 },
-        description: 'Экспонента и квадратичная функция'
+        description: ''
     },
     'g3': {
         name: 'f(x) = sin(x²) + 0.3x',
         latex: '\\sin(x^2) + 0.3x',
         viewport: { xmin: -4, ymin: -5, xmax: 4, ymax: 5 },
-        description: 'Трансцендентная функция'
+        description: ''
     }
 };
 
@@ -938,6 +991,95 @@ const SYSTEMS_CONFIG = {
         viewport: { xmin: -5, ymin: -8, xmax: 5, ymax: 8 }
     }
 };
+
+
+www/js/fileLoader.js
+
+// www/js/fileLoader.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('jsonFileInput');
+    if (!fileInput) return;
+
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                populateFormFromJson(data);
+                showFileStatus('Файл успешно загружен!', '#00aa00'); // Зеленый
+            } catch (err) {
+                console.error(err);
+                showFileStatus('Ошибка: неверный формат JSON', '#ff0000'); // Красный
+            }
+        };
+        
+        reader.onerror = function() {
+            showFileStatus('Ошибка при чтении файла', '#ff0000');
+        };
+        
+        reader.readAsText(file);
+
+
+        event.target.value = '';
+    });
+});
+
+function populateFormFromJson(data) {
+    if (!data || !data.type) {
+        throw new Error('Отсутствует обязательное поле "type" (eq или sys)');
+    }
+
+    if (data.type === 'eq') {
+
+        switchTab('equations');
+
+
+        if (data.function) {
+            const funcSelect = document.getElementById('eqFunctionSelect');
+            funcSelect.value = data.function;
+            funcSelect.dispatchEvent(new Event('change'));
+        }
+        
+        if (data.method) document.getElementById('eqMethodSelect').value = data.method;
+        if (data.intervalA !== undefined) document.getElementById('eqIntervalA').value = data.intervalA;
+        if (data.intervalB !== undefined) document.getElementById('eqIntervalB').value = data.intervalB;
+        if (data.x0 !== undefined) document.getElementById('eqX0Input').value = data.x0;
+        if (data.epsilon !== undefined) document.getElementById('eqEpsilonInput').value = data.epsilon;
+
+    } else if (data.type === 'sys') {
+
+        switchTab('systems');
+
+
+        if (data.function) {
+            const sysSelect = document.getElementById('sysSelect');
+            sysSelect.value = data.function;
+            sysSelect.dispatchEvent(new Event('change'));
+        }
+        
+        if (data.x0 !== undefined) document.getElementById('sysX0Input').value = data.x0;
+        if (data.y0 !== undefined) document.getElementById('sysY0Input').value = data.y0;
+        if (data.epsilon !== undefined) document.getElementById('sysEpsilonInput').value = data.epsilon;
+        
+    } else {
+        throw new Error(`Неизвестный тип: ${data.type}`);
+    }
+}
+
+function showFileStatus(msg, color) {
+    const statusEl = document.getElementById('fileLoadStatus');
+    if (statusEl) {
+        statusEl.textContent = msg;
+        statusEl.style.color = color;
+
+        
+        setTimeout(() => { statusEl.textContent = ''; }, 3000);
+    }
+}
 
 
 www/js/graph/DesmosGraph.js
