@@ -48,6 +48,35 @@ document.addEventListener('DOMContentLoaded', async function() {
             pirateVideo.playbackRate = 1.0;
         });
     }
+
+    document.querySelectorAll('.number-input').forEach(input => {
+        input.addEventListener('input', function() {
+
+            let val = this.value.replace(/,/g, '.');
+
+            val = val.replace(/[^\d.-]/g, '');
+
+            if (val.indexOf('-') > 0) {
+                val = val.replace(/-/g, '');
+            } else if ((val.match(/-/g) ||[]).length > 1) {
+                val = '-' + val.replace(/-/g, '');
+            }
+
+            let parts = val.split('.');
+            if (parts.length > 2) {
+                val = parts[0] + '.' + parts.slice(1).join('');
+            }
+
+            parts = val.split('.');
+            if (parts.length === 2 && parts[1].length > 5) {
+                val = parts[0] + '.' + parts[1].substring(0, 5);
+            }
+
+            if (this.value !== val) {
+                this.value = val;
+            }
+        });
+    });
 });
 
 function initEquationForm() {
@@ -97,7 +126,10 @@ async function handleEquationSubmit(e) {
         intervalA: parseFloat(document.getElementById('eqIntervalA').value),
         intervalB: parseFloat(document.getElementById('eqIntervalB').value),
         x0: parseFloat(document.getElementById('eqX0Input').value) || null,
-        epsilon: parseFloat(document.getElementById('eqEpsilonInput').value) || 0.0001
+        epsilon: parseFloat(document.getElementById('eqEpsilonInput').value) || 0.0001,
+
+        type: "eq"
+
     };
 
     if (!data.function || !data.method || data.intervalA == null || data.intervalB == null) {
@@ -117,7 +149,7 @@ async function handleEquationSubmit(e) {
 
         if (result.success && result.data) {
             showStatus('eqFormStatus', 'Расчёт завершён успешно!', 'success');
-            displayEquationResults(result.data);
+            displayEquationResults(result);
         } else {
             showStatus('eqFormStatus', 'Ошибка: ' + result.error, 'error');
         }
@@ -130,11 +162,15 @@ async function handleSystemSubmit(e) {
     e.preventDefault();
 
     const data = {
+
         function: document.getElementById('sysSelect').value,
         method: 'newton',
         x0: parseFloat(document.getElementById('sysX0Input').value),
         y0: parseFloat(document.getElementById('sysY0Input').value),
-        epsilon: parseFloat(document.getElementById('sysEpsilonInput').value) || 0.0001
+        epsilon: parseFloat(document.getElementById('sysEpsilonInput').value) || 0.0001,
+
+        type: "sys"
+
     };
 
     if (!data.function || data.x0 == null || data.y0 == null) {
@@ -164,11 +200,13 @@ async function handleSystemSubmit(e) {
 }
 
 function displayEquationResults(data) {
-    eqGraphManager.markRoot(data.root, data.fValue);
+    eqGraphManager.markRoot(data.data.root, data.data.fValue);
 
-    document.getElementById('eqResultRoot').textContent = data.root.toFixed(6);
-    document.getElementById('eqResultFValue').textContent = data.fValue.toFixed(10);
-    document.getElementById('eqResultIterations').textContent = data.iterationsCount;
+    console.log(data);
+
+    document.getElementById('eqResultRoot').textContent = data.data.root.toFixed(6);
+    document.getElementById('eqResultFValue').textContent = data.data.fValue.toFixed(10);
+    document.getElementById('eqResultIterations').textContent = data.data.iterations;
     document.getElementById('eqResultsPanel').style.display = 'block';
 }
 
@@ -185,11 +223,19 @@ function displaySystemResults(data, iterations) {
 
     document.getElementById('sysResultX').textContent = data.solution.x.toFixed(6);
     document.getElementById('sysResultY').textContent = data.solution.y.toFixed(6);
-    document.getElementById('sysResultIterations').textContent = data.iterationsCount;
+    document.getElementById('sysResultIterations').textContent = data.iterations;
     document.getElementById('sysResultDeltaX').textContent = lastDeltaX.toExponential(6);
     document.getElementById('sysResultDeltaY').textContent = lastDeltaY.toExponential(6);
-    document.getElementById('sysResultF1').textContent = Functions.fSys1(data.solution.x, data.solution.y).toExponential(6);
-    document.getElementById('sysResultF2').textContent = Functions.fSys2(data.solution.x, data.solution.y).toExponential(6);
+    
+    const sysId = document.getElementById('sysSelect').value;
+    let f1Val = 0, f2Val = 0;
+    if (Functions[sysId]) {
+        f1Val = Functions[sysId].f1(data.solution.x, data.solution.y);
+        f2Val = Functions[sysId].f2(data.solution.x, data.solution.y);
+    }
+
+    document.getElementById('sysResultF1').textContent = f1Val.toExponential(6);
+    document.getElementById('sysResultF2').textContent = f2Val.toExponential(6);
     document.getElementById('sysResultsPanel').style.display = 'block';
 }
 
@@ -200,6 +246,16 @@ function showStatus(elementId, message, type) {
 }
 
 const Functions = {
-    fSys1: (x, y) => Math.sin(y) + 2 * x - 2.0,
-    fSys2: (x, y) => y + Math.cos(x - 1.0) - 0.7
+    's1': {
+        f1: (x, y) => 0.5 * x * x + 2 * y * y - 1,
+        f2: (x, y) => y - Math.exp(x) + 1
+    },
+    's2': {
+        f1: (x, y) => y - Math.sin(2 * x) - Math.cos(10 * x),
+        f2: (x, y) => Math.pow(x, 3) + Math.pow(y, 2) - 1
+    },
+    's3': {
+        f1: (x, y) => y - Math.sin(2 * x),
+        f2: (x, y) => x - Math.cos(3 * y)
+    }
 };
