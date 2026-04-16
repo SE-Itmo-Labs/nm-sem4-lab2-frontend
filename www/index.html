@@ -14,6 +14,7 @@
     <script src="js/graph/GraphManager.js"></script>
     <script src="js/app.js"></script>
     <script src="js/fileLoader.js"></script>
+    <script src="js/fileDownloader.js"></script>
 </head>
 <body>
 <div class="container">
@@ -37,7 +38,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('equations')">Уравнения</button>
         <button class="tab-btn" onclick="switchTab('systems')">Системы</button>
-        
+
         <div style="text-align: center; margin-bottom: 10px;">
             <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
             <button class="retro-btn retro-btn-secondary" onclick="document.getElementById('jsonFileInput').click()" style="padding: 5px 15px;">
@@ -126,6 +127,9 @@
                                 <span class="result-label">Итераций:</span>
                                 <span class="result-value" id="eqResultIterations">-</span>
                             </div>
+                            <button class="retro-btn retro-btn-secondary" style="width: 100%; margin-top: 15px;" onclick="downloadResults('eq')">
+                                Скачать отчет
+                            </button>
                         </div>
                     </div>
                 </td>
@@ -212,6 +216,9 @@
                                 <span class="result-label">F2(x*, y*):</span>
                                 <span class="result-value" id="sysResultF2">-</span>
                             </div>
+                            <button class="retro-btn retro-btn-secondary" style="width: 100%; margin-top: 15px;" onclick="downloadResults('sys')">
+                                Скачать отчет
+                            </button>
                         </div>
                     </div>
                 </td>
